@@ -25,13 +25,13 @@ for iteration = 1 to max:
 - **Coverage**: Fraction of bins filled
 
 ## Variants
-| Variant | Innovation |
-|---------|-----------|
-| **CVT-MAP-Elites** | Centroidal Voronoi Tessellation (handles high-dim BD) |
-| **CMA-MAP-Elites** | Uses CMA-ES for mutation → better continuous optimization |
-| **PGA-MAP-Elites** | Policy Gradient + QD for RL tasks |
-| **DCRL-MAP-Elites** | Depth-Conditioned RL (GECCO 2023 Best Paper) |
-| **Parametric-Task ME** | Task descriptor as additional objective |
+| Variant                | Innovation                                                |
+| ---------------------- | --------------------------------------------------------- |
+| **CVT-MAP-Elites**     | Centroidal Voronoi Tessellation (handles high-dim BD)     |
+| **CMA-MAP-Elites**     | Uses CMA-ES for mutation → better continuous optimization |
+| **PGA-MAP-Elites**     | Policy Gradient + QD for RL tasks                         |
+| **DCRL-MAP-Elites**    | Descriptor-Conditioned RL                                 |
+| **Parametric-Task ME** | Task descriptor as additional objective                   |
 
 ## Interview Relevance
 - **QD vs single-objective?** QD finds diverse repertoire; useful when you need multiple solutions

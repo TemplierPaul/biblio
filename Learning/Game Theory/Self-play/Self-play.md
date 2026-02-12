@@ -10,6 +10,9 @@ Self-play is a paradigm in multi-agent reinforcement learning and game theory wh
 
 ## Advanced Variants
 - [[Pipeline_PSRO|Pipeline PSRO (P2SRO)]] · [[Pipeline_PSRO_detailed|detailed]] — Parallel PSRO with convergence
+- [[A_PSRO|A-PSRO]] · [[A_PSRO_detailed|detailed]] — Advantage-based PSRO (deterministic convergence)
+- [[SP_PSRO|SP-PSRO]] · [[SP_PSRO_detailed|detailed]] — Self-Play PSRO (mixed strategies)
+- [[SF_PSRO|SF-PSRO]] · [[SF_PSRO_detailed|detailed]] — Simulation-Free PSRO (Dynamic Window)
 - [[Simplex_NeuPL|Simplex-NeuPL]] · [[Simplex_NeuPL_detailed|detailed]] — Any-mixture Bayes-optimality
 - [[NeuPL_JPSRO|NeuPL-JPSRO]] · [[NeuPL_JPSRO_detailed|detailed]] — General-sum n-player NeuPL
 - [[PRD_Rectified_Nash|PRD & Rectified Nash]] · [[PRD_Rectified_Nash_detailed|detailed]] — Meta-strategy solvers

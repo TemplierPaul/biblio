@@ -23,6 +23,9 @@ Tags: #game-theory #interview-prep
 - [[Self-play/Pipeline_PSRO|Pipeline PSRO]] · [[Self-play/Pipeline_PSRO_detailed|detailed]]
 - [[Self-play/Simplex_NeuPL|Simplex-NeuPL]] · [[Self-play/Simplex_NeuPL_detailed|detailed]]
 - [[Self-play/NeuPL_JPSRO|NeuPL-JPSRO]] · [[Self-play/NeuPL_JPSRO_detailed|detailed]]
+- [[Self-play/A_PSRO|A-PSRO]] · [[Self-play/A_PSRO_detailed|detailed]]
+- [[Self-play/SP_PSRO|SP-PSRO]] · [[Self-play/SP_PSRO_detailed|detailed]]
+- [[Self-play/SF_PSRO|SF-PSRO]] · [[Self-play/SF_PSRO_detailed|detailed]]
 - [[Self-play/PRD_Rectified_Nash|PRD & Rectified Nash]] · [[Self-play/PRD_Rectified_Nash_detailed|detailed]]
 
 ## Partial Observation & Imperfect Information
