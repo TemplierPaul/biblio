@@ -71,7 +71,8 @@ subject to  ν(π) ≥ 0, Σ ν(π) = 1
 
 **Common Objectives**:
 - **Maximum Welfare (MW-CCE)**: Maximize sum of utilities
-- **Maximum Entropy (MG-CCE)**: Maximize entropy (recommended)
+- **Maximum Gini (MG-CCE / MGCE)**: Maximize Gini impurity (recommended) - see [[MGCE]]
+- **Maximum Entropy (MECE)**: Maximize Shannon entropy (alternative)
 - **Random Vertex (RV-CCE)**: Sample vertex of CCE polytope
 
 ### 4. Best Response Computation

@@ -59,12 +59,20 @@ Input: Initial policies, equilibrium concept (CE or CCE)
 σ* = argmax_{σ ∈ (C)CE} Σᵢ uᵢ(σ)
 ```
 
-### Maximum Entropy MG(C)CE (Recommended)
+### Maximum Gini Correlated Equilibrium (MGCE) - Recommended
 ```
-maximize: -½σᵀσ  (Gini impurity)
+maximize: -½σᵀσ  (Gini impurity = Σ σ(a)(1-σ(a)))
 subject to: A·σ ≤ ε, σ ≥ 0, eᵀ·σ = 1
 ```
-Robust to payoff perturbations, encourages diversity.
+**Key insight**: Uses Gini impurity, NOT entropy. MGCE is the main contribution of the JPSRO paper.
+
+**Properties**:
+- Robust to payoff perturbations
+- Encourages diversity in strategy selection
+- Computationally efficient (convex QP)
+- Invariant to positive affine transformations
+
+**Note**: MECE (Maximum Entropy CE) uses Shannon entropy instead and is harder to compute.
 
 ### Random Vertex RV(C)CE
 ```
