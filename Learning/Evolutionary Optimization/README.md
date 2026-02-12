@@ -20,6 +20,26 @@ Quick reference for evolutionary algorithms, quality-diversity methods, and open
 
 ---
 
+## PT-ME (Parametric-Task MAP-Elites)
+**Paper**: "Parametric-Task MAP-Elites" (Anne & Mouret, 2024)
+**What**: Black-box algorithm for continuous multi-task optimization (parametric-task problem)
+**How**: Sample new task each iteration, local linear regression operator, distill to neural network
+**Key innovation**: Continuous task coverage + exploits local task structure via regression, outperforms PPO
+**When to use**: Continuous task space (not finite), need solution for any task parameter
+**Difference from MT-ME**: Continuous task sampling vs fixed discretization, adds linear regression operator
+
+---
+
+## MTMB-ME (Multi-Task Multi-Behavior MAP-Elites)
+**Paper**: "Multi-Task Multi-Behavior MAP-Elites" (Anne & Mouret, 2023)
+**What**: MAP-Elites variant finding many diverse solutions for many tasks simultaneously
+**How**: Crossover between elites from different tasks, evaluate on random task, maintain task-specific archives
+**Key innovation**: Leverages task similarity via crossover, 2× more solutions than baselines
+**When to use**: Need diverse solutions for multiple related tasks, limited budget per task
+**Difference from MAP-Elites**: Multiple tasks with shared optimization vs single task
+
+---
+
 ## POET (Paired Open-Ended Trailblazer)
 **Paper**: "Paired Open-Ended Trailblazer (POET)" (Wang et al., 2019)
 **What**: Coevolutionary algorithm generating environments AND agents simultaneously
@@ -65,25 +85,100 @@ Quick reference for evolutionary algorithms, quality-diversity methods, and open
 
 ---
 
+## GAME (Generational Adversarial MAP-Elites)
+**Paper**: "Tournament Informed Adversarial Quality Diversity" (Anne et al., 2026)
+**What**: Coevolutionary QD illuminating BOTH sides of adversarial problems simultaneously
+**How**: Alternating MTMB-ME generations with tournament-informed task selection (Ranking method)
+**Key innovation**: Six adversarial QD measures, ranking vectors as adversarial behavior descriptors
+**When to use**: Adversarial domains (red teaming, game balancing), need diverse challenges
+**Difference from POET**: Adversarial coevolution vs. agent-environment, tournament-based selection
+
+---
+
+## Extract-QD Framework
+**Paper**: "Extract-QD: A Generic Approach for QD in Noisy, Stochastic or Uncertain Domains" (Flageat et al., 2023)
+**What**: Modular framework for Quality-Diversity under uncertainty (UQD)
+**How**: Adaptive sampling via extraction budget (25%), archive depth tracking, exponential sampling
+**Key innovation**: Unifies all UQD methods, 3 problem formulations, 6 algorithmic modules
+**When to use**: Noisy evaluations, stochastic environments, reproducibility critical
+**Difference from MAP-Elites**: Handles uncertainty via resampling, depth-based archives, Extract-ME algorithm
+
+---
+
+## QD-RL: Quality-Diversity with Reinforcement Learning
+
+Folder: `QD-RL/` — Three progressive algorithms combining QD with Deep RL for efficient neuroevolution.
+
+### PGA-ME (Policy Gradient Assisted MAP-Elites)
+**Paper**: Nilsson & Cully (2021)
+**What**: Hybrid variation operator (50% GA + 50% Policy Gradient) for neuroevolution
+**How**: Evolutionary mutations + deterministic policy gradient using trained critic, actor injection
+**Key innovation**: First successful hybrid QD-RL, 10× speedup over MAP-Elites
+**When to use**: Unidirectional tasks, high-dimensional policies (10k+ parameters)
+**Limitation**: Fails on omnidirectional (diversity collapses to single point)
+
+### DCG-ME (Descriptor-Conditioned Gradients MAP-Elites)
+**Paper**: Faldor et al. (2023)
+**What**: Descriptor-conditioned critic Q(s,a|d) that guides mutations toward specific descriptors
+**How**: Reward scaling by descriptor similarity S(d,d'), actor evaluation for negative samples, archive distillation
+**Key innovation**: Fixes PGA-ME omnidirectional failure (+82% improvement), distills archive into single policy
+**When to use**: Omnidirectional tasks, deceptive fitness landscapes, need archive distillation
+**Advantage over PGA-ME**: Works on all task types, produces versatile policy
+
+### DCRL-ME (Descriptor-Conditioned RL MAP-Elites)
+**Paper**: Faldor et al. (2024)
+**What**: Actor Injection mechanism transforms descriptor-conditioned actor into diverse specialized policies
+**How**: Weight extraction (descriptor baked into bias), no actor evaluation needed, three variation operators
+**Key innovation**: Eliminates actor evaluation overhead, 2.75× sample efficiency improvement over DCG-ME
+**When to use**: Omnidirectional tasks with tight evaluation budget
+**Advantage over DCG-ME**: Same benefits, 50% fewer evaluations
+
+→ **See `QD-RL/README.md`** for detailed comparison, progression path, and guidance on choosing the right algorithm.
+
+---
+
 ## Summary Table
 
 | Algorithm | Type | Best For | Key Strength |
 |-----------|------|----------|--------------|
 | **MAP-Elites** | Grid-based QD | Low-D, known bounds | Interpretable illumination |
+| **PT-ME** | Continuous multi-task | Continuous task space | Local regression, NN distillation |
+| **MTMB-ME** | Multi-task QD | Many related tasks | Crossover across tasks, 2× solutions |
 | **POET** | Coevolution | Automatic curriculum | Environment-agent coevolution |
 | **Enhanced POET** | Coevolution | Unbounded generation | Domain-general, CPPNs |
 | **JEDi** | QD-ES hybrid | Optimization focus | Intelligent behavior targeting |
 | **OMNI-EPIC** | LLM-driven | Unlimited tasks | Code generation, natural language |
 | **DNS** | Parameter-free QD | High-D, unsupervised | No tuning, scales naturally |
+| **GAME** | Adversarial QD | Red teaming, game balancing | Both-sided illumination, tournament metrics |
+| **Extract-QD** | Uncertain QD | Noisy/stochastic domains | Adaptive sampling, reproducibility |
+| **PGA-ME** | QD-RL | Neuroevolution (unidirectional) | Hybrid GA+PG, 10× speedup |
+| **DCG-ME** | QD-RL | Neuroevolution (omnidirectional) | Descriptor conditioning, archive distillation |
+| **DCRL-ME** | QD-RL | Efficient neuroevolution | Actor injection, 2.75× sample efficiency |
 
 ---
 
 ## Relationships
 
+### Multi-Task QD Evolution
+- **MAP-Elites** → **Multi-Task MAP-Elites** (MT-ME): Extend to finite multiple tasks
+- **MT-ME** → **PT-ME**: Continuous task space + local linear regression
+- **MT-ME** → **MTMB-ME**: Multiple diverse solutions per task (not just 1)
+
+### Open-Ended Learning
 - **POET** → **Enhanced POET**: Domain-general extension with CPPNs
+- **Enhanced POET** → **OMNI-EPIC**: Replace CPPNs with LLM code generation
+
+### QD Variants
 - **MAP-Elites** → **JEDi**: Add intelligent targeting with GP
 - **MAP-Elites** → **DNS**: Remove grid, use dominated novelty
-- **Enhanced POET** → **OMNI-EPIC**: Replace CPPNs with LLM code generation
+- **MAP-Elites** → **GAME**: Extend to adversarial coevolution (uses MTMB-ME internally)
+- **Enhanced POET** (PATA-EC) → **GAME** (Ranking): Ranking vectors for task selection
+- **MAP-Elites** → **Extract-QD**: Add uncertainty handling via resampling
+
+### QD-RL (Deep RL Integration) ✨ NEW
+- **MAP-Elites** → **PGA-ME**: Add policy gradients for neuroevolution (10× speedup)
+- **PGA-ME** → **DCG-ME**: Add descriptor conditioning to fix omnidirectional tasks (+82%)
+- **DCG-ME** → **DCRL-ME**: Replace actor evaluation with actor injection (2.75× efficiency)
 
 ---
 

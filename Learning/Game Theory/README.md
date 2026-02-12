@@ -73,9 +73,12 @@ Quick reference for game theory concepts, equilibria, and multi-agent learning a
 **Difference from self-play**: Maintains population, explicit equilibrium computation
 
 ### JPSRO (Joint PSRO)
-**What**: Cooperative PSRO where all players share policy pool
-**Difference from PSRO**: Single shared repertoire vs. per-player repertoires
-**When to use**: Symmetric games, want unified strategy space
+**Paper**: "Multi-Agent Training beyond Zero-Sum with Correlated Equilibrium Meta-Solvers" (Marris et al., 2021)
+**What**: PSRO for n-player general-sum games using Correlated Equilibrium (CE) meta-solvers
+**How**: Shared policy pool, optimize Maximum Gini CE (MGCE) for meta-strategy
+**Key innovation**: Extends PSRO beyond 2-player zero-sum, uses Gini impurity (not entropy)
+**When to use**: N-player general-sum games, symmetric games, want correlated equilibria
+**Difference from PSRO**: CE/MGCE solver vs. Nash, supports general-sum
 
 ### Pipeline PSRO
 **Paper**: "Pipeline PSRO" (McAleer et al., 2020)
@@ -107,22 +110,55 @@ Quick reference for game theory concepts, equilibria, and multi-agent learning a
 
 ---
 
+## Multi-Agent Evaluation
+
+### α-Rank (AlphaRank)
+**Paper**: "α-Rank: Multi-Agent Evaluation by Evolution" (Omidshafiei et al., DeepMind, 2019)
+**What**: Evolutionary dynamics ranking method grounded in Markov-Conley chains (MCCs)
+**How**: Compute stationary distribution π of discrete-time evolutionary Markov chain with ranking-intensity α
+**Key innovation**: Dynamical solution concept (MCCs) vs. static (Nash), polynomial-time, unique ranking
+**When to use**: Large-scale multi-agent evaluation, intransitive games, many agents, want evolutionary strengths
+**Difference from Nash**: Descriptive (evolutionary) vs. prescriptive (rational), polynomial vs. PPAD-complete
+
+---
+
+## Game-Theoretic PSRO Methods
+
+### PSRO-rN (Rectified Nash Response)
+**Paper**: "Open-ended Learning in Symmetric Zero-sum Games" (Balduzzi et al., 2019)
+**What**: PSRO variant using Rectified Nash for open-ended learning via game-theoretic niching
+**How**: PRD meta-solver, response graph analysis, gamescapes framework (Hodge decomposition)
+**Key innovation**: Nontransitive games enable open-endedness, avoid Nash convergence
+**When to use**: Want continuous innovation, nontransitive domains, avoid equilibrium stagnation
+**Difference from PSRO**: Explicit niching dynamics, gamescapes analysis, designed for nontransitivity
+
+---
+
 ## NeuPL (Neural Population Learning)
 
 ### NeuPL
-**Paper**: "NeuPL: Neural Population Learning" (Bakhtin et al., 2022)
-**What**: Learns distribution over strategies (population) instead of single policy
-**How**: Parameterize strategy distribution with neural network, optimize for Nash
-**Key innovation**: Infinite strategy populations, end-to-end differentiable
-**Difference from PSRO**: Continuous distribution vs. discrete pool
+**Paper**: "Neural Population Learning beyond Symmetric Zero-sum Games" (Liu et al., 2021)
+**What**: Shared conditional neural network representing entire policy population
+**How**: Policy conditioned on strategy embedding ν, optimize for Coarse Correlated Equilibrium (CCE)
+**Key innovation**: Efficient population via parameter sharing, continual learning, scales to general-sum
+**When to use**: Large policy spaces, want compact representation, general-sum games
+**Difference from PSRO**: Single shared network vs. discrete pool, CCE vs. Nash/CE
 
 ### NeuPL-JPSRO
-**What**: NeuPL combined with PSRO framework (joint training)
-**When to use**: Want both population diversity and best-response training
+**Paper**: "Neural Population Learning beyond Symmetric Zero-sum Games" (Liu et al., 2021)
+**What**: NeuPL integrated with JPSRO for scalable n-player general-sum CCE convergence
+**How**: Neural population (shared θ) + JPSRO outer loop (expand repertoire)
+**Key innovation**: Combines compact neural representation with PSRO scalability
+**When to use**: N-player general-sum games, need scalability, want CCE guarantees
+**Difference from NeuPL**: Adds PSRO outer loop for iterative expansion
 
 ### Simplex NeuPL
-**What**: NeuPL with simplex-constrained meta-strategies
-**Difference from NeuPL**: Enforces valid probability distributions explicitly
+**Paper**: "Simplex Neural Population Learning" (Liu et al., 2022)
+**What**: NeuPL extension achieving any-mixture Bayes-optimality via simplex sampling
+**How**: Sample opponent priors from Dirichlet distribution over population simplex (ε=0.5)
+**Key innovation**: Optimal against ANY mixture (not just training set), implicit Bayesian inference
+**When to use**: Test-time uncertainty, need adaptation, have subjective beliefs about opponents
+**Difference from NeuPL**: Trains BR to all σ ∈ Δ^(N-1) vs. discrete set, Bayes-optimal behavior
 
 ---
 
@@ -154,8 +190,12 @@ Quick reference for game theory concepts, equilibria, and multi-agent learning a
 | Perfect info, zero-sum | AlphaZero, Minimax | Optimal, self-contained |
 | Imperfect info (poker) | CFR | Handles info sets, converges to Nash |
 | General-sum, diverse strategies | PSRO | Population-based, explicit equilibria |
+| N-player general-sum | JPSRO, NeuPL-JPSRO | Correlated equilibria, scalable |
 | Large-scale, parallel | Pipeline PSRO | Massive parallelization |
-| Continuous populations | NeuPL | Infinite strategy space |
+| Compact populations | NeuPL | Shared network, parameter-efficient |
+| Test-time adaptation | Simplex NeuPL | Any-mixture optimality, Bayes-optimal |
+| Open-ended learning | PSRO-rN | Nontransitive dynamics, avoid convergence |
+| Multi-agent evaluation & ranking | α-Rank | Evolutionary strengths, polynomial-time, unique ranking |
 | Fast approximate Nash | PRD | Efficient solver for meta-games |
 | Simple baseline | FSP | Easy to implement, works for some games |
 
@@ -165,8 +205,12 @@ Quick reference for game theory concepts, equilibria, and multi-agent learning a
 
 - **Minimax** → **MCTS** → **AlphaZero**: Perfect info search evolution
 - **Self-Play** → **PSRO**: Single policy → Population of policies
-- **PSRO** → **NeuPL**: Discrete pool → Continuous distribution
+- **PSRO** → **JPSRO**: 2-player zero-sum → N-player general-sum (CE)
+- **PSRO** → **NeuPL**: Discrete pool → Shared neural network (CCE)
+- **PSRO** → **PSRO-rN**: Nash convergence → Open-ended niching
 - **PSRO** → **Pipeline PSRO**: Sequential → Parallel
+- **NeuPL** → **NeuPL-JPSRO**: Standalone → PSRO integration
+- **NeuPL** → **Simplex NeuPL**: Discrete mixtures → Any-mixture Bayes-optimality
 - **Nash** → **PRD**: Exact → Approximate fast solver
 
 ---
