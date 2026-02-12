@@ -44,7 +44,8 @@ Where:
 
 **Dataset Size**: ~50K-100K comparisons (InstructGPT used 33K)
 
-### Stage 3: RL Fine-tuning (PPO)
+### Stage 3: RL Fine-tuning
+
 **Purpose**: Optimize policy to maximize reward model
 
 **Objective**:
@@ -62,18 +63,62 @@ Where:
 - Maintains language quality (reference model is coherent)
 - Exploration-exploitation balance
 
-**Algorithm**: Proximal Policy Optimization (PPO)
+#### Option A: PPO (Proximal Policy Optimization)
+
+**Standard Approach** - Used in InstructGPT, ChatGPT
+
+**Process**:
 - Sample batch of prompts
 - Generate responses with current policy
 - Compute rewards (reward model - KL penalty)
-- Update policy with PPO objective
+- Update policy AND value function with PPO objective
+
+**Components**:
+- Policy network (actor): The LLM being trained
+- Value network (critic): Estimates expected reward (same size as policy)
+- Total memory: ~2× policy size
 
 **Hyperparameters**:
 - Learning rate: ~1e-6 (very small)
 - Batch size: 512-1024 prompts
 - PPO epochs per batch: 1-4
 - KL coefficient ($\beta$): 0.01-0.02
+- Clipping threshold ($\epsilon$): 0.1-0.2
 - Training: ~256K prompts total
+
+#### Option B: GRPO (Group Relative Policy Optimization)
+
+**Memory-Efficient Alternative** - Used in DeepSeek-Math, DeepSeek-R1
+
+**Key Difference**: Eliminates value network, uses group-relative advantages instead
+
+**Process**:
+1. Sample G outputs (typically 64) per prompt from current policy
+2. Score all outputs with reward model
+3. Normalize rewards within each group: $\tilde{r}_i = \frac{r_i - \text{mean}(r)}{\text{std}(r)}$
+4. Use normalized rewards as advantages (no learned value function)
+5. Update policy with clipped objective
+
+**Advantages over PPO**:
+- **40-50% memory reduction**: No critic network
+- **Faster training**: No value function updates
+- **Dynamic gradient coefficients**: Reinforcement proportional to reward magnitude
+- **Group alignment**: Matches how reward models are trained (comparisons)
+
+**Disadvantages**:
+- **Higher sampling cost**: Need G outputs per prompt (vs. 1 in PPO)
+- **LLM-specific**: Designed for language tasks, not general RL
+
+**When to use GRPO over PPO**:
+- Training large LLMs (>7B parameters) with memory constraints
+- Have good reward models
+- Can afford higher inference cost during training
+- Want faster convergence on reasoning tasks
+
+**Results** (DeepSeek-Math 7B):
+- GSM8K: 82.9% → 88.2% (+5.3% over SFT)
+- MATH: 46.8% → 51.7% (+4.9% over SFT)
+- Comparable or better than PPO with half the memory
 
 ## Key Challenges
 
@@ -94,12 +139,25 @@ Where:
 - **Solutions**: Better reward model, diverse prompts, KL penalty
 
 ### 4. Compute Cost
+
+**With PPO**:
 - Need to run multiple models during training:
   - Policy model (being trained)
   - Reference model (for KL)
   - Reward model (for scoring)
-  - Value model (for PPO, sometimes separate)
-- Typically 4x more expensive than SFT
+  - Value model (critic, typically same size as policy)
+- **Memory**: ~2× policy size (policy + value)
+- **Compute**: Typically 4× more expensive than SFT
+
+**With GRPO**:
+- Models needed:
+  - Policy model (being trained)
+  - Reference model (for KL)
+  - Reward model (for scoring)
+  - ~~Value model~~ (eliminated!)
+- **Memory**: ~1× policy size (40-50% savings vs. PPO)
+- **Compute**: Higher sampling cost (G outputs per prompt), but fewer model updates
+- **Trade-off**: Memory for inference (more samples during training)
 
 ## Alternatives to RLHF
 
@@ -156,19 +214,79 @@ $$\mathcal{L}_{DPO} = -\mathbb{E}_{(x,y_w,y_l)} \left[\log \sigma \left(\beta \l
 ## Interview Relevance
 
 **Common Questions**:
+
+### General RLHF
 1. **Why RLHF?** Align with human preferences; hard to define "good" output with loss function
 2. **Why three stages?** (1) SFT: get right format, (2) RM: learn preferences, (3) RL: optimize for preferences
 3. **Why KL penalty?** Prevent reward hacking and maintain language quality
 4. **Reward hacking examples?** Length exploitation, phrase repetition, gaming reward model
 5. **RLHF vs DPO?** RLHF: two-stage (RM + RL), more compute; DPO: direct optimization, simpler
-6. **Why PPO?** On-policy algorithm, stable for LLM fine-tuning
-7. **Overoptimization issue?** Policy exploits RM errors at high KL; solution: early stopping
-8. **Compute requirements?** 4 models running (policy, reference, reward, value), ~4x SFT cost
+6. **Overoptimization issue?** Policy exploits RM errors at high KL; solution: early stopping
+
+### PPO vs GRPO
+
+7. **What is GRPO?** Group Relative Policy Optimization - memory-efficient PPO variant that eliminates value network
+   - **Answer**: GRPO samples multiple outputs per prompt, normalizes rewards within groups, uses normalized rewards as advantages. Saves 40-50% memory by not needing critic.
+
+8. **How does GRPO compute advantages without a value function?**
+   - **Answer**: Sample G outputs (e.g., 64) per prompt, score with reward model, normalize: $\tilde{r}_i = (r_i - \mu) / \sigma$ within group. Use $\tilde{r}_i$ as advantage. Group statistics provide natural baseline.
+
+9. **Why does GRPO work for LLMs?**
+   - **Answer**: (1) Reward models trained on pairwise comparisons → group-relative advantages align naturally, (2) LLMs can generate many samples cheaply, (3) Memory often more limiting than inference for large models
+
+10. **GRPO vs PPO: when to use which?**
+    - **PPO**: General RL, continuous control, need value function, sparse rewards
+    - **GRPO**: LLM alignment, memory constraints, mathematical reasoning, have good reward models
+    - **Key trade-off**: GRPO trades sampling cost (G outputs) for memory savings (no critic)
+
+11. **What are GRPO's gradient coefficients?**
+    - **Answer**: $GC = \hat{A}_i + \beta(\pi_{ref}/\pi_\theta - 1)$ where $\hat{A}_i$ is normalized group advantage. Unlike binary reinforcement (RFT: ±1), GRPO's coefficients are continuous and proportional to reward magnitude → differential reinforcement of varying intensities.
+
+12. **What is outcome vs process supervision in GRPO?**
+    - **Outcome Supervision (OS)**: Single reward at end, all tokens get same advantage $\hat{A}_i = \tilde{r}_i$
+    - **Process Supervision (PS)**: Step-level rewards, cumulative advantage $\hat{A}_{i,t} = \sum_{j=t}^T \tilde{r}_{i,j}$
+    - **Result**: GRPO+PS > GRPO+OS on math reasoning (DeepSeek-Math)
+
+13. **Why doesn't GRPO improve Pass@1, only Maj@K?**
+    - **Answer**: GRPO improves output distribution robustness (ensemble accuracy) but doesn't fundamentally expand model capabilities. It refines the sampling distribution to favor correct solutions more often, benefiting majority voting.
+
+14. **Compute requirements: PPO vs GRPO?**
+    - **PPO**: 4 models (policy, reference, reward, value), 2× policy memory
+    - **GRPO**: 3 models (policy, reference, reward), 1× policy memory, but G× sampling cost
+    - **Trade-off**: GRPO saves memory but increases inference during training
+
+15. **Can GRPO replace PPO in all RLHF pipelines?**
+    - **Answer**: No - GRPO is LLM-specific. PPO still needed for: (1) Continuous control, (2) Sparse reward environments, (3) Non-language domains, (4) When value function provides significant variance reduction
+
+### Advanced GRPO Topics
+
+16. **How does iterative GRPO work?**
+    - **Answer**: After each RL iteration, update reward model with new samples (10% historical replay prevents catastrophic forgetting). Set reference model to current policy. Continue training. Enables co-evolution of policy and reward model.
+
+17. **What causes reward model exploitation in GRPO?**
+    - **Answer**: Same as PPO - policy finds spurious patterns reward model associates with high scores. Mitigation: (1) KL penalty, (2) Iterative reward model updates, (3) Diverse training data, (4) Early stopping based on held-out metrics
+
+18. **GRPO vs Online RFT (Rejection Fine-Tuning)?**
+    - **Answer**: Both use neural reward models, but:
+    - **RFT**: Binary gradient coefficients (GC = +1 correct, -1 incorrect)
+    - **GRPO**: Continuous coefficients proportional to normalized reward
+    - **Result**: GRPO outperforms Online RFT on math reasoning benchmarks
 
 **Key Concepts**:
 - **Bradley-Terry model**: Probabilistic model for pairwise preferences
 - **KL divergence**: Measures how much policy deviates from reference
 - **Reward hacking**: Policy exploits flaws in reward model
 - **Distribution shift**: Policy generates out-of-distribution samples
+- **Group-relative advantages**: Advantages computed from group statistics, not learned value function
+- **Gradient coefficients**: Weights for policy gradient updates; GRPO makes them dynamic and proportional to reward
 
-**Key Insight**: RLHF transforms LLMs from "text completers" to "helpful assistants" by incorporating human preferences, but requires careful tuning to avoid reward hacking.
+**Key Insights**:
+- RLHF transforms LLMs from "text completers" to "helpful assistants" by incorporating human preferences
+- PPO is standard but memory-intensive; GRPO offers 40-50% memory savings for LLM-specific tasks
+- GRPO's group-relative advantages align with reward model training (pairwise comparisons)
+- Choice between PPO/GRPO depends on: domain (general RL vs LLMs), resources (compute vs memory), and task (reasoning benefits more from GRPO)
+
+**See Also**:
+- **[[GRPO]]**: Detailed GRPO overview and comparison
+- **[[GRPO_detailed]]**: Implementation guide with code examples
+- **[[PPO]]**: Standard PPO algorithm (referenced in multiple files)

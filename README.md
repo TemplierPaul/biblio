@@ -71,6 +71,16 @@ Essential CS interview topics:
 
 ---
 
+### 3. `Sources/` - Grounding Data
+
+**Purpose**: Raw and cleaned TeX sources from ArXiv papers, used for RAG and LLM grounding.
+
+**Current Sources**:
+- `omni_epic/`, `jedi/`, `extract_qd/`, `dns/`, etc.
+- Each contains raw `.tex` files and a `_full_paper_context.txt` (cleaned text).
+
+---
+
 ## 🎯 Use Cases
 
 ### For Personal Learning & Research
@@ -128,6 +138,24 @@ See specific README files in Questions/ML and Questions/CS for detailed study pa
 
 ---
 
+## 📥 Data Acquisition: ArXiv to Local
+
+Papers in the `Sources/` directory are acquired using [arxiv_download](https://github.com/TemplierPaul/arxiv_download). This tool downloads ArXiv TeX sources and cleans them for LLM grounding.
+
+### Prerequisite: Start the Server (Docker)
+Ensure the output directory is set to `/Users/ptemplie/Documents/ICLVault/Sources` in `docker-compose.yml`.
+```bash
+docker compose up --build -d
+```
+
+### Usage
+1. **Load Extension**: Load `extension/manifest.json` as a temporary add-on in Firefox (`about:debugging`).
+2. **Download**: Go to an ArXiv page (e.g., [1901.01753](https://arxiv.org/abs/1901.01753)).
+3. **Trigger**: Click the extension icon, type a folder name (e.g., `poet`), and hit **Enter**.
+4. **Result**: A new folder in `Sources/` with raw TeX and a `_full_paper_context.txt` ready for LLM use.
+
+---
+
 ## 📊 Content Statistics
 
 ### Learning Folder
@@ -171,6 +199,11 @@ biblio/
 │   ├── JAX/                     # JAX ecosystem guides
 │   └── ...                      # Other research topics
 │
+├── Sources/                     # Grounding data (ArXiv sources)
+│   ├── used_sources.md          # Registry of processed papers
+│   ├── omni_epic/               # Example: Omni-EPIC sources
+│   └── ...                      # Other paper sources
+│
 └── Questions/                   # Interview Q&A collection
     ├── STUDY_TRACKER.md         # Progress tracking checklist ⭐
     │
@@ -209,6 +242,7 @@ biblio/
 | **Style** | Exploratory, detailed | Concise, practical |
 
 **When to use Learning/**: Understanding concepts deeply, research projects, implementing algorithms
+**When to use Sources/**: Grounding LLMs with raw paper data, RAG applications, extracting specific text
 **When to use Questions/**: Interview prep, quick review, systematic coverage of topics
 
 ---

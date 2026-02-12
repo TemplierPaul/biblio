@@ -529,6 +529,267 @@ Measures divergence between current policy and reference (SFT) policy.
 
 **Total**: ~4x compute vs SFT.
 
+### What is GRPO and how does it differ from PPO?
+
+**GRPO** (Group Relative Policy Optimization): Memory-efficient PPO variant for LLM alignment.
+
+**Key Difference**: **Eliminates the critic (value function) model**
+
+**PPO approach**:
+- Learn value function $V(s)$ to estimate expected return
+- Compute advantages: $A = Q - V$
+- Update both policy and value network
+
+**GRPO approach**:
+- Sample G outputs (e.g., 64) for same prompt from old policy
+- Score all outputs with reward model: $r_1, r_2, ..., r_G$
+- Normalize within group: $\tilde{r}_i = \frac{r_i - \text{mean}(r)}{\text{std}(r)}$
+- Use normalized rewards as advantages: $\hat{A}_i = \tilde{r}_i$
+
+**Memory savings**: 40-50% (no critic network, optimizer states, or gradients for critic)
+
+**Trade-off**: Need to sample G outputs per prompt (higher inference cost during training) vs. PPO's single output.
+
+### How does GRPO compute advantages without a value function?
+
+**Core insight**: Use group statistics as natural baseline instead of learned value function.
+
+**Algorithm**:
+```python
+# For each prompt q in batch
+for q in batch:
+    # 1. Sample group of outputs from old policy
+    outputs = [policy_old.sample(q) for _ in range(G)]  # G=64 typical
+
+    # 2. Get rewards from reward model
+    rewards = [reward_model(q, o) for o in outputs]
+
+    # 3. Normalize within group
+    mean_r = mean(rewards)
+    std_r = std(rewards)
+    advantages = [(r - mean_r) / std_r for r in rewards]
+
+    # 4. Update policy using advantages
+    for output, advantage in zip(outputs, advantages):
+        policy_loss = compute_ppo_loss(q, output, advantage)
+        policy_loss.backward()
+```
+
+**Why it works**:
+- Group average acts as baseline (what's "normal" performance on this prompt)
+- Relative ranking aligns with how reward models are trained (pairwise comparisons)
+- High variance reduced by large group size (G=64)
+
+**Comparison**: PPO learns "how good is this state universally", GRPO computes "how good is this output compared to others on same prompt".
+
+### When should you use GRPO vs PPO for RLHF?
+
+**Use GRPO ✅ when**:
+
+1. **Memory constrained**: Can't fit policy + critic (e.g., training 7B+ models on limited GPUs)
+2. **LLM alignment tasks**: RLHF, instruction tuning, mathematical reasoning
+3. **Have quality reward models**: GRPO depends heavily on RM accuracy
+4. **Can afford sampling**: G outputs per prompt (inference cost acceptable during training)
+5. **Process supervision available**: Step-level rewards boost GRPO performance
+
+**Use PPO ✅ when**:
+
+1. **General RL domains**: Robotics, game playing, continuous control
+2. **Sparse rewards**: Need value function for credit assignment
+3. **Sampling expensive**: Can't afford G outputs per prompt
+4. **Non-language tasks**: PPO more general-purpose
+5. **Simpler setup**: Existing PPO infrastructure already works
+
+**Performance comparison (DeepSeek-Math 7B)**:
+| Benchmark | SFT | GRPO | Improvement |
+|-----------|-----|------|-------------|
+| GSM8K | 82.9% | 88.2% | +5.3% |
+| MATH | 46.8% | 51.7% | +4.9% |
+
+**In practice**: GRPO is becoming standard for LLM alignment due to memory efficiency with comparable performance.
+
+### What are GRPO's gradient coefficients?
+
+**Dynamic gradient coefficients** proportional to reward magnitude.
+
+**Formula**:
+$$GC(q, o, t) = \hat{A}_{i,t} + \beta \left(\frac{\pi_{ref}}{\pi_\theta} - 1\right)$$
+
+Where:
+- $\hat{A}_{i,t}$: Group-relative advantage (normalized reward)
+- $\beta$: KL coefficient (typically 0.01-0.02)
+- $\pi_{ref} / \pi_\theta$: Ratio for KL penalty
+
+**Key insight**: Coefficient is **continuous** (not binary)
+
+**Comparison with other methods**:
+
+| Method | Gradient Coefficient |
+|--------|---------------------|
+| **SFT** | GC = 1 (all examples equal) |
+| **RFT** | GC = +1 (correct) or -1 (wrong) |
+| **GRPO** | GC = normalized reward (continuous) |
+| **PPO** | GC = GAE advantage (learned baseline) |
+
+**Example**:
+- High reward (+2.5 after normalization) → Strong positive reinforcement
+- Neutral reward (0 after normalization) → Minimal update
+- Low reward (-1.8 after normalization) → Strong negative reinforcement
+
+**Why better than binary**: Differential treatment based on quality (very good > good > neutral > bad > very bad).
+
+### What's the difference between outcome and process supervision in GRPO?
+
+**Outcome Supervision (OS)**:
+- **Single reward** at end of sequence
+- All tokens get **same advantage**: $\hat{A}_{i,t} = \tilde{r}_i$ for all $t$
+- Simpler, only needs final outcome reward
+
+**Example** (math problem):
+```
+Question: 2 + 2 = ?
+Answer: First, I add 2 and 2. This equals 4.
+Reward: 1.0 (correct final answer)
+All tokens get advantage = 1.0
+```
+
+**Process Supervision (PS)**:
+- **Step-level rewards** throughout reasoning
+- Cumulative advantage: $\hat{A}_{i,t} = \sum_{j=t}^{T} \tilde{r}_{i,j}$
+- More fine-grained signal
+- Requires annotated reasoning steps
+
+**Example** (same problem):
+```
+Question: 2 + 2 = ?
+Answer: First, I add   [r=0.8]
+        2 and 2.       [r=1.0]
+        This equals 4. [r=1.0]
+Token advantages: [2.8, 2.0, 1.0] (cumulative sum)
+```
+
+**Performance** (DeepSeek-Math):
+- GRPO+PS > GRPO+OS > Online RFT
+- PS provides stronger training signal for multi-step reasoning
+
+**Trade-off**: PS requires step-level reward annotations (expensive) but significantly improves reasoning tasks.
+
+### Why does GRPO improve Maj@K but not Pass@1?
+
+**Observation**: GRPO boosts majority voting accuracy but not single-sample performance.
+
+**Pass@1**: Single sample correctness (greedy or single draw)
+**Maj@K**: Generate K samples, take majority vote
+
+**Why this happens**:
+
+1. **Distributional improvement**: GRPO improves the **robustness of the output distribution**
+   - More samples land on correct answer
+   - Fewer samples produce wrong answers
+   - Better for ensemble methods
+
+2. **Not capability expansion**: Doesn't teach fundamentally new skills
+   - Model still makes same types of errors
+   - Just shifts probability mass toward correct solutions
+
+3. **Self-consistency effect**: Majority voting amplifies distributional improvements
+   - If 60% of samples correct → majority likely correct
+   - GRPO pushes 60% → 70% → majority voting wins more
+
+**Analogy**: Like calibrating a biased coin - doesn't change the coin's fundamental properties, but makes the distribution more favorable for aggregate outcomes.
+
+**Practical implication**: GRPO most valuable when you can afford to sample multiple outputs and use voting/verification.
+
+### What are the memory and compute trade-offs between GRPO and PPO?
+
+**Memory Comparison**:
+
+**PPO**:
+- Policy network (e.g., 7B params): ~28GB FP32
+- Value network (typically same size): ~28GB FP32
+- Gradients + optimizer states: ~2× parameters
+- **Total**: ~4× policy size = ~112GB
+
+**GRPO**:
+- Policy network: ~28GB FP32
+- ~~Value network~~: Eliminated!
+- Gradients + optimizer states: ~2× policy parameters
+- **Total**: ~2× policy size = ~56GB
+
+**Memory savings**: 40-50% (can train on smaller GPUs or larger batch sizes)
+
+**Compute Comparison**:
+
+**PPO per batch**:
+- 1× policy forward (generate)
+- 1× policy backward (update)
+- 1× value forward (compute baseline)
+- 1× value backward (update critic)
+- 1× reference forward (KL penalty)
+- 1× reward model forward (rewards)
+
+**GRPO per batch**:
+- G× policy forward (sample group) ← **Higher cost**
+- 1× policy backward (update)
+- ~~Value forward/backward~~: Eliminated
+- 1× reference forward (KL penalty)
+- G× reward model forward (score group) ← **Higher cost**
+
+**Key trade-off**: GRPO trades **memory for inference**
+- Saves memory (no critic)
+- Costs more inference (G samples vs 1)
+- Typical G=64, so 64× more sampling
+
+**When GRPO wins**: Memory-bound scenarios (large models, limited GPUs, want bigger batches)
+
+**When PPO wins**: Inference-bound scenarios (sampling is expensive, small models where memory not limiting)
+
+### How does iterative GRPO work?
+
+**Problem**: Policy improves → generates out-of-distribution samples → reward model less accurate.
+
+**Solution**: Iteratively update both policy AND reward model.
+
+**Algorithm**:
+```
+Initialize: policy_0, reward_model_0
+
+For iteration i in 1, 2, 3, ...:
+    # 1. RL Training Phase
+    policy_i = GRPO_train(
+        policy=policy_{i-1},
+        reference=policy_{i-1},  # Reference updates each iteration
+        reward_model=reward_model_{i-1}
+    )
+
+    # 2. Collect New Data
+    new_samples = generate_samples(policy_i, prompts)
+    new_comparisons = human_annotate(new_samples)  # Or AI annotate
+
+    # 3. Update Reward Model
+    replay_buffer = new_comparisons + sample(old_comparisons, ratio=0.1)
+    reward_model_i = train_reward_model(replay_buffer)
+
+    # 4. Update Reference
+    reference_{i+1} = policy_i  # Set new reference for next iteration
+```
+
+**Key components**:
+
+1. **Reference model updates**: Use current policy as next reference (not frozen SFT)
+2. **Reward model updates**: Retrain RM on new samples + 10% historical data
+3. **Replay buffer**: Prevents catastrophic forgetting in RM
+4. **Co-evolution**: Policy and RM improve together
+
+**Benefits**:
+- Mitigates reward model exploitation
+- Continues improving beyond first iteration
+- Better out-of-domain generalization
+
+**Diminishing returns**: First iteration gives most gains, subsequent iterations smaller improvements.
+
+**Used in**: DeepSeek-R1, DeepSeek-Math for extended reasoning training.
+
 ### Compare RLHF, DPO, RLAIF, Constitutional AI
 
 **RLHF**:
