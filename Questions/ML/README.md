@@ -5,83 +5,76 @@ Comprehensive interview questions and answers organized by topic, covering ML/AI
 ## 📋 Quick Reference Table
 
 | File | Topics | Difficulty | Key For |
-|------|--------|------------|---------|
-| 01_ANN_Architecture | LSTM, Attention, Transformers | Medium | Any ML role |
-| 02_LLM_Training | Pre-training, Fine-tuning, RLHF | Medium-Hard | LLM/NLP roles |
-| 03_Deep_Learning | GNNs, Diffusion, VLAs | Hard | Research, specialized DL |
-| 04_Classical_ML | Gaussian Processes | Medium-Hard | Bayesian ML, uncertainty |
-| 05_Game_Theory | Nash, MCTS, AlphaZero, PSRO | Hard | Multi-agent, game AI |
-| 06_Reinforcement_Learning ⭐ | MDPs to SAC (complete RL) | Easy-Hard | RL roles, research |
-| 07_ML_Fundamentals ⭐ | SVM, metrics, optimizers, debugging | Easy-Medium | ML Engineer interviews |
-| 08_Probability_Statistics ⭐ | Distributions, Bayes, testing | Easy-Medium | Any ML role, research |
-| 09_ML_Systems | Scalability, RecSys, deployment | Medium-Hard | MLOps, infrastructure |
-| 10_Ethics_AI | Fairness, bias, transparency | Medium | Responsible AI, all roles |
-| 11_Math_Foundations | Optimization, linear algebra, VAE/GAN | Medium | Theory, research interviews |
+|------|--------|------------|------------|
+| [[01_Math_Foundations]] | Optimization, linear algebra, VAE/GAN | Medium | Theory, research interviews |
+| [[02_Probability_Statistics]] ⭐ | Distributions, Bayes, testing | Easy-Medium | Any ML role, research |
+| [[03_ML_Fundamentals]] ⭐ | Metrics, model debugging | Easy-Medium | ML Engineer interviews |
+| [[04_Loss_Functions]] | Regression, classification, RL losses | Medium | Any ML role |
+| [[05_Optimizers_Regularization]] | SGD, Adam, L1/L2, dropout | Medium | ML Engineer, research |
+| [[06_Classical_ML]] | SVM, k-NN, Gaussian Processes | Medium-Hard | Classical ML, Bayesian |
+| [[07_Neural_Architectures]] | CNN, LSTM, Transformers, GNNs | Medium-Hard | Any DL role |
+| [[08_Advanced_Deep_Learning]] | Diffusion, VLA models | Hard | Research, specialized DL |
+| [[09_LLM_Training]] | Pre-training, fine-tuning, RLHF | Medium-Hard | LLM/NLP roles |
+| [[10_Reinforcement_Learning]] ⭐ | MDPs to SAC (complete RL) | Easy-Hard | RL roles, research |
+| [[11_Game_Theory]] | Nash, MCTS, AlphaZero, PSRO | Hard | Multi-agent, game AI |
+| [[12_ML_Systems]] | Scalability, RecSys, deployment | Medium-Hard | MLOps, infrastructure |
+| [[13_Ethics_AI]] | Fairness, bias, transparency | Medium | Responsible AI, all roles |
 
 ⭐ = Essential for interview prep
 
 ## 📁 File Organization
 
-### 01_ANN_Architecture.md
-Neural network architectures and attention mechanisms:
-- **Part 1: LSTM** - Recurrent networks, vanishing gradients, gates
-- **Part 2: Attention Mechanism** - Scaled dot-product, Q/K/V, multi-head attention
-- **Part 3: Transformer Architecture** - Encoder-decoder, positional encoding, masking
+### [[01_Math_Foundations]]
+**Mathematical foundations for ML**:
+- **Part 1: Optimization Theory** - Gradient descent, second-order methods, Newton's method
+- **Part 2: Linear Algebra** - Jacobian, gradients, derivatives
+- **Part 3: Tensors & Decompositions** - Eigenvalues, SVD, matrix factorization
+- **Part 4: Generative Models** - VAE, GAN, training dynamics
+- **Part 5: Advanced Topics** - Mixture of Experts, conditional computation
 
-### 02_LLM_Training.md
-Large language model training and fine-tuning:
-- **Part 1: Large Language Models** - Pre-training, scaling laws, emergent abilities
-- **Part 2: Fine-tuning & PEFT** - LoRA, QLoRA, instruction tuning
-- **Part 3: Alignment & RLHF** - Reward modeling, PPO, DPO, Constitutional AI
-
-### 03_Deep_Learning.md
-Advanced deep learning topics:
-- **Part 1: Graph Neural Networks** - Message passing, GCN/GraphSAGE/GAT, applications
-- **Part 2: Diffusion Models** - DDPM, DDIM, latent diffusion, classifier-free guidance
-- **Part 3: Vision-Language-Action** - RT-1/RT-2, VLA models, robotics
-
-### 04_Classical_ML.md
-Traditional machine learning methods:
-- **Part 1: Gaussian Processes** - Kernels, Bayesian inference, uncertainty quantification
-
-### 05_Game_Theory.md
-Game theory and multi-agent algorithms:
-- **Part 1-2: Foundations** - Nash equilibrium, extensive form games, social dilemmas
-- **Part 3: Classical Algorithms** - Minimax, alpha-beta pruning, MCTS, UCT
-- **Part 4: AlphaZero** - Self-play, PUCT, policy/value networks
-- **Part 5-6: Population Methods** - PSRO, JPSRO, NeuPL, equilibrium concepts
-- **Part 7-8: Learning Methods** - Fictitious self-play, CFR, poker AI
-
-### 06_Reinforcement_Learning.md ⭐
-**Comprehensive RL coverage from basics to advanced**:
-- **Part 1-2: Foundations** - MDPs, Bellman equations, value functions
-- **Part 3: Dynamic Programming** - Policy/value iteration
-- **Part 4: Monte Carlo** - First-visit, exploration-exploitation
-- **Part 5: Temporal Difference** - TD(0), SARSA, Q-learning
-- **Part 6: Function Approximation** - Deep Q-Networks, experience replay
-- **Part 7: Policy Gradients** - REINFORCE, advantage, baselines
-- **Part 8: Actor-Critic** - A2C, A3C, PPO, TRPO, GAE
-- **Part 9: Deep Q-Networks** - DQN, Double/Dueling DQN, Rainbow
-- **Part 10: Continuous Control** - DDPG, TD3, SAC
-- **Part 11: Advanced Topics** - Model-based RL, MARL, imitation learning
-- **Part 12: Practical** - Debugging, hyperparameters, evaluation
-
-### 07_ML_Fundamentals.md ⭐
-**Classical ML, metrics, and model debugging**:
-- **Part 1: Classification & Regression** - SVM, k-NN, generative vs discriminative
-- **Part 2: Evaluation Metrics** - Precision, recall, F1, ROC-AUC, BLEU, ROUGE
-- **Part 3: Loss Functions** - Cross-entropy, MSE, focal loss, contrastive, triplet
-- **Part 4: Optimizers** - SGD, Adam, AdamW, RMSProp, learning rate scheduling
-- **Part 5: Regularization** - L1/L2, overfitting mitigation strategies
-- **Part 6: Model Debugging** - Improving accuracy, handling class imbalance
-
-### 08_Probability_Statistics.md
+### [[02_Probability_Statistics]] ⭐
 **Statistical foundations for ML**:
 - **Part 1: Probability Fundamentals** - Random variables, mean/median/mode, correlation vs dependence
 - **Part 2: Distributions** - Bernoulli, Binomial, Poisson, Normal, Beta, Gamma, t-distribution
 - **Part 3: Bayesian Inference** - Bayes theorem, conjugate priors, Bayesian updating
 - **Part 4: Statistical Testing** - Hypothesis testing, p-values, t-tests, Type I/II errors
 - **Part 5: Bias-Variance Tradeoff** - Decomposition, empirical demonstration, mitigation
+
+### [[03_ML_Fundamentals]] ⭐
+**Evaluation metrics and model debugging**:
+- **Part 1: Evaluation Metrics** - Precision, recall, F1, ROC-AUC, BLEU, ROUGE, Perplexity
+- **Part 2: Model Debugging & Improvement** - Systematic debugging, class imbalance, feature engineering, hyperparameter tuning
+
+### [[04_Loss_Functions]]
+**Comprehensive loss function coverage**:
+- Regression losses (MSE, MAE, Huber)
+- Classification losses (Cross-entropy, Focal, Label smoothing)
+- Contrastive & metric learning (Triplet, InfoNCE)
+- RL losses (Policy gradient, value, advantage)
+- Advanced losses (GAN, Diffusion, Alignment)
+
+### [[05_Optimizers_Regularization]]
+**Optimization and regularization techniques**:
+- **Part 1: Optimizers** - SGD, Adam, AdamW, RMSProp, RAdam, LAMB, learning rate scheduling
+- **Part 2: Regularization** - L1/L2, dropout, early stopping, data augmentation, overfitting mitigation
+
+### [[06_Classical_ML]]
+**Traditional machine learning methods**:
+- **Part 1: Classification & Regression** - SVM, k-NN, generative vs discriminative models
+- **Part 2: Gaussian Processes** - Kernels, Bayesian inference, uncertainty quantification
+
+### [[07_Neural_Architectures]]
+**Neural network architectures**:
+- **Part 0: CNNs** - Convolutions, pooling, ResNet, skip connections, U-Net *(to be expanded)*
+- **Part 1: LSTM** - Recurrent networks, vanishing gradients, gates
+- **Part 2: Attention Mechanism** - Scaled dot-product, Q/K/V, multi-head attention
+- **Part 3: Transformer Architecture** - Encoder-decoder, positional encoding, masking
+- **Part 4: Graph Neural Networks** - Message passing, GCN/GraphSAGE/GAT, applications
+
+### [[08_Advanced_Deep_Learning]]
+**Advanced deep learning topics**:
+- **Part 1: Diffusion Models** - DDPM, DDIM, latent diffusion, classifier-free guidance
+- **Part 2: Vision-Language-Action** - RT-1/RT-2, VLA models, robotics
 
 ### 09_ML_Systems.md
 **Scalable ML systems and deployment**:
@@ -115,28 +108,28 @@ Game theory and multi-agent algorithms:
 ### Study Paths
 
 **ML Engineer Interview Prep** (2-3 weeks):
-07 (ML Fundamentals) → 08 (Probability & Stats) → 11 (Math Foundations: Parts 1-2) → 01 (ANN) → 02 (LLM) → Practice problems
+01 (Math) → 02 (Probability) → 03 (ML Fundamentals) → 04 (Loss Functions) → 05 (Optimizers) → 07 (Neural Architectures) → 09 (LLM) → Practice problems
 
 **Research Scientist Path**:
-11 (Math Foundations) → Full 06 (RL) → 05 (Game Theory) → 02 (LLM) → 03 (Deep Learning) → 10 (Ethics)
+01 (Math) → 02 (Probability) → Full 10 (RL) → 11 (Game Theory) → 09 (LLM) → 08 (Advanced DL) → 13 (Ethics)
 
 **Applied RL Path**:
-06 (RL: Parts 1-10) → 05 (Game Theory: Parts 1-4) → 11 (Math: Parts 1-2) → 09 (ML Systems: Part 2)
+10 (RL: Parts 1-10) → 11 (Game Theory: Parts 1-4) → 01 (Math: Parts 1-2) → 12 (ML Systems: Part 2)
 
 **Systems/MLOps Path**:
-09 (ML Systems) → 07 (ML Fundamentals: Parts 3-4) → 02 (LLM: Part 1) → 10 (Ethics: Part 4)
+12 (ML Systems) → 04 (Loss Functions) → 05 (Optimizers) → 09 (LLM: Part 1) → 13 (Ethics: Part 4)
 
 **Responsible AI Path**:
-10 (Ethics) → 07 (ML Fundamentals: Parts 2, 5-6) → 08 (Probability: Part 4) → Fairness papers
+13 (Ethics) → 03 (ML Fundamentals) → 05 (Optimizers/Regularization) → 02 (Probability: Part 4) → Fairness papers
 
 **Theory-Heavy Path** (PhD/Research):
-08 (Probability & Stats) → 11 (Math Foundations) → 04 (Classical ML) → 06 (RL: theory parts) → 05 (Game Theory)
+01 (Math) → 02 (Probability) → 06 (Classical ML) → 10 (RL: theory parts) → 11 (Game Theory)
 
 **Generative Models Path**:
-11 (Math: Parts 4-5) → 03 (Diffusion Models) → 02 (LLM Training) → Practice with GANs/VAEs
+01 (Math: Parts 4-5) → 08 (Advanced DL: Diffusion) → 09 (LLM Training) → Practice with GANs/VAEs
 
 **Complete Prep** (comprehensive):
-07 → 08 → 11 → 01 → 02 → 03 → 04 → 05 → 06 → 09 → 10
+01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12 → 13
 
 ## 📊 Content Statistics
 
@@ -159,9 +152,9 @@ Game theory and multi-agent algorithms:
 - Precision, recall, F1-score, ROC-AUC
 - Probability fundamentals, Bayes theorem
 
-### Classical ML (07, 08)
-- SVM, k-NN, decision trees
-- Loss functions (cross-entropy, MSE, focal, triplet)
+### Classical ML (03, 04, 05, 06)
+- SVM, k-NN, decision trees, Gaussian Processes
+- Loss functions (cross-entropy, MSE, focal, triplet, contrastive)
 - Optimizers (SGD, Adam, AdamW, learning rate scheduling)
 - Regularization (L1/L2, dropout, early stopping)
 - Evaluation metrics (precision, recall, F1, BLEU, ROUGE)
@@ -169,15 +162,16 @@ Game theory and multi-agent algorithms:
 - Statistical testing (t-tests, p-values, hypothesis testing)
 - Central Limit Theorem, bias-variance decomposition
 
-### Deep Learning Specific (01-03)
+### Deep Learning Specific (07, 08)
 - Batch normalization, layer norm, dropout
-- ResNet, skip connections
+- ResNet, skip connections, U-Net
 - Transfer learning, fine-tuning
 - LSTM gates, attention mechanisms
 - Diffusion models, GANs, VAEs
 - Graph neural networks (GCN, GraphSAGE, GAT)
+- CNNs, convolutions, pooling
 
-### RL Specific (06)
+### RL Specific (10)
 - MDP, Bellman equations
 - Policy vs value-based methods
 - On-policy vs off-policy
@@ -186,7 +180,7 @@ Game theory and multi-agent algorithms:
 - Actor-critic methods, advantage functions
 - Q-learning, SARSA, temporal difference learning
 
-### LLM Specific (02)
+### LLM Specific (09)
 - Pre-training objectives
 - Tokenization, KV cache
 - In-context learning
@@ -195,7 +189,7 @@ Game theory and multi-agent algorithms:
 - Fine-tuning (LoRA, QLoRA, instruction tuning)
 - DPO, GRPO, Constitutional AI
 
-### ML Systems (09)
+### ML Systems (12)
 - Model optimization (quantization, distillation, pruning)
 - Distributed serving, load balancing
 - Caching strategies (Redis, CDN)
@@ -203,7 +197,7 @@ Game theory and multi-agent algorithms:
 - Fast retrieval (FAISS, ANN search)
 - A/B testing, online learning
 
-### Ethics & Fairness (10)
+### Ethics & Fairness (13)
 - Bias detection and mitigation
 - Fairness metrics (demographic parity, equalized odds)
 - Explainability (SHAP, LIME, feature importance)
@@ -211,7 +205,7 @@ Game theory and multi-agent algorithms:
 - Model auditing, monitoring
 - Responsible deployment practices
 
-### Mathematical Foundations (11)
+### Mathematical Foundations (01)
 - Optimization theory (gradient descent, Newton's method, second-order)
 - Linear algebra (Jacobian, Hessian, eigenvalues)
 - Matrix decompositions (SVD, eigendecomposition, QR)
@@ -252,22 +246,22 @@ Game theory and multi-agent algorithms:
 ### Company-Specific Focus
 
 **Research Labs (DeepMind, Google Brain, Meta AI)**:
-- Deep RL (06), Game Theory (05), recent papers
+- Deep RL (10), Game Theory (11), recent papers
 - Novel research directions, mathematical depth
-- Strong fundamentals (07, 08)
+- Strong fundamentals (01, 02, 03)
 
 **Product Companies (Google, Meta, Netflix)**:
-- ML Systems (09), Metrics (07), A/B testing
+- ML Systems (12), Metrics (03), A/B testing
 - Recommendation systems, ranking
-- Ethics & Fairness (10)
+- Ethics & Fairness (13)
 
 **Startups (AI companies)**:
-- End-to-end ML (07, 01, 02)
+- End-to-end ML (03, 04, 05, 07, 09)
 - Practical deployment, system design
 - Fast iteration, pragmatic solutions
 
 **AI Safety/Alignment**:
-- Ethics (10), RLHF (02), alignment techniques
+- Ethics (13), RLHF (09), alignment techniques
 - Fairness, transparency, robustness
 - Responsible deployment
 
@@ -319,35 +313,35 @@ After mastering these topics:
 ### Practice Checklist by Role
 
 **ML Engineer**:
-- [ ] Implement evaluation metrics from scratch (07)
-- [ ] Debug a poorly performing model (07)
-- [ ] Design a scalable ML system (09)
-- [ ] Implement fairness constraints (10)
-- [ ] Build a simple recommendation system (09)
+- [ ] Implement evaluation metrics from scratch (03)
+- [ ] Debug a poorly performing model (03)
+- [ ] Design a scalable ML system (12)
+- [ ] Implement fairness constraints (13)
+- [ ] Build a simple recommendation system (12)
 
 **Research Scientist**:
-- [ ] Derive Bellman equations (06)
-- [ ] Derive gradient descent and Newton's method (11)
-- [ ] Implement PPO or SAC from scratch (06)
-- [ ] Implement VAE or GAN from scratch (11)
-- [ ] Explain recent RL/LLM papers (02, 06)
-- [ ] Understand SVD and its applications (11)
+- [ ] Derive Bellman equations (10)
+- [ ] Derive gradient descent and Newton's method (01)
+- [ ] Implement PPO or SAC from scratch (10)
+- [ ] Implement VAE or GAN from scratch (01)
+- [ ] Explain recent RL/LLM papers (09, 10)
+- [ ] Understand SVD and its applications (01)
 - [ ] Design novel algorithm for specific problem
-- [ ] Understand game theory algorithms (05)
+- [ ] Understand game theory algorithms (11)
 
 **ML Infra/MLOps**:
-- [ ] Design model serving architecture (09)
-- [ ] Implement model monitoring (10)
-- [ ] Set up A/B testing framework (09)
-- [ ] Handle billions of queries (09)
+- [ ] Design model serving architecture (12)
+- [ ] Implement model monitoring (13)
+- [ ] Set up A/B testing framework (12)
+- [ ] Handle billions of queries (12)
 - [ ] Deploy with Kubernetes
 
 **AI Ethics/Safety**:
-- [ ] Audit model for bias (10)
-- [ ] Implement fairness mitigation (10)
-- [ ] Explain SHAP/LIME (10)
-- [ ] Design responsible deployment process (10)
-- [ ] Understand privacy-preserving ML (10)
+- [ ] Audit model for bias (13)
+- [ ] Implement fairness mitigation (13)
+- [ ] Explain SHAP/LIME (13)
+- [ ] Design responsible deployment process (13)
+- [ ] Understand privacy-preserving ML (13)
 
 ## 📝 Contributing
 

@@ -4,6 +4,42 @@
 
 ---
 
+
+## Table of Contents
+
+- [[#Part 1: Memory Management]]
+  - [[#What's the difference between stack and heap?]]
+  - [[#What's a memory leak?]]
+  - [[#What's a pointer?]]
+  - [[#What's a reference (C++)?]]
+  - [[#What's a dangling pointer?]]
+  - [[#What's RAII?]]
+  - [[#What are smart pointers?]]
+- [[#Part 2: Operating Systems]]
+  - [[#What's a process vs thread?]]
+  - [[#What's a race condition?]]
+  - [[#What's a mutex?]]
+  - [[#What's a semaphore?]]
+  - [[#What's deadlock?]]
+  - [[#What's virtual memory?]]
+- [[#Part 3: Compilation & Linking]]
+  - [[#What's the difference between compiled and interpreted?]]
+  - [[#What are the stages of compilation?]]
+  - [[#What's static vs dynamic linking?]]
+  - [[#What's a virtual function?]]
+- [[#Part 4: Computer Architecture]]
+  - [[#How does computer store floating point numbers?]]
+  - [[#What's cache and why does it matter?]]
+  - [[#What's pipelining?]]
+  - [[#What's branch prediction?]]
+- [[#Part 5: Concurrency]]
+  - [[#What's the difference between concurrency and parallelism?]]
+  - [[#What's a thread pool?]]
+  - [[#What's atomic operation?]]
+  - [[#What's the GIL (Python)?]]
+
+---
+
 ## Part 1: Memory Management
 
 ### What's the difference between stack and heap?

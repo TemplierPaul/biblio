@@ -109,6 +109,69 @@ Quick reference for neural architectures, training methods, and modern ML techni
 
 ---
 
+## Loss Functions
+
+### Overview
+**Files**: `Losses.md` (taxonomy), `Losses_detailed.md` (formulations and implementations)
+**What**: Functions that define what the model optimizes — the mathematical objective
+**Key principle**: Match loss to output distribution and problem structure
+**Taxonomy**: Regression, Classification, Contrastive, Generative, RL, Alignment, QD
+**See also**: Questions/ML/07_ML_Fundamentals.md for Q&A on loss functions
+
+### Regression Losses
+**What**: Optimize continuous value prediction
+**Common losses**:
+- MSE (Mean Squared Error): L2 norm, assumes Gaussian noise
+- MAE (L1 Loss): Robust to outliers, sparse gradients
+- Huber Loss: Combines MSE + MAE, smooth near zero
+**When to use**: MSE for most regression, Huber for outliers, MAE for robustness
+
+### Classification Losses
+**What**: Optimize discrete label assignment
+**Common losses**:
+- Cross-Entropy: Standard for multi-class, log-likelihood of correct class
+- Focal Loss: Down-weights easy examples, addresses class imbalance
+- Hinge Loss: SVM-style margin-based loss
+**When to use**: CE for balanced data, Focal for imbalanced, Hinge for margin-based
+
+### Contrastive Losses
+**What**: Learn similarity structure in embedding space
+**Common losses**:
+- Triplet Loss: Anchor-positive-negative triplet margin
+- InfoNCE / NT-Xent: Contrastive learning (SimCLR)
+- SupCon: Supervised contrastive learning
+**When to use**: Representation learning, few-shot learning, metric learning
+
+### RL Policy & Value Losses
+**What**: Optimize sequential decision-making
+**Policy losses**:
+- REINFORCE: Vanilla policy gradient
+- PPO: Clipped surrogate objective (stable, widely used)
+- SAC: Maximum entropy RL
+**Value losses**:
+- TD(0): Temporal difference, bootstrap from next state
+- TD(λ): Eligibility traces, n-step returns
+**When to use**: PPO for most RL tasks, SAC for continuous control, TD for value estimation
+
+### Alignment Losses
+**What**: Match LLM behavior to human preferences
+**Common losses**:
+- RLHF: PPO on reward model score
+- DPO: Direct preference optimization (no reward model)
+- GRPO: Group relative policy optimization (DeepSeek)
+- KTO: Kahneman-Tversky optimization (unpaired preferences)
+**When to use**: RLHF for traditional approach, DPO for simpler/faster, GRPO for reasoning tasks
+
+### Quality-Diversity Losses
+**What**: Explore diverse high-performing solutions
+**Common losses**:
+- MAP-Elites: Fitness within behavior niches
+- Novelty Search: Distance to archive members
+- QD-score: Sum of fitness across filled niches
+**When to use**: Open-ended optimization, diverse solution portfolios, exploration
+
+---
+
 ## Summary by Domain
 
 | Domain | Algorithm/Architecture | Why |
@@ -117,11 +180,16 @@ Quick reference for neural architectures, training methods, and modern ML techni
 | Sequences (modern) | Transformer | Parallelizable, scales better |
 | Text generation | LLMs (GPT, etc.) | Pre-trained, few-shot capable |
 | Task adaptation | LoRA | Parameter-efficient fine-tuning |
-| Alignment | RLHF | Human preference optimization |
+| Alignment | RLHF / DPO | Human preference optimization |
 | Image generation | Diffusion Models | Stable, high-quality |
 | Uncertainty quantification | Gaussian Processes | Bayesian, principled |
 | Graph data | GNN | Operates on graph structure |
 | Robotics + vision | VLA | Unified multimodal control |
+| Regression | MSE / Huber | Continuous value prediction |
+| Classification | Cross-Entropy / Focal | Discrete label assignment |
+| Representation learning | Contrastive (InfoNCE) | Similarity structure |
+| RL optimization | PPO / SAC | Sequential decisions |
+| Diverse solutions | MAP-Elites / QD | Quality-diversity optimization |
 
 ---
 
@@ -150,14 +218,18 @@ Quick reference for neural architectures, training methods, and modern ML techni
 - **RNN/LSTM** → **Transformer**: Replace recurrence with attention
 - **Transformer** → **LLMs**: Scale up massively with pre-training
 - **Pre-trained LLM** → **LoRA**: Parameter-efficient adaptation
-- **Supervised LLM** → **RLHF**: Add human preference alignment
+- **Supervised LLM** → **RLHF/DPO**: Add human preference alignment
 - **GAN** → **Diffusion**: Stable training, better mode coverage
+- **Cross-Entropy** → **Focal Loss**: Address class imbalance
+- **RLHF** → **DPO**: Direct preference optimization (no reward model)
+- **Standard RL** → **Quality-Diversity**: Optimize for diverse solutions, not single optimum
 
 ---
 
 **For comprehensive ML fundamentals, see Questions/ML/07_ML_Fundamentals.md**
 **For probability/statistics foundations, see Questions/ML/08_Probability_Statistics.md**
 **For mathematical foundations (optimization, linear algebra, VAE, GAN), see Questions/ML/11_Math_Foundations.md**
+**For detailed loss functions taxonomy and formulations, see Losses.md and Losses_detailed.md**
 
 ---
 

@@ -4,6 +4,33 @@ Comprehensive coverage of ethical considerations, bias mitigation, fairness, tra
 
 ---
 
+
+## Table of Contents
+
+- [[#Part 1: Ethical Considerations in AI]]
+  - [[#What are the ethical considerations in AI research and deployment?]]
+  - [[#1. Fairness & Non-Discrimination]]
+  - [[#2. Transparency & Explainability]]
+  - [[#3. Privacy & Data Protection]]
+  - [[#4. Accountability & Responsibility]]
+  - [[#5. Safety & Security]]
+- [[#Part 2: Bias Mitigation]]
+  - [[#How do you identify and mitigate bias in ML models?]]
+  - [[#Stage 1: Pre-processing (Before Training)]]
+  - [[#Stage 2: In-processing (During Training)]]
+  - [[#Stage 3: Post-processing (After Training)]]
+- [[#Part 3: Practical Considerations]]
+  - [[#What tradeoffs exist between fairness and accuracy?]]
+  - [[#How do you ensure responsible deployment?]]
+- [[#Part 4: Interview Questions & Answers]]
+  - [[#Q: "You discover your model has a fairness issue in production. What do you do?"]]
+  - [[#Q: "How do you explain a model's decision to a non-technical user?"]]
+  - [[#Q: "What's the difference between fairness and accuracy?"]]
+  - [[#Q: "When would you prioritize fairness over accuracy?"]]
+- [[#Summary: Key Takeaways]]
+
+---
+
 ## Part 1: Ethical Considerations in AI
 
 ### What are the ethical considerations in AI research and deployment?

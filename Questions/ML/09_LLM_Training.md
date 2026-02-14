@@ -4,6 +4,53 @@
 
 ---
 
+
+## Table of Contents
+
+- [[#Part 1: Large Language Models]]
+  - [[#What's the pre-training objective for decoder-only LLMs?]]
+  - [[#Explain the three-stage training pipeline (pre-training → SFT → RLHF)]]
+  - [[#What are emergent abilities and at what scale do they appear?]]
+  - [[#What is in-context learning?]]
+  - [[#Explain the Chinchilla scaling laws]]
+  - [[#What's the KV cache and why is it needed?]]
+  - [[#What's the difference between temperature sampling and greedy decoding?]]
+  - [[#Why use RoPE over absolute positional encoding?]]
+  - [[#What's Grouped-Query Attention (GQA) and why use it?]]
+  - [[#Explain the difference between GPT-3, ChatGPT, and GPT-4]]
+- [[#Part 2: Fine-tuning & PEFT]]
+  - [[#What's the difference between full fine-tuning and PEFT?]]
+  - [[#Why use lower learning rate for fine-tuning?]]
+  - [[#What is catastrophic forgetting and how to prevent it?]]
+  - [[#What's instruction tuning (SFT)?]]
+  - [[#Explain LoRA: what are the A and B matrices?]]
+  - [[#Why does LoRA reduce parameters by 10,000x?]]
+  - [[#What rank should you use for LoRA?]]
+  - [[#Why initialize B to zero in LoRA?]]
+  - [[#What's QLoRA and how does it enable 65B on single GPU?]]
+  - [[#When to use LoRA vs full fine-tuning?]]
+- [[#Part 3: Alignment & RLHF]]
+  - [[#Why do we need RLHF after pre-training?]]
+  - [[#Explain the three stages of RLHF pipeline]]
+  - [[#What's the Bradley-Terry model for reward modeling?]]
+  - [[#Why use PPO for the RL stage?]]
+  - [[#What's the KL penalty term and why is it critical?]]
+  - [[#What is reward hacking? Give examples]]
+  - [[#What's the difference between RLHF and DPO?]]
+  - [[#When does overoptimization occur?]]
+  - [[#Why does RLHF require 4x more compute than SFT?]]
+  - [[#What is GRPO and how does it differ from PPO?]]
+  - [[#How does GRPO compute advantages without a value function?]]
+  - [[#When should you use GRPO vs PPO for RLHF?]]
+  - [[#What are GRPO's gradient coefficients?]]
+  - [[#What's the difference between outcome and process supervision in GRPO?]]
+  - [[#Why does GRPO improve Maj@K but not Pass@1?]]
+  - [[#What are the memory and compute trade-offs between GRPO and PPO?]]
+  - [[#How does iterative GRPO work?]]
+  - [[#Compare RLHF, DPO, RLAIF, Constitutional AI]]
+
+---
+
 ## Part 1: Large Language Models
 
 ### What's the pre-training objective for decoder-only LLMs?

@@ -4,6 +4,28 @@ Comprehensive coverage of mathematical concepts essential for machine learning: 
 
 ---
 
+
+## Table of Contents
+
+- [[#Part 1: Optimization Theory]]
+  - [[#Explain gradient descent. What are second-order optimization algorithms?]]
+  - [[#What are second-order optimization algorithms? How can the 2nd derivative be used?]]
+  - [[#Describe Newton's algorithm. Where does it come from? How can it be adapted to find a minimum?]]
+- [[#Part 2: Linear Algebra]]
+  - [[#What is a Jacobian matrix?]]
+- [[#Part 3: Tensors and Linear Algebra]]
+  - [[#Explain tensors, eigenvalues, and matrix decomposition]]
+  - [[#Eigenvalues and Eigenvectors]]
+  - [[#Matrix Decompositions]]
+- [[#Part 4: Generative Models]]
+  - [[#Explain VAE (Variational Autoencoder)]]
+  - [[#Explain GAN (Generative Adversarial Network)]]
+- [[#Part 5: Advanced Topics]]
+  - [[#What is Mixture of Experts (MoE)?]]
+- [[#Summary: Key Takeaways]]
+
+---
+
 ## Part 1: Optimization Theory
 
 ### Explain gradient descent. What are second-order optimization algorithms?

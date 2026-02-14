@@ -4,6 +4,60 @@
 
 ---
 
+
+## Table of Contents
+
+- [[#Part 1: Arrays & Strings]]
+  - [[#What's the time complexity of array access?]]
+  - [[#What's the difference between array and ArrayList/vector?]]
+  - [[#How do you reverse a string in-place?]]
+  - [[#What's a sliding window algorithm?]]
+- [[#Part 2: Linked Lists]]
+  - [[#What's a linked list?]]
+  - [[#Array vs Linked List - when to use each?]]
+  - [[#How to detect a cycle in a linked list?]]
+  - [[#How to find the middle of a linked list?]]
+  - [[#How to reverse a linked list?]]
+  - [[#What's a dummy node and when to use it?]]
+- [[#Part 3: Stacks & Queues]]
+  - [[#What's a stack? Applications?]]
+  - [[#What's a queue? Applications?]]
+  - [[#What's a monotonic stack?]]
+  - [[#Implement a min-stack (getMin in O(1))]]
+  - [[#Implement a queue using stacks]]
+- [[#Part 4: Trees]]
+  - [[#What's a binary tree?]]
+  - [[#What's a BST (Binary Search Tree)?]]
+  - [[#DFS vs BFS for trees?]]
+  - [[#What's tree traversal complexity?]]
+  - [[#What's a balanced tree?]]
+  - [[#What's the lowest common ancestor (LCA)?]]
+- [[#Part 5: Heaps & Priority Queues]]
+  - [[#What's a heap?]]
+  - [[#When to use a heap?]]
+  - [[#What's heapify? Time complexity?]]
+  - [[#Implement heap sort]]
+- [[#Part 6: Hash Tables]]
+  - [[#What's a hash table?]]
+  - [[#What's a hash function?]]
+  - [[#What are collisions? Resolution strategies?]]
+  - [[#When does hash table degrade to O(n)?]]
+  - [[#What's rehashing?]]
+- [[#Part 7: Graphs]]
+  - [[#What's a graph?]]
+  - [[#What's graph traversal (DFS vs BFS)?]]
+  - [[#How to detect cycle in graph?]]
+  - [[#What's topological sort?]]
+  - [[#What's Dijkstra's algorithm?]]
+  - [[#What's union-find (disjoint set)?]]
+  - [[#What's minimum spanning tree (MST)?]]
+- [[#Part 8: Tries]]
+  - [[#What's a trie?]]
+  - [[#Implement a trie]]
+  - [[#When to use trie vs hash table?]]
+
+---
+
 ## Part 1: Arrays & Strings
 
 ### What's the time complexity of array access?

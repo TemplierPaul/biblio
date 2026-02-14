@@ -4,7 +4,7 @@ Comprehensive CS interview questions and answers covering data structures, algor
 
 ## 📁 File Organization
 
-### 01_Data_Structures.md
+### [[01_Data_Structures]]
 Fundamental and advanced data structures:
 - **Part 1: Arrays & Strings** - Access patterns, sliding window, string manipulation
 - **Part 2: Linked Lists** - Cycle detection, reversal, dummy nodes
@@ -15,7 +15,7 @@ Fundamental and advanced data structures:
 - **Part 7: Graphs** - Traversal, cycle detection, topological sort, Dijkstra, union-find
 - **Part 8: Tries** - Prefix trees, autocomplete, comparison with hash tables
 
-### 02_Algorithms.md
+### [[02_Algorithms]]
 Algorithm design and analysis:
 - **Part 1: Sorting** - Merge sort, quick sort, heap sort, complexity comparison
 - **Part 2: Searching** - Binary search, two-pointer technique, variants
@@ -24,7 +24,7 @@ Algorithm design and analysis:
 - **Part 5: Backtracking** - Template, subsets, permutations, N-Queens
 - **Part 6: Complexity Analysis** - Big O/Ω/Θ, recurrence relations, amortized analysis
 
-### 03_Systems_Programming.md
+### [[03_Systems_Programming]]
 Low-level programming and operating systems:
 - **Part 1: Memory Management** - Stack vs heap, memory leaks, pointers, RAII, smart pointers
 - **Part 2: Operating Systems** - Processes vs threads, race conditions, mutex, semaphore, deadlock, virtual memory
@@ -32,12 +32,47 @@ Low-level programming and operating systems:
 - **Part 4: Computer Architecture** - Floating point, cache, pipelining, branch prediction
 - **Part 5: Concurrency** - Concurrency vs parallelism, thread pools, atomics, GIL
 
-### 04_Programming_Languages.md
+### [[04_Programming_Languages]]
 Language concepts and paradigms:
 - **Part 1: Python vs C++** - Differences, practical implications, memory management
 - **Part 2: OOP** - Encapsulation, inheritance, polymorphism, composition vs inheritance
 - **Part 3: Type Systems** - Static vs dynamic, strong vs weak, type hints, duck typing
 - **Part 4: Advanced Concepts** - Closures, decorators, generators, metaprogramming
+
+### [[05_Distributed_Systems]]
+Distributed computing for ML at scale:
+- **Part 1: Fundamentals** - CAP theorem, Consistency models
+- **Part 2: MapReduce & Spark** - RDDs, DAGs, Spark vs MapReduce
+- **Part 3: Distributed Training** - Data/Model/Pipeline parallelism, DDP, All-reduce, Ray, Horovod
+- **Part 4: Fault Tolerance** - Checkpointing, Replication, Two-phase commit
+
+### [[06_System_Design]]
+Designing scalable ML systems:
+- **Part 1: Framework** - 5-step design process, requirements, constraints
+- **Part 2: Serving** - Batch vs Real-time, Feature Stores, Deployment patterns
+- **Part 3: Monitoring** - Training-serving skew, Data drift, Concept drift
+- **Part 4: Case Studies** - RecSys, Search Ranking, Ad Click Prediction
+
+### [[07_Databases_SQL]]
+Data storage and retrieval:
+- **Part 1: SQL** - Joins, Window functions, CTEs, Execution order
+- **Part 2: Design** - Normalization, Star vs Snowflake schema
+- **Part 3: NoSQL** - Redis, MongoDB, Cassandra, Neo4j
+- **Part 4: Optimization** - Indexes, Explain plans, Columnar storage
+
+### [[08_ML_Infrastructure]]
+Hardware and operational infrastructure:
+- **Part 1: GPU Programming** - CUDA hierarchy, Kernel launches, Tensor cores
+- **Part 2: Optimization** - Quantization, Pruning, Distillation
+- **Part 3: MLOps** - Experiment tracking, Model registry, Data versioning
+- **Part 4: Serving** - TensorRT, ONNX, Triton, Batching
+
+### [[09_Software_Engineering]]
+Best practices for ML engineering:
+- **Part 1: Git** - Rebase vs Merge, Bisect, Cherry-pick
+- **Part 2: Testing** - Unit vs Integration, Mocking, Property-based testing
+- **Part 3: Code Quality** - Typing (mypy), Linting, Design patterns
+- **Part 4: Profiling** - cProfile, Memory leaks, GIL, Multiprocessing
 
 ## 🎯 How to Use
 
@@ -56,8 +91,11 @@ Language concepts and paradigms:
 **Systems Engineer**:
 03 (Systems Programming) → 01 (Data Structures) → 02 (Algorithms: Part 6)
 
+**ML Infrastructure / Research Engineer**:
+05 (Distributed) → 08 (Infrastructure) → 06 (System Design) → 09 (Software Engineering)
+
 **Full Stack Developer**:
-04 (Programming Languages) → 01 (Hash Tables, Tries) → 02 (Dynamic Programming)
+04 (Programming Languages) → 01 (Hash Tables, Tries) → 02 (Dynamic Programming) → 07 (Databases)
 
 **Deep Dive** (comprehensive):
 All files in order (01 → 02 → 03 → 04)
@@ -219,6 +257,18 @@ All files in order (01 → 02 → 03 → 04)
 - [ ] Cache performance
 - [ ] OOP concepts
 - [ ] Type systems
+
+### ML System Design & Infra ✓
+- [ ] Distributed training (DDP, Model Parallelism)
+- [ ] System design framework (Training -> Serving)
+- [ ] Feature Stores
+- [ ] Model Monitoring (Drift)
+- [ ] SQL Window Functions & Joins
+- [ ] NoSQL types (Key-Value, Document, Column, Graph)
+- [ ] GPU architecture (Global/Shared memory)
+- [ ] Model Optimization (Quantization, Pruning)
+- [ ] MLOps (Registry, Versioning)
+- [ ] Docker & Kubernetes basics
 
 ## 🎓 Company-Specific Focus
 

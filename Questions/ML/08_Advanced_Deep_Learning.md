@@ -1,176 +1,31 @@
-# Deep Learning (GNNs, Diffusion, VLA) - Interview Q&A
+# Advanced Deep Learning - Interview Q&A
 
-**How to use**: Questions are formatted as collapsible headings. Try to answer before expanding.
+**Coverage**: Diffusion Models, Vision-Language-Action Models
 
 ---
 
-## Part 1: Graph Neural Networks
 
-### What is message passing in GNNs?
+## Table of Contents
 
-**Core paradigm**: Update node representations by **aggregating information from neighbors**.
-
-**Framework**:
-$$h_v^{(k+1)} = \text{UPDATE}(h_v^{(k)}, \text{AGGREGATE}(\{h_u^{(k)} : u \in \mathcal{N}(v)\}))$$
-
-**Three steps per layer**:
-1. **Message**: Each neighbor sends its representation
-2. **Aggregate**: Combine neighbor messages (sum, mean, max, attention)
-3. **Update**: Combine aggregated message with own features
-
-**Intuition**: "Tell me about your friends, I'll tell you who you are"
-
-**Example** (social network):
-- Layer 1: Learn from direct friends
-- Layer 2: Learn from friends-of-friends
-- Layer 3: Learn from 3-hop neighborhood
-
-### Explain GCN, GraphSAGE, and GAT - key differences?
-
-**GCN** (Graph Convolutional Network):
-- **Aggregation**: Normalized mean (by degree)
-- **Formula**: $h_v = \sigma(W \sum_{u \in \mathcal{N}(v)} \frac{h_u}{\sqrt{|N(u)||N(v)||}})$
-- **Pros**: Simple, effective
-- **Cons**: Fixed weighting (all neighbors equal)
-
-**GraphSAGE**:
-- **Aggregation**: Sample + aggregate (mean, max, LSTM)
-- **Formula**: $h_v = \sigma(W[h_v \| \text{AGG}(\{h_u\})])$
-- **Pros**: Inductive (works on unseen nodes), scalable (sampling)
-- **Cons**: Sampling introduces variance
-
-**GAT** (Graph Attention):
-- **Aggregation**: Learned attention weights
-- **Formula**: $h_v = \sigma(\sum_{u} \alpha_{vu} W h_u)$ where $\alpha_{vu}$ are attention weights
-- **Pros**: Different neighbors have different importance
-- **Cons**: More parameters, slower
-
-**Key difference**: How neighbors are weighted - GCN (fixed), GraphSAGE (sampling), GAT (learned).
-
-### What's the over-smoothing problem?
-
-**Problem**: After many GNN layers, all node representations **converge to same value**.
-
-**Why it happens**:
-- Each layer mixes node with neighbors
-- After k layers, node sees k-hop neighborhood
-- In connected graph, all nodes eventually see entire graph
-- Representations become indistinguishable
-
-**Example**:
-- Layer 1: Nodes are different
-- Layer 10: All nodes ≈ same (graph-level average)
-
-**Impact**: Can't distinguish nodes, lose local structure
-
-**Solutions**:
-1. **Fewer layers**: Use 2-4 layers (not 50+ like CNNs)
-2. **Residual connections**: $h^{(k+1)} = h^{(k+1)} + h^{(k)}$
-3. **Jumping knowledge**: Combine representations from all layers
-4. **Regularization**: DropEdge, layer dropout
-
-### Why do GNNs typically use only 2-4 layers?
-
-**Over-smoothing**: Deep GNNs → all nodes converge to same representation
-
-**Receptive field**:
-- 2 layers: 2-hop neighborhood
-- 4 layers: 4-hop neighborhood
-- In many graphs: 4 hops covers most nodes (small-world property)
-
-**Diminishing returns**: Beyond 4 layers, adding more layers often hurts performance
-
-**Contrast with CNNs**:
-- CNNs: 50-200 layers common (ResNet, etc.)
-- GNNs: 2-4 layers typical
-
-**Exceptions**: Special architectures (skip connections, normalization) can go deeper, but 2-4 is default.
-
-### What's the difference between node-level, edge-level, and graph-level tasks?
-
-**Node-level**: Predict property of each node
-- Example: Classify user's interests, protein function
-- Output: Use final node embeddings $h_v^{(K)}$
-- Loss: Per-node (cross-entropy, MSE)
-
-**Edge-level**: Predict property of edge or edge existence
-- Example: Link prediction, relation classification
-- Output: Combine node embeddings $f(h_u, h_v)$ (dot product, concat+MLP)
-- Loss: Per-edge
-
-**Graph-level**: Predict property of entire graph
-- Example: Molecule toxicity, graph classification
-- Output: Aggregate all nodes (sum, mean, attention pooling)
-- Loss: Per-graph
-
-### How to do graph-level prediction (readout functions)?
-
-**Readout**: Aggregate all node embeddings into single graph embedding
-
-**Methods**:
-
-1. **Sum**: $h_G = \sum_{v \in V} h_v^{(K)}$
-   - Permutation-invariant
-   - Simple, works well
-
-2. **Mean**: $h_G = \frac{1}{|V|} \sum_{v} h_v^{(K)}$
-   - Normalizes by graph size
-   - Better for varying sizes
-
-3. **Max**: $h_G = \max_{v \in V} h_v^{(K)}$ (element-wise)
-   - Focuses on most important features
-
-4. **Attention**: $h_G = \sum_v \alpha_v h_v$ where $\alpha_v = \text{softmax}(a^T h_v)$
-   - Learned weighting
-   - Most expressive
-
-5. **Hierarchical pooling**: Coarsen graph iteratively (DiffPool)
-
-**Choice**: Mean/sum work well, attention for best performance.
-
-### What's the difference between transductive and inductive learning?
-
-**Transductive**:
-- Train and test on **same graph**
-- Graph structure fixed
-- Can see test nodes during training (but not labels)
-- Example: GCN on single citation network
-- **Use**: Node classification on fixed graph
-
-**Inductive**:
-- Generalize to **unseen nodes/graphs**
-- Graph structure can change
-- Can't see test nodes during training
-- Example: GraphSAGE (learns aggregation function)
-- **Use**: New nodes added, multiple graphs
-
-**Analogy**:
-- Transductive: Closed-world (one graph)
-- Inductive: Open-world (new data)
-
-**Most real applications need inductive** (e.g., recommendation, new users).
-
-### When to use GNN vs transformer vs RNN?
-
-**GNN**:
-- ✅ Graph-structured data (social, molecular, knowledge graphs)
-- ✅ Relational information critical
-- ✅ Irregular structure
-- Example: Drug discovery, recommendation, traffic
-
-**Transformer**:
-- ✅ Sequences (text, time series)
-- ✅ Long-range dependencies
-- ✅ Parallelizable training
-- Example: NLP, vision (as sequences of patches)
-
-**RNN/LSTM**:
-- ✅ Sequences with inherent order
-- ✅ Streaming/online (process one step at a time)
-- ✅ Memory-constrained (long sequences)
-- Example: Real-time speech, sensor data
-
-**Overlap**: Transformers can be viewed as fully-connected graph (all-to-all attention).
+- [[#Part 2: Diffusion Models]]
+  - [[#Explain forward diffusion process (noising)]]
+  - [[#What does the model predict during training (noise, x_0, or score)?]]
+  - [[#Write the training objective for DDPM]]
+  - [[#What's the reparameterization trick for x_t?]]
+  - [[#DDPM vs DDIM sampling - differences?]]
+  - [[#What's latent diffusion and why use it?]]
+  - [[#Explain classifier-free guidance]]
+  - [[#Diffusion vs GAN vs VAE - when to use each?]]
+  - [[#Why do diffusion models achieve better sample quality than GANs?]]
+- [[#Part 3: Vision-Language-Action Models]]
+  - [[#What's the key innovation of VLA models?]]
+  - [[#RT-1 vs RT-2 architecture differences?]]
+  - [[#How are actions represented (discretization)?]]
+  - [[#What's FiLM conditioning?]]
+  - [[#How does RT-2 leverage pre-trained VLMs?]]
+  - [[#What emergent capabilities does RT-2 show?]]
+  - [[#Why co-fine-tune on robot data?]]
+  - [[#What are the limitations of VLAs?]]
 
 ---
 
@@ -343,7 +198,9 @@ Where:
 
 **Trade-off**: Slower sampling (but DDIM, distillation help)
 
+
 ---
+
 
 ## Part 3: Vision-Language-Action Models
 

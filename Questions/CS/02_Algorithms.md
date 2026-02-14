@@ -4,6 +4,43 @@
 
 ---
 
+
+## Table of Contents
+
+- [[#Part 1: Sorting Algorithms]]
+  - [[#What's the time complexity of common sorting algorithms?]]
+  - [[#Explain merge sort]]
+  - [[#Explain quick sort]]
+  - [[#When to use which sorting algorithm?]]
+  - [[#What's a stable sort and why does it matter?]]
+- [[#Part 2: Searching Algorithms]]
+  - [[#What's binary search?]]
+  - [[#How to find first/last occurrence?]]
+  - [[#What's the two-pointer technique?]]
+- [[#Part 3: Dynamic Programming]]
+  - [[#What's dynamic programming?]]
+  - [[#Fibonacci - DP example]]
+  - [[#What's the knapsack problem?]]
+  - [[#What's the longest common subsequence (LCS)?]]
+  - [[#How to identify DP problems?]]
+- [[#Part 4: Greedy Algorithms]]
+  - [[#What's a greedy algorithm?]]
+  - [[#Example: Activity selection problem]]
+  - [[#Example: Huffman coding]]
+- [[#Part 5: Backtracking]]
+  - [[#What's backtracking?]]
+  - [[#Example: Generate all subsets]]
+  - [[#Example: Generate all permutations]]
+  - [[#Example: N-Queens]]
+- [[#Part 6: Complexity Analysis]]
+  - [[#What's Big O notation?]]
+  - [[#What's the difference between O, Ω, and Θ?]]
+  - [[#How to analyze recursive algorithms?]]
+  - [[#What's amortized analysis?]]
+  - [[#Space complexity - what counts?]]
+
+---
+
 ## Part 1: Sorting Algorithms
 
 ### What's the time complexity of common sorting algorithms?

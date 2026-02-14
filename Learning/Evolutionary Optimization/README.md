@@ -76,6 +76,16 @@ Quick reference for evolutionary algorithms, quality-diversity methods, and open
 
 ---
 
+## Digital Red Queen (DRQ)
+**Paper**: "Digital Red Queen: Adversarial Program Evolution in Core War with LLMs" (Kumar et al., 2025)
+**What**: LLM-guided adversarial self-play evolving assembly programs through Red Queen dynamics
+**How**: Multi-round MAP-Elites, each round evolves warrior to defeat all previous opponents
+**Key innovation**: Historical self-play produces convergent evolution toward general-purpose behavior
+**When to use**: Adversarial domains needing robust generalists (not brittle specialists), LLM code evolution
+**Difference from POET**: Adversarial self-play (not environment-agent), convergent evolution in behavior
+
+---
+
 ## DNS (Dominated Novelty Search)
 **What**: Parameter-free QD using dominated novelty score (distance to fitter solutions)
 **How**: Competition fitness = mean distance to k-nearest better-performing solutions
@@ -148,6 +158,7 @@ Folder: `QD-RL/` — Three progressive algorithms combining QD with Deep RL for 
 | **Enhanced POET** | Coevolution | Unbounded generation | Domain-general, CPPNs |
 | **JEDi** | QD-ES hybrid | Optimization focus | Intelligent behavior targeting |
 | **OMNI-EPIC** | LLM-driven | Unlimited tasks | Code generation, natural language |
+| **Digital Red Queen** | Adversarial self-play | LLM code evolution, cybersecurity | Convergent evolution, robust generalists |
 | **DNS** | Parameter-free QD | High-D, unsupervised | No tuning, scales naturally |
 | **GAME** | Adversarial QD | Red teaming, game balancing | Both-sided illumination, tournament metrics |
 | **Extract-QD** | Uncertain QD | Noisy/stochastic domains | Adaptive sampling, reproducibility |
@@ -167,6 +178,7 @@ Folder: `QD-RL/` — Three progressive algorithms combining QD with Deep RL for 
 ### Open-Ended Learning
 - **POET** → **Enhanced POET**: Domain-general extension with CPPNs
 - **Enhanced POET** → **OMNI-EPIC**: Replace CPPNs with LLM code generation
+- **MAP-Elites** → **Digital Red Queen**: Adversarial self-play with LLM mutations in Core War
 
 ### QD Variants
 - **MAP-Elites** → **JEDi**: Add intelligent targeting with GP

@@ -14,7 +14,7 @@ Welcome to **biblio**, a comprehensive knowledge repository covering Machine Lea
 - **Game Theory**: Self-play algorithms, AlphaZero, PSRO, NeuPL, CFR, Nash Equilibrium
 - **Reinforcement Learning**: World Models, RL algorithms (MPO, CrossQ, PPO, SAC), RNN policies
 - **Evolutionary Optimization**: Quality-Diversity, MAP-Elites, NEAT, CMA-ES
-- **JAX Ecosystem**: Comprehensive guides for JAX, Flax NNX, Flashbax, PGX, QDax
+- **JAX Tools**: Comprehensive guides for JAX, Flax NNX, Flashbax, PGX, QDax
 - **Machine Learning**: Transformers, LLMs, Attention mechanisms, Diffusion models, GNNs
 
 **Format**:
@@ -29,36 +29,43 @@ Welcome to **biblio**, a comprehensive knowledge repository covering Machine Lea
 
 **Purpose**: Extensive, structured collection of interview questions and answers for ML/AI and Computer Science roles.
 
-#### `Questions/ML/` - Machine Learning & AI (11 Files, ~700+ Questions)
+#### `Questions/ML/` - Machine Learning & AI (13 Files, ~380 Questions)
 
 Comprehensive ML interview coverage from fundamentals to cutting-edge:
 
-| File | Topics | Coverage |
-|------|--------|----------|
-| **01_ANN_Architecture** | LSTM, Attention, Transformers | Neural network architectures |
-| **02_LLM_Training** | Pre-training, Fine-tuning, RLHF, LoRA | Large language models |
-| **03_Deep_Learning** | GNNs, Diffusion Models, VLAs | Advanced deep learning |
-| **04_Classical_ML** | Gaussian Processes | Bayesian methods |
-| **05_Game_Theory** | Nash, MCTS, AlphaZero, PSRO, CFR | Multi-agent systems |
-| **06_Reinforcement_Learning** ⭐ | MDPs, Q-learning, PPO, SAC, DQN | Complete RL (12 parts) |
-| **07_ML_Fundamentals** ⭐ | SVM, k-NN, metrics, optimizers | Classical ML algorithms |
-| **08_Probability_Statistics** ⭐ | Distributions, Bayes, hypothesis testing | Statistical foundations |
-| **09_ML_Systems** | Scalability, RecSys, deployment | Production ML systems |
-| **10_Ethics_AI** | Fairness, bias mitigation, transparency | Responsible AI |
-| **11_Math_Foundations** | Optimization, linear algebra, VAE, GAN | Mathematical theory |
+| File | Questions | Topics |
+|------|-----------|--------|
+| [[01_Math_Foundations]] | 10 | Optimization, linear algebra |
+| [[02_Probability_Statistics]] | 9 | Distributions, Bayes, hypothesis testing |
+| [[03_ML_Fundamentals]] | 3 | Metrics, model debugging |
+| [[04_Loss_Functions]] | 44 | Regression/Classification losses |
+| [[05_Optimizers_Regularization]] | 3 | SGD, Adam, L1/L2, Dropout |
+| [[06_Classical_ML]] | 13 | SVM, k-NN, Gaussian Processes |
+| [[07_Neural_Architectures]] | 31 | CNNs, LSTMs, Attention, Transformers |
+| [[08_Advanced_Deep_Learning]] | 17 | Diffusion, GNNs, VLAs |
+| [[09_LLM_Training]] | 38 | Pre-training, RLHF, LoRA, Peft |
+| [[10_Reinforcement_Learning]] | 118 | MDPs, PPO, SAC, DQN, MPO |
+| [[11_Game_Theory]] | 74 | Nash, AlphaZero, PSRO, CFR |
+| [[12_ML_Systems]] | 2 | Scalability, RecSys |
+| [[13_Ethics_AI]] | 16 | Fairness, bias, transparency |
 
 **Format**: Q&A style with detailed explanations, code examples, equations, and interview tips.
 
-#### `Questions/CS/` - Computer Science Fundamentals (4 Files, ~200+ Questions)
+#### `Questions/CS/` - Computer Science Fundamentals (9 Files, ~200 Questions)
 
 Essential CS interview topics:
 
-| File | Topics | Coverage |
-|------|--------|----------|
-| **01_Data_Structures** | Arrays, trees, graphs, hash tables | Core data structures |
-| **02_Algorithms** | Sorting, DP, greedy, backtracking | Algorithm design |
-| **03_Systems_Programming** | Memory, OS, concurrency, compilation | Low-level programming |
-| **04_Programming_Languages** | Python vs C++, OOP, type systems | Language concepts |
+| File | Questions | Topics |
+|------|-----------|--------|
+| [[01_Data_Structures]] | 40 | Arrays, trees, graphs, hash tables |
+| [[02_Algorithms]] | 25 | Sorting, DP, greedy, backtracking |
+| [[03_Systems_Programming]] | 25 | Memory, OS, concurrency |
+| [[04_Programming_Languages]] | 20 | Python vs C++, OOP, type systems |
+| [[05_Distributed_Systems]] | 28 | MapReduce, Spark, Ray, DDP |
+| [[06_System_Design]] | 15 | ML Pipelines, Serving, Monitoring |
+| [[07_Databases_SQL]] | 16 | SQL, NoSQL, Normalization |
+| [[08_ML_Infrastructure]] | 15 | GPU, CUDA, MLOps, Quantization |
+| [[09_Software_Engineering]] | 15 | Git, CI/CD, Testing, Profiling |
 
 **Format**: Q&A with implementations in Python and C++, complexity analysis, and practical examples.
 
@@ -164,7 +171,7 @@ docker compose up --build -d
 - **Focus**: Research depth and conceptual understanding
 
 ### Questions Folder
-- **Questions**: 900+ total (700+ ML, 200+ CS)
+- **Questions**: ~580 total (378 ML, 199 CS)
 - **Code Examples**: 500+ implementations
 - **Equations**: 400+ mathematical formulas
 - **Coverage**: Fundamentals to PhD-level research
@@ -191,18 +198,18 @@ docker compose up --build -d
 ```
 biblio/
 ├── Learning/                    # Knowledge base & research references
+│   ├── Evolutionary Optimization/ # QD, MAP-Elites, NEAT
 │   ├── Game Theory/             # Self-play, AlphaZero, PSRO, CFR
-│   │   ├── Self-play/           # Self-play algorithms
-│   │   └── *.md                 # High-level + _detailed files
-│   ├── Reinforcement Learning/  # RL algorithms, world models
+│   ├── JAX Tools/               # JAX ecosystem guides (Flax, Flashbax)
 │   ├── Machine Learning/        # Transformers, LLMs, diffusion
-│   ├── JAX/                     # JAX ecosystem guides
-│   └── ...                      # Other research topics
+│   └── Reinforcement Learning/  # RL algorithms, world models
 │
 ├── Sources/                     # Grounding data (ArXiv sources)
 │   ├── used_sources.md          # Registry of processed papers
-│   ├── omni_epic/               # Example: Omni-EPIC sources
-│   └── ...                      # Other paper sources
+│   ├── deepseek_grpo/           # DeepSeek GRPO
+│   ├── omni_epic/               # Omni-EPIC sources
+│   ├── poet/                    # POET
+│   └── ...                      # 20+ other paper sources
 │
 └── Questions/                   # Interview Q&A collection
     ├── STUDY_TRACKER.md         # Progress tracking checklist ⭐

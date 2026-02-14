@@ -4,6 +4,16 @@ Comprehensive coverage of ML system design, scalability, deployment, and product
 
 ---
 
+
+## Table of Contents
+
+- [[#Part 1: Scalable ML Systems]]
+  - [[#How would you scale an ML model to handle billions of queries per second?]]
+- [[#Part 2: Recommendation Systems]]
+  - [[#Design a scalable recommendation system for YouTube videos]]
+
+---
+
 ## Part 1: Scalable ML Systems
 
 ### How would you scale an ML model to handle billions of queries per second?

@@ -4,6 +4,26 @@ Comprehensive coverage of probability theory, statistical distributions, hypothe
 
 ---
 
+
+## Table of Contents
+
+- [[#Part 1: Probability Fundamentals]]
+  - [[#What is a random variable?]]
+  - [[#What is mean, median, and mode of a probability distribution?]]
+  - [[#What's the difference between dependence and correlation?]]
+- [[#Part 2: Distributions]]
+  - [[#Review common probability distributions]]
+- [[#Part 3: Bayesian Inference]]
+  - [[#Explain the Bayes theorem]]
+  - [[#What is a conjugate prior?]]
+- [[#Part 4: Statistical Testing]]
+  - [[#Explain hypothesis testing, p-value, and t-test]]
+  - [[#Explain the Central Limit Theorem]]
+- [[#Part 5: Bias-Variance Tradeoff]]
+  - [[#Explain the bias-variance tradeoff]]
+
+---
+
 ## Part 1: Probability Fundamentals
 
 ### What is a random variable?

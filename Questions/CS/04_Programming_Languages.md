@@ -4,6 +4,36 @@
 
 ---
 
+
+## Table of Contents
+
+- [[#Part 1: Python vs C++]]
+  - [[#What's the difference between Python and C++?]]
+  - [[#What are the practical implications of these differences?]]
+  - [[#Python variables - types and implications?]]
+  - [[#Memory leaks - Python vs C++?]]
+  - [[#Private variables - Python vs C++?]]
+- [[#Part 2: Object-Oriented Programming]]
+  - [[#What's object-oriented programming?]]
+  - [[#Advantages of OOP?]]
+  - [[#When is OOP good? Bad?]]
+  - [[#What's inheritance?]]
+  - [[#Composition vs inheritance?]]
+  - [[#What's polymorphism?]]
+  - [[#What's encapsulation?]]
+- [[#Part 3: Type Systems]]
+  - [[#Static vs dynamic typing?]]
+  - [[#Strong vs weak typing?]]
+  - [[#What are type hints in Python?]]
+  - [[#What's duck typing?]]
+- [[#Part 4: Advanced Concepts]]
+  - [[#What's a closure?]]
+  - [[#What's a decorator?]]
+  - [[#What's a generator?]]
+  - [[#What's metaprogramming?]]
+
+---
+
 ## Part 1: Python vs C++
 
 ### What's the difference between Python and C++?
