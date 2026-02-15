@@ -155,7 +155,7 @@ def max_sum_subarray(arr, k):
 class Node:
     def __init__(self, data):
         self.data = data
-        self.next = None
+        self.next = None  # Pointer to next node
 ```
 
 **Types**:
@@ -192,14 +192,15 @@ def has_cycle(head):
 
     slow = fast = head
 
+    # Floyd's Cycle-Finding Algorithm (Tortoise and Hare)
     while fast and fast.next:
-        slow = slow.next
-        fast = fast.next.next
+        slow = slow.next          # Move 1 step
+        fast = fast.next.next     # Move 2 steps
 
-        if slow == fast:
+        if slow == fast:          # If they meet, there's a cycle
             return True
 
-    return False
+    return False  # Fast reached end, no cycle
 ```
 
 **How it works**:
@@ -217,11 +218,12 @@ def has_cycle(head):
 def find_middle(head):
     slow = fast = head
 
+    # Fast pointer moves 2x speed, slow moves 1x speed
     while fast and fast.next:
         slow = slow.next
         fast = fast.next.next
 
-    return slow
+    return slow  # When fast reaches end, slow is at middle
 ```
 
 **Why it works**:
@@ -240,12 +242,12 @@ def reverse_list(head):
     curr = head
 
     while curr:
-        next_temp = curr.next
-        curr.next = prev
-        prev = curr
-        curr = next_temp
+        next_temp = curr.next  # Save next node
+        curr.next = prev       # Reverse pointer
+        prev = curr            # Move prev forward
+        curr = next_temp       # Move curr forward
 
-    return prev
+    return prev  # New head of reversed list
 ```
 
 **Steps**:
@@ -259,10 +261,14 @@ def reverse_list(head):
 **Recursive** (O(n) space due to call stack):
 ```python
 def reverse_recursive(head):
+    # Base case: empty list or single node
     if not head or not head.next:
         return head
 
+    # Recursive step: reverse rest of list
     new_head = reverse_recursive(head.next)
+    
+    # Reverse current node's pointer
     head.next.next = head
     head.next = None
 
@@ -280,17 +286,19 @@ def reverse_recursive(head):
 **Example** (remove elements):
 ```python
 def remove_elements(head, val):
-    dummy = Node(0)
-    dummy.next = head
+    dummy = Node(0)      # Create dummy node
+    dummy.next = head    # Point dummy next to head
 
     curr = dummy
     while curr.next:
         if curr.next.val == val:
+            # Skip the node with value val
             curr.next = curr.next.next
         else:
+            # Move to next node
             curr = curr.next
 
-    return dummy.next
+    return dummy.next    # Return actual head (skipping dummy)
 ```
 
 **Advantage**: No special handling for removing head.
@@ -319,10 +327,10 @@ def remove_elements(head, val):
 ```python
 # Using list
 stack = []
-stack.append(1)  # push
-x = stack.pop()  # pop
+stack.append(1)  # push operation
+x = stack.pop()  # pop operation (removes last element)
 
-# Or using deque (more efficient)
+# Or using deque (more efficient, O(1) from ends)
 from collections import deque
 stack = deque()
 ```
@@ -347,8 +355,8 @@ stack = deque()
 ```python
 from collections import deque
 queue = deque()
-queue.append(1)      # enqueue
-x = queue.popleft()  # dequeue
+queue.append(1)      # enqueue (add to right)
+x = queue.popleft()  # dequeue (remove from left)
 ```
 
 **Don't use list**: `list.pop(0)` is O(n)
@@ -366,22 +374,32 @@ x = queue.popleft()  # dequeue
 ```python
 def next_greater(arr):
     n = len(arr)
-    result = [-1] * n
-    stack = []
+    result = [-1] * n  # Initialize result with -1
+    stack = []         # Monotonic decreasing stack (stores indices)
 
     for i in range(n):
+        # While stack is not empty and current element is greater than element at stack top
         while stack and arr[stack[-1]] < arr[i]:
-            idx = stack.pop()
+            idx = stack.pop()   # Current element is next greater for this popped index
             result[idx] = arr[i]
-        stack.append(i)
+        stack.append(i)         # Push current index onto stack
 
     return result
 ```
 
-**Pattern**: Pop while condition violated, then push.
+**Core Idea**: Maintain a specific order (invariant) in the stack.
+- **Increasing Stack**: Keep elements in increasing order. Good for finding "next smaller element".
+- **Decreasing Stack**: Keep elements in decreasing order. Good for finding "next greater element".
 
-**Time**: O(n) - each element pushed/popped once
-**Space**: O(n)
+**Logic**:
+1. When a new element `x` arrives, compare it with stack top.
+2. If `x` violates the invariant (e.g., `x > top` for decreasing stack), **pop** the top.
+3. The element `x` is the "next greater element" for the popped item.
+4. Repeat pop until invariant is restored, then push `x`.
+
+**Complexity Analysis**:
+- **Time**: O(N). Although there's a while loop, each element is pushed exactly once and popped at most once. Amortized O(1) per step.
+- **Space**: O(N) worst case.
 
 ### Implement a min-stack (getMin in O(1))
 
@@ -391,15 +409,17 @@ def next_greater(arr):
 ```python
 class MinStack:
     def __init__(self):
-        self.stack = []
-        self.min_stack = []
+        self.stack = []      # Main stack stores all elements
+        self.min_stack = []  # Auxiliary stack stores minimums
 
     def push(self, x):
         self.stack.append(x)
+        # Only push to min_stack if x is new minimum (or equal to current min)
         if not self.min_stack or x <= self.min_stack[-1]:
             self.min_stack.append(x)
 
     def pop(self):
+        # If popping minimum element, remove from min_stack too
         if self.stack[-1] == self.min_stack[-1]:
             self.min_stack.pop()
         self.stack.pop()
@@ -408,12 +428,17 @@ class MinStack:
         return self.stack[-1]
 
     def getMin(self):
-        return self.min_stack[-1]
+        return self.min_stack[-1]  # Top of min_stack is current minimum
 ```
 
-**Key idea**: Track minimums in parallel stack.
+**Key Idea (Auxiliary Stack)**:
+- We need a history of minimums. If we pop the current minimum, we must revert to the previous one.
+- **Invariant**: `min_stack` top is always the minimum of all elements currently in `stack`.
+- **Optimization**: Only push to `min_stack` if the new value is `<= current_min`. When popping `stack`, only pop `min_stack` if values match.
 
-**Space**: O(n) worst case (all decreasing)
+**Complexity**:
+- **Time**: O(1) for all operations (push, pop, top, getMin).
+- **Space**: O(N) worst case (e.g., sorting: 5, 4, 3, 2, 1 -> duplicates main stack). Best case O(1) (e.g., 1, 2, 3, 4, 5 -> min stack only has '1').
 
 **Solution 2** (store differences):
 - More space-efficient but complex
@@ -425,13 +450,14 @@ class MinStack:
 ```python
 class QueueUsingStacks:
     def __init__(self):
-        self.input_stack = []
-        self.output_stack = []
+        self.input_stack = []   # Push new elements here
+        self.output_stack = []  # Pop/peek from here
 
     def enqueue(self, x):
-        self.input_stack.append(x)
+        self.input_stack.append(x)  # Always push to input stack
 
     def dequeue(self):
+        # Move elements only if output stack is empty
         if not self.output_stack:
             while self.input_stack:
                 self.output_stack.append(self.input_stack.pop())
@@ -444,7 +470,17 @@ class QueueUsingStacks:
         return self.output_stack[-1]
 ```
 
-**Amortized O(1)**: Each element moved once from input to output.
+**Logic (Two Stacks)**:
+- **Input Stack (`s1`)**: Acts as an inbox. Always push here.
+- **Output Stack (`s2`)**: Acts as an outbox. Always pop/peek from here.
+- **Transfer**: When `s2` is empty and we need to pop/peek, move **all** elements from `s1` to `s2`. This reverses the order (LIFO + LIFO = FIFO).
+
+**Complexity Analysis**:
+- **Enqueue**: O(1).
+- **Dequeue**:
+  - **Worst case**: O(N) (when `s2` is empty, move N items).
+  - **Amortized**: O(1).
+  - **Proof**: Each element is pushed to `s1` (1 op), popped from `s1` (1 op), pushed to `s2` (1 op), and popped from `s2` (1 op). Total ~4 operations per element over its lifetime. Thus, average is constant.
 
 ---
 
@@ -489,9 +525,11 @@ class TreeNode:
 **Search**:
 ```python
 def search(root, val):
+    # Base case: root is None or value found
     if not root or root.val == val:
         return root
 
+    # Recursive step: search left or right subtree
     if val < root.val:
         return search(root.left, val)
     else:
@@ -518,9 +556,9 @@ def search(root, val):
 def inorder(root):
     if not root:
         return
-    inorder(root.left)
-    print(root.val)
-    inorder(root.right)
+    inorder(root.left)   # Visit left subtree
+    print(root.val)      # Process current node
+    inorder(root.right)  # Visit right subtree
 ```
 
 **BFS implementation**:
@@ -531,11 +569,12 @@ def level_order(root):
     if not root:
         return
 
-    queue = deque([root])
+    queue = deque([root])  # Initialize queue with root
     while queue:
-        node = queue.popleft()
-        print(node.val)
+        node = queue.popleft()  # Dequeue front node
+        print(node.val)         # Process node
 
+        # Enqueue children if exist
         if node.left:
             queue.append(node.left)
         if node.right:
@@ -571,19 +610,21 @@ def level_order(root):
 def is_balanced(root):
     def height(node):
         if not node:
-            return 0
+            return 0  # Height of None is 0
 
+        # Recursively get height of left subtree
         left_h = height(node.left)
-        if left_h == -1:
-            return -1
+        if left_h == -1: return -1  # Propagate imbalance
 
+        # Recursively get height of right subtree
         right_h = height(node.right)
-        if right_h == -1:
-            return -1
+        if right_h == -1: return -1
 
+        # Check balance condition for current node
         if abs(left_h - right_h) > 1:
-            return -1
+            return -1  # Imbalanced
 
+        # Return height of this subtree
         return max(left_h, right_h) + 1
 
     return height(root) != -1
@@ -597,26 +638,33 @@ def is_balanced(root):
 ```python
 def lca_bst(root, p, q):
     while root:
+        # If both values are smaller, LCA is in left subtree
         if p.val < root.val and q.val < root.val:
             root = root.left
+        # If both values are larger, LCA is in right subtree
         elif p.val > root.val and q.val > root.val:
             root = root.right
+        # Otherwise, current node is the split point (LCA)
         else:
             return root
 ```
 
 **For general binary tree**:
 ```python
-def lca(root, p, q):
+def lca_binary_tree(root, p, q):
+    # Base case: If root is None, or root is one of the target nodes, it's the LCA
     if not root or root == p or root == q:
         return root
 
-    left = lca(root.left, p, q)
-    right = lca(root.right, p, q)
+    # Search in left and right subtrees
+    left = lca_binary_tree(root.left, p, q)
+    right = lca_binary_tree(root.right, p, q)
 
+    # If both return non-None, p and q are in different branches, so root is LCA
     if left and right:
         return root
-
+    
+    # Otherwise return the non-None branch (or None if neither found)
     return left if left else right
 ```
 
@@ -660,16 +708,21 @@ def lca(root, p, q):
 ```python
 import heapq
 
-def k_largest(arr, k):
-    # Min-heap of size k
-    heap = []
+# Min-heap (default in Python)
+heap = []
+heapq.heappush(heap, 3)
+heapq.heappush(heap, 1)
+heapq.heappush(heap, 4)
 
-    for num in arr:
-        heapq.heappush(heap, num)
-        if len(heap) > k:
-            heapq.heappop(heap)
+min_val = heapq.heappop(heap)  # Returns 1 (smallest)
 
-    return heap
+# Max-heap workaround (negate values)
+max_heap = []
+heapq.heappush(max_heap, -3)
+heapq.heappush(max_heap, -1)
+heapq.heappush(max_heap, -4)
+
+max_val = -heapq.heappop(max_heap) # Returns 4 (largest)
 ```
 
 **Time**: O(n log k)
@@ -808,14 +861,16 @@ def hash_function(key, size):
 class HashTableChaining:
     def __init__(self, size=10):
         self.size = size
-        self.table = [[] for _ in range(size)]
+        self.table = [[] for _ in range(size)]  # List of lists for chaining
 
     def insert(self, key, value):
         index = hash(key) % self.size
+        # Check if key exists in bucket to update value
         for pair in self.table[index]:
             if pair[0] == key:
                 pair[1] = value
                 return
+        # Key not found, append new pair to bucket
         self.table[index].append([key, value])
 ```
 
@@ -838,12 +893,14 @@ class HashTableOpenAddressing:
     def insert(self, key, value):
         index = hash(key) % self.size
 
+        # Linear probing: find empty slot or matching key
         while self.keys[index] is not None:
             if self.keys[index] == key:
-                self.values[index] = value
+                self.values[index] = value  # Update existing key
                 return
-            index = (index + 1) % self.size
+            index = (index + 1) % self.size  # Move to next slot (wrap around)
 
+        # Place new key-value pair in empty slot
         self.keys[index] = key
         self.values[index] = value
 ```
@@ -881,12 +938,13 @@ class HashTableOpenAddressing:
 ```python
 def resize(self):
     old_table = self.table
-    self.size = self.size * 2
+    self.size = self.size * 2  # Double the size
     self.table = [[] for _ in range(self.size)]
 
+    # Rehash all existing items into new table
     for bucket in old_table:
         for key, value in bucket:
-            self.insert(key, value)
+            self.insert(key, value)  # Uses new size for hash calculation
 ```
 
 **Why 2x**: Ensures amortized O(1)
@@ -947,28 +1005,36 @@ graph = {
 
 **Recursive DFS**:
 ```python
-def dfs(graph, node, visited):
+def dfs_recursive(graph, node, visited):
+    # Mark current node as visited and print it
     visited.add(node)
     print(node)
 
+    # Recur for all adjacent vertices
     for neighbor in graph[node]:
         if neighbor not in visited:
-            dfs(graph, neighbor, visited)
+            dfs_recursive(graph, neighbor, visited)
+
+# Example usage (assuming 'graph' is defined, e.g., as an adjacency list)
+# graph = {'A': ['B', 'C'], 'B': ['D'], 'C': ['E'], 'D': [], 'E': []}
+# visited = set()
+# dfs_recursive(graph, 'A', visited)
 ```
 
 **Iterative DFS**:
 ```python
 def dfs_iterative(graph, start):
     visited = set()
-    stack = [start]
+    stack = [start]  # Use stack for DFS
 
     while stack:
         node = stack.pop()
         if node not in visited:
-            visited.add(node)
             print(node)
-
-            for neighbor in graph[node]:
+            visited.add(node)
+            # Add neighbors to stack. Order might differ from recursive depending on implementation.
+            # To mimic recursive DFS (processing left-most child first), add neighbors in reverse order.
+            for neighbor in reversed(graph[node]): # Add neighbors to stack
                 if neighbor not in visited:
                     stack.append(neighbor)
 ```
@@ -982,13 +1048,15 @@ def dfs_iterative(graph, start):
 from collections import deque
 
 def bfs(graph, start):
-    visited = set([start])
-    queue = deque([start])
+    visited = set()
+    queue = deque([start])  # Use queue for BFS
+    visited.add(start)      # Mark start as visited
 
     while queue:
-        node = queue.popleft()
+        node = queue.popleft() # Dequeue front node
         print(node)
 
+        # Enqueue unvisited neighbors
         for neighbor in graph[node]:
             if neighbor not in visited:
                 visited.add(neighbor)
@@ -1006,21 +1074,23 @@ def has_cycle_undirected(graph):
     visited = set()
 
     def dfs(node, parent):
-        visited.add(node)
+        visited.add(node) # Mark current node as visited
 
         for neighbor in graph[node]:
             if neighbor not in visited:
+                # If neighbor is not visited, recur for it
                 if dfs(neighbor, node):
                     return True
             elif neighbor != parent:
-                # Visited neighbor (not parent) = cycle
+                # If neighbor is visited and not parent of current node, then a cycle exists
                 return True
 
         return False
 
+    # Iterate over all nodes to handle disconnected components
     for node in graph:
         if node not in visited:
-            if dfs(node, -1):
+            if dfs(node, -1): # -1 indicates no parent for the starting node
                 return True
 
     return False
@@ -1029,24 +1099,19 @@ def has_cycle_undirected(graph):
 **Directed graph** (DFS + recursion stack):
 ```python
 def has_cycle_directed(graph):
-    visited = set()
-    rec_stack = set()
+    visited = set()      # Keeps track of all visited nodes
+    rec_stack = set()    # Keeps track of nodes in the current recursion path
 
-    def dfs(node):
+    def find_cycle(node):
         visited.add(node)
-        rec_stack.add(node)
+        rec_stack.add(node)  # Add node to recursion stack
 
         for neighbor in graph[node]:
             if neighbor not in visited:
-                if dfs(neighbor):
+                # If neighbor is not visited, recur for it
+                if find_cycle(neighbor):
                     return True
             elif neighbor in rec_stack:
-                # In recursion stack = back edge = cycle
-                return True
-
-        rec_stack.remove(node)
-        return False
-
     for node in graph:
         if node not in visited:
             if dfs(node):
@@ -1221,12 +1286,13 @@ class UnionFind:
 ```python
 def kruskal(n, edges):
     # edges = [(weight, u, v), ...]
-    edges.sort()
+    edges.sort()  # Sort edges by weight (greedy approach)
     uf = UnionFind(n)
     mst = []
     total_weight = 0
 
     for weight, u, v in edges:
+        # If adding edge doesn't create a cycle (vertices in different sets)
         if uf.union(u, v):
             mst.append((u, v, weight))
             total_weight += weight
@@ -1278,17 +1344,17 @@ class Trie:
         node = self.root
         for char in word:
             if char not in node.children:
-                node.children[char] = TrieNode()
-            node = node.children[char]
-        node.is_end = True
+                node.children[char] = TrieNode()  # Create new node if path doesn't exist
+            node = node.children[char]  # Move to next node
+        node.is_end = True  # Mark end of word
 
     def search(self, word):
         node = self.root
         for char in word:
             if char not in node.children:
-                return False
+                return False  # Path doesn't exist
             node = node.children[char]
-        return node.is_end
+        return node.is_end  # True if it's a complete word, not just a prefix
 
     def starts_with(self, prefix):
         node = self.root
@@ -1296,7 +1362,7 @@ class Trie:
             if char not in node.children:
                 return False
             node = node.children[char]
-        return True
+        return True  # Prefix exists
 ```
 
 **Time**:

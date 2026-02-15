@@ -7,6 +7,10 @@
 
 ## Table of Contents
 
+- [[#Part 1: Generative Models]]
+  - [[#Explain VAE (Variational Autoencoder)]]
+  - [[#Explain GAN (Generative Adversarial Network)]]
+  - [[#Diffusion vs GAN vs VAE - when to use each?]]
 - [[#Part 2: Diffusion Models]]
   - [[#Explain forward diffusion process (noising)]]
   - [[#What does the model predict during training (noise, x_0, or score)?]]
@@ -15,7 +19,6 @@
   - [[#DDPM vs DDIM sampling - differences?]]
   - [[#What's latent diffusion and why use it?]]
   - [[#Explain classifier-free guidance]]
-  - [[#Diffusion vs GAN vs VAE - when to use each?]]
   - [[#Why do diffusion models achieve better sample quality than GANs?]]
 - [[#Part 3: Vision-Language-Action Models]]
   - [[#What's the key innovation of VLA models?]]
@@ -26,6 +29,240 @@
   - [[#What emergent capabilities does RT-2 show?]]
   - [[#Why co-fine-tune on robot data?]]
   - [[#What are the limitations of VLAs?]]
+- [[#Part 4: Advanced Architectures]]
+  - [[#What is Mixture of Experts (MoE)?]]
+
+---
+
+## Part 1: Generative Models
+
+### Explain VAE (Variational Autoencoder)
+
+**The Goal:**
+
+Learn a generative model of data p(x) that can:
+1. Generate new samples similar to training data
+2. Learn meaningful latent representations
+3. Handle uncertainty
+
+**Architecture:**
+
+**Encoder:** q(z|x) - Maps data x to latent code z
+**Decoder:** p(x|z) - Reconstructs x from latent code z
+
+**Key Idea - Variational Inference:**
+
+We want to learn p(z|x), but it's intractable. Instead, learn an approximate distribution q(z|x) that's close to the true posterior.
+
+**The VAE Loss (ELBO):**
+
+Maximize Evidence Lower Bound:
+
+ELBO = E_q[log p(x|z)] - KL(q(z|x) || p(z))
+
+**Two terms:**
+
+1. **Reconstruction loss**: E[log p(x|z)]
+   - How well can we reconstruct x from z?
+   - Typically: MSE for continuous data, BCE for binary
+
+2. **KL divergence**: KL(q(z|x) || p(z))
+   - How different is q(z|x) from prior p(z)?
+   - Regularizes latent space
+   - Typically: KL between Gaussian q(z|x) and standard normal p(z)
+
+**Reparameterization Trick:**
+
+Problem: Can't backpropagate through sampling z ~ q(z|x)
+
+Solution: Reparameterize as:
+- Sample ε ~ N(0, I)
+- Compute z = μ(x) + σ(x) ⊙ ε
+
+Now gradients flow through μ and σ!
+
+**Intuition:**
+
+- **Encoder** compresses x into mean μ and variance σ²
+- **Sample** z from N(μ, σ²) using reparameterization
+- **Decoder** reconstructs x from z
+- **KL term** keeps latent space organized (prevents overfitting)
+
+**Why the KL term matters:**
+
+Without it, encoder could map each x to a unique z with zero variance → no generalization.
+
+With it, similar inputs get mapped to overlapping regions in latent space → smooth interpolation.
+
+**Training Process:**
+
+1. Input image x
+2. Encode to μ(x), σ(x)
+3. Sample z = μ + σ ⊙ ε
+4. Decode to x̂
+5. Compute loss: ||x - x̂||² + KL(N(μ,σ²) || N(0,I))
+6. Backpropagate, update weights
+
+**Generating New Samples:**
+
+1. Sample z ~ N(0, I) from prior
+2. Decode z to get x = decoder(z)
+3. Since latent space is continuous, can interpolate between points
+
+**Applications:**
+
+- Image generation
+- Data compression
+- Anomaly detection (high reconstruction error)
+- Semi-supervised learning
+- Disentangled representations
+
+**VAE vs Autoencoder:**
+
+| Feature | Autoencoder | VAE |
+|---------|-------------|-----|
+| Latent space | Deterministic | Probabilistic |
+| Loss | Reconstruction only | Reconstruction + KL |
+| Generation | No (irregular latent space) | Yes (smooth prior) |
+| Interpolation | Poor | Smooth |
+
+---
+
+### Explain GAN (Generative Adversarial Network)
+
+**The Core Idea:**
+
+Two neural networks compete in a game:
+- **Generator (G)**: Creates fake data
+- **Discriminator (D)**: Distinguishes real from fake
+
+**The Adversarial Game:**
+
+- **D's goal**: Maximize ability to classify real vs fake
+  - D(x_real) → 1
+  - D(G(z)) → 0
+
+- **G's goal**: Fool D by generating realistic data
+  - D(G(z)) → 1
+
+**Objective Function:**
+
+min_G max_D V(D,G) = E[log D(x)] + E[log(1 - D(G(z)))]
+
+**Training Alternates:**
+
+1. **Update D** (discriminator):
+   - Sample real data x
+   - Sample noise z, generate fake G(z)
+   - Train D to maximize V (classify correctly)
+
+2. **Update G** (generator):
+   - Sample noise z
+   - Train G to minimize V (fool D)
+
+**Intuition - Counterfeiter vs Police:**
+
+- Generator = counterfeiter making fake money
+- Discriminator = police detecting fakes
+- As police get better at detection, counterfeiter improves quality
+- Eventually, counterfeits become indistinguishable from real money
+
+**Training Dynamics:**
+
+**Nash Equilibrium:**
+When G generates perfect samples, D outputs 0.5 (can't tell real from fake).
+
+At this point:
+- D can't improve (samples are perfect)
+- G can't improve (already generating real distribution)
+
+**Practical Challenges:**
+
+**1. Mode Collapse:**
+- Generator produces limited variety (only a few types of outputs)
+- **Solution**: Unrolled GAN, minibatch discrimination
+
+**2. Training Instability:**
+- D becomes too strong → G gets no gradient signal
+- G becomes too strong → D gives up
+- **Solution**: Careful tuning, Wasserstein GAN
+
+**3. Vanishing Gradients:**
+- When D is perfect, log(1-D(G(z))) saturates
+- **Solution**: Use -log D(G(z)) instead (non-saturating loss)
+
+**GAN Variants:**
+
+**DCGAN (Deep Convolutional GAN):**
+- Use conv layers instead of fully connected
+- BatchNorm in G and D
+- LeakyReLU in D, ReLU in G
+- More stable training
+
+**WGAN (Wasserstein GAN):**
+- Replace JS divergence with Wasserstein distance
+- More meaningful loss metric
+- More stable training
+- Clip weights or use gradient penalty
+
+**Conditional GAN:**
+- Condition on class label y
+- G(z, y) and D(x, y)
+- Can control what type of image to generate
+
+**StyleGAN:**
+- State-of-the-art image generation
+- Progressive growing
+- Style transfer at different resolutions
+- Generates incredibly realistic faces
+
+**Applications:**
+
+- **Image generation**: High-quality synthetic images
+- **Image-to-image translation**: Pix2Pix, CycleGAN (day→night, sketch→photo)
+- **Super-resolution**: Upscale low-res images
+- **Data augmentation**: Generate training data
+- **Art and creativity**: Generate art, music, text
+
+**VAE vs GAN:**
+
+| Feature | VAE | GAN |
+|---------|-----|-----|
+| Training | Stable | Can be unstable |
+| Sample quality | Blurry | Sharp, realistic |
+| Latent space | Interpretable | Less interpretable |
+| Diversity | Good | Risk of mode collapse |
+| Likelihood | Tractable lower bound | Intractable |
+
+**When to Use Each:**
+
+- **VAE**: Need stable training, interpretable latent space, anomaly detection
+- **GAN**: Need highest quality samples, image synthesis, don't care about exact likelihood
+
+### Diffusion vs GAN vs VAE - when to use each?
+
+**Diffusion**:
+- ✅ Best sample quality (FID scores)
+- ✅ Stable training (no mode collapse)
+- ✅ Good mode coverage
+- ❌ Slow sampling (10-1000 steps)
+- **Use**: When quality matters most (text-to-image)
+
+**GAN**:
+- ✅ Fast sampling (1 step)
+- ✅ Sharp images
+- ❌ Training instability (mode collapse)
+- ❌ Poor mode coverage
+- **Use**: Real-time generation, video
+
+**VAE**:
+- ✅ Fast sampling
+- ✅ Exact likelihood
+- ❌ Blurry samples
+- ❌ Lower quality
+- **Use**: Compression, representation learning
+
+**Trend**: Diffusion dominant for images (Stable Diffusion, DALL-E), GANs for video/real-time.
 
 ---
 
@@ -161,30 +398,9 @@ Where:
 
 **Training requirement**: Randomly drop conditioning (10-20% of time) during training to learn $\epsilon_\theta(x_t, \emptyset)$
 
-### Diffusion vs GAN vs VAE - when to use each?
 
-**Diffusion**:
-- ✅ Best sample quality (FID scores)
-- ✅ Stable training (no mode collapse)
-- ✅ Good mode coverage
-- ❌ Slow sampling (10-1000 steps)
-- **Use**: When quality matters most (text-to-image)
 
-**GAN**:
-- ✅ Fast sampling (1 step)
-- ✅ Sharp images
-- ❌ Training instability (mode collapse)
-- ❌ Poor mode coverage
-- **Use**: Real-time generation, video
 
-**VAE**:
-- ✅ Fast sampling
-- ✅ Exact likelihood
-- ❌ Blurry samples
-- ❌ Lower quality
-- **Use**: Compression, representation learning
-
-**Trend**: Diffusion dominant for images (Stable Diffusion, DALL-E), GANs for video/real-time.
 
 ### Why do diffusion models achieve better sample quality than GANs?
 
@@ -344,3 +560,50 @@ Where:
 7. **Compute**: Large models, slow inference
 
 **Open challenges**: Scaling robot data, sim-to-real transfer, safety.
+
+---
+
+## Part 4: Advanced Architectures
+
+### What is Mixture of Experts (MoE)?
+
+**Core Concept:**
+
+Instead of one large model, use multiple specialized "expert" networks, and learn when to use each expert.
+
+**Architecture:**
+
+1. **Multiple expert networks**: E₁, E₂, ..., Eₙ
+2. **Gating network**: Decides which experts to use
+3. **Combiner**: Aggregates expert outputs
+
+**How It Works:**
+
+For input x:
+1. Gating network outputs weights: g(x) = [g₁, g₂, ..., gₙ]
+2. Each expert produces output: yᵢ = Eᵢ(x)
+3. Final output: y = Σᵢ gᵢ(x) · yᵢ
+
+**Gating Function:**
+
+Typically softmax over expert scores:
+g(x) = softmax(Wx)
+
+This ensures weights sum to 1 and are non-negative.
+
+**Types of MoE:**
+
+**Soft MoE:**
+- All experts contribute (weighted)
+- Smooth, differentiable
+- More computation (run all experts)
+
+**Hard MoE (Sparse MoE):**
+- Only activate top-k experts
+- Efficient (fewer computations)
+- Requires tricks for gradients (Gumbel-softmax, straight-through estimators)
+
+**Example - Language Model:**
+
+- Expert 1: Handles technical text
+- Expert 2: Handles creative writing

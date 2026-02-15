@@ -61,11 +61,11 @@
 **Example** (C++):
 ```cpp
 void example() {
-    int stack_var = 10;        // Stack
-    int* heap_var = new int(20); // Heap
+    int stack_var = 10;          // Stack: automatically allocated/freed
+    int* heap_var = new int(20); // Heap: manually allocated
 
-    delete heap_var;  // Must free
-}  // stack_var automatically freed
+    delete heap_var;  // Heap memory must be explicitly freed to prevent leaks
+}  // stack_var is automatically freed when function returns (out of scope)
 ```
 
 **When to use**:
@@ -85,10 +85,11 @@ void example() {
 **Example** (C++):
 ```cpp
 void leak_example() {
-    int* data = new int[1000];
+    int* data = new int[1000];   // Allocate memory on heap
     // ... do work ...
     // Oops! Forgot to delete[] data
-}  // Memory leaked
+    // Memory remains allocated but pointer is lost when function returns
+}  // Result: Memory leak
 ```
 
 **Consequences**:
@@ -137,8 +138,11 @@ ptr++;      // Move to next int (4 bytes forward)
 
 **NULL/nullptr**: Pointer to nothing
 ```cpp
-int* ptr = nullptr;  // C++11
-if (ptr) { ... }     // Check if not null
+int* ptr = nullptr;  // C++11 standard for null pointer
+if (ptr) {             // Check if pointer is valid (not null)
+    // Safe to dereference
+    *ptr = 10;
+}
 ```
 
 ### What's a reference (C++)?
@@ -171,9 +175,9 @@ cout << x;     // 20
 
 ```cpp
 void swap(int& a, int& b) {
-    int temp = a;
-    a = b;
-    b = temp;
+    int temp = a;  // Standard swap logic
+    a = b;         // References act as aliases to original variables
+    b = temp;      // Modifying 'a' and 'b' modifies original arguments
 }
 ```
 
@@ -212,8 +216,10 @@ delete ptr1;
 
 **Smart pointer solution**:
 ```cpp
+// make_unique creates a unique_ptr that owns the int
 std::unique_ptr<int> ptr = std::make_unique<int>(10);
-// Automatically deleted, can't create dangling
+// Memory is automatically freed when 'ptr' goes out of scope
+// No need for manual 'delete', preventing dangling pointers
 ```
 
 ### What's RAII?
@@ -229,15 +235,18 @@ std::unique_ptr<int> ptr = std::make_unique<int>(10);
 class FileHandler {
     FILE* file;
 public:
+    // Constructor: Acquire resource (open file)
     FileHandler(const char* filename) {
         file = fopen(filename, "r");
     }
 
+    // Destructor: Release resource (close file)
     ~FileHandler() {
-        if (file) fclose(file);
+        if (file) fclose(file);  // Guaranteed to run when object destroyed
     }
 
-    // Prevent copying
+    // Prevent copying (Delete copy constructor and assignment operator)
+    // This ensures unique ownership of the file handle
     FileHandler(const FileHandler&) = delete;
     FileHandler& operator=(const FileHandler&) = delete;
 };
@@ -391,13 +400,15 @@ Result: 1 (should be 2!)
 
 **Fix with mutex**:
 ```cpp
-std::mutex mtx;
+std::mutex mtx;       // Mutex to protect shared data
 int counter = 0;
 
 // Thread function
 void increment() {
+    // lock_guard automatically locks mtx on construction
     std::lock_guard<std::mutex> lock(mtx);
-    counter++;
+    counter++;          // Safe to increment (exclusive access)
+    // lock_guard automatically unlocks mtx on destruction (end of scope)
 }
 ```
 
@@ -638,7 +649,7 @@ Python:
 source.py → [interpreter] → [bytecode] → execution
 
 Java:
-source.java → [compiler] → bytecode → [JVM + JIT] → execution
+source.java → [compiler (javac)] → bytecode (.class) → [JVM + JIT] → machine code → execution
 ```
 
 ### What are the stages of compilation?
@@ -770,8 +781,10 @@ public:
     void foo() override { cout << "Derived"; }
 };
 
+// Base pointer pointing to Derived object
 Base* ptr = new Derived();
-ptr->foo();  // "Derived" - calls Derived::foo (dynamic type)
+ptr->foo();  // "Derived" - Runtime polymorphism
+             // Vtable lookup finds Derived::foo because foo is virtual
 ```
 
 **How it works**: vtable (virtual table)
@@ -791,8 +804,10 @@ public:
 ```cpp
 class Base {
 public:
-    virtual ~Base() {}  // Important!
+    virtual ~Base() {}  // Virtual destructor ensures Derived destructor is called
 };
+// Otherwise, deleting Base* pointing to Derived would only call ~Base(),
+// potentially leaking resources in Derived.
 ```
 Otherwise derived destructor not called → leak!
 
@@ -837,9 +852,10 @@ Representation: 0 10000010 10010000000000000000000
 **Precision issues**:
 ```cpp
 float a = 0.1 + 0.2;
-// a might not exactly equal 0.3
-if (abs(a - 0.3) < 1e-7) {  // Use epsilon comparison
-    // Close enough
+// Floating point arithmetic is not perfectly precise
+// a might be 0.300000004 instead of 0.3
+if (abs(a - 0.3) < 1e-7) {  // Use epsilon (small value) for comparison
+    // Close enough to be considered equal
 }
 ```
 
@@ -872,17 +888,17 @@ Disk (~1 TB, ~10,000,000 cycles)
 
 **Why cache matters**:
 ```cpp
-// Cache-friendly (sequential)
+// Cache-friendly (sequential access)
 for (int i = 0; i < N; i++) {
     for (int j = 0; j < N; j++) {
-        sum += matrix[i][j];  // Row-major access
+        sum += matrix[i][j];  // Row-major access: matches memory layout
     }
 }
 
-// Cache-unfriendly (strided)
+// Cache-unfriendly (strided access)
 for (int j = 0; j < N; j++) {
     for (int i = 0; i < N; i++) {
-        sum += matrix[i][j];  // Column-major access (cache misses!)
+        sum += matrix[i][j];  // Column-major access: jumps across memory, causing cache misses
     }
 }
 ```
@@ -971,14 +987,14 @@ if (x > 0) {
 
 **Optimization**:
 ```cpp
-// Unpredictable branch (50/50)
+// Unpredictable branch (50/50 chance) causes pipeline flushes
 if (random() > 0.5) {
     ...
 }
 
-// Better: Branchless
+// Better: Branchless programming avoids pipeline stalls
 int result = (condition) ? value1 : value2;
-// Or bitwise tricks
+// Or bitwise tricks to select value without branching
 int result = (-condition & value1) | (~-condition & value2);
 ```
 
@@ -1054,12 +1070,12 @@ for (int i = 0; i < 1000; i++) {
 
 **Solution**: Create pool once, reuse threads
 ```cpp
-ThreadPool pool(4);  // 4 worker threads
+ThreadPool pool(4);  // Create pool with 4 worker threads
 
 for (int i = 0; i < 1000; i++) {
-    pool.enqueue(task, i);  // Add task to queue
+    pool.enqueue(task, i);  // Add task to queue instead of creating new thread
 }
-// 4 threads process tasks from queue
+// 4 threads process tasks from queue efficiently, reusing threads
 ```
 
 **Architecture**:
@@ -1100,6 +1116,7 @@ public:
                 while (true) {
                     std::function<void()> task;
                     {
+                        // Lock queue to safely retrieve task
                         std::unique_lock<std::mutex> lock(queue_mutex);
                         condition.wait(lock, [this] {
                             return stop || !tasks.empty();
@@ -1111,7 +1128,7 @@ public:
                         task = std::move(tasks.front());
                         tasks.pop();
                     }
-                    task();
+                    task(); // Execute task outside of lock
                 }
             });
         }
@@ -1121,19 +1138,19 @@ public:
     void enqueue(F&& f) {
         {
             std::unique_lock<std::mutex> lock(queue_mutex);
-            tasks.emplace(std::forward<F>(f));
+            tasks.emplace(std::forward<F>(f)); // Add task to queue
         }
-        condition.notify_one();
+        condition.notify_one(); // Wake up one worker thread
     }
 
     ~ThreadPool() {
         {
             std::unique_lock<std::mutex> lock(queue_mutex);
-            stop = true;
+            stop = true; // Signal threads to stop
         }
-        condition.notify_all();
+        condition.notify_all(); // Wake up all threads
         for (std::thread& worker : workers)
-            worker.join();
+            worker.join(); // Wait for threads to finish
     }
 };
 ```
@@ -1172,7 +1189,9 @@ std::atomic<int> value(0);
 int expected = 0;
 int desired = 1;
 
-// Atomic: if (value == expected) value = desired; return success
+// Atomic Compare-And-Swap (CAS):
+// If value == expected, set value to desired and return true
+// Otherwise, update expected with current value and return false
 bool success = value.compare_exchange_strong(expected, desired);
 ```
 

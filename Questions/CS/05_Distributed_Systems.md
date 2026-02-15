@@ -307,11 +307,11 @@ Output: [("hello", 2), ("world", 1), ("spark", 1)]
 # Map function
 def mapper(line):
     for word in line.split():
-        yield (word, 1)
+        yield (word, 1)  # Emit (key, value) pair for each word
 
 # Reduce function
 def reducer(key, values):
-    yield (key, sum(values))
+    yield (key, sum(values))  # Aggregate values for the key
 ```
 
 ### How does MapReduce work?
@@ -371,10 +371,10 @@ Input Data (HDFS)
 
 def mapper(record):
     user_id, page_url = record
-    yield (user_id, 1)
+    yield (user_id, 1)  # Emit 1 for every page view by user
 
 def reducer(user_id, counts):
-    yield (user_id, sum(counts))
+    yield (user_id, sum(counts))  # Sum up all 1s to get total views
 
 # Execution:
 # 1B records across 1000 mappers
@@ -410,13 +410,13 @@ sc = SparkContext()
 # Read data
 lines = sc.textFile("hdfs://data.txt")
 
-# Transformation (lazy)
-words = lines.flatMap(lambda line: line.split())
-pairs = words.map(lambda word: (word, 1))
-counts = pairs.reduceByKey(lambda a, b: a + b)
+# Transformation (lazy - no execution yet)
+words = lines.flatMap(lambda line: line.split())  # Split lines into words
+pairs = words.map(lambda word: (word, 1))         # Map words to (word, 1)
+counts = pairs.reduceByKey(lambda a, b: a + b)    # Aggregate counts by key
 
 # Action (triggers execution)
-results = counts.collect()
+results = counts.collect()  # Gather results to driver
 ```
 
 **Architecture**:
@@ -496,7 +496,7 @@ If partition lost → recompute from parent RDD
 **3. Immutable**: Transformations create new RDDs
 ```
 rdd1 = sc.parallelize([1, 2, 3])
-rdd2 = rdd1.map(lambda x: x * 2)  # New RDD, rdd1 unchanged
+rdd2 = rdd1.map(lambda x: x * 2)  # New RDD created, rdd1 remains unchanged (immutability)
 ```
 
 **Operations**:
@@ -522,25 +522,25 @@ rdd.saveAsTextFile("hdfs://output")  # Save to file
 
 **Lineage** (fault tolerance):
 ```python
-# Lineage graph
+# Lineage graph records sequence of operations
 rdd1 = sc.textFile("data.txt")           # Read from HDFS
 rdd2 = rdd1.flatMap(lambda x: x.split()) # Split words
 rdd3 = rdd2.map(lambda x: (x, 1))        # Create pairs
 rdd4 = rdd3.reduceByKey(lambda a,b: a+b) # Count
 
 # If rdd4 partition lost:
-# Recompute: textFile → flatMap → map → reduceByKey
+# Recompute missing partition using lineage: textFile → flatMap → map → reduceByKey
 ```
 
 **Persistence** (caching):
 ```python
 rdd = sc.textFile("large_file.txt")
-rdd.cache()  # Keep in memory
+rdd.cache()  # Mark RDD for caching in memory
 
-# First action: computes and caches
+# First action: computes RDD and caches partitions in memory
 count1 = rdd.count()
 
-# Second action: reads from cache (fast!)
+# Second action: reads from memory cache (much faster!)
 count2 = rdd.filter(lambda x: "error" in x).count()
 ```
 
@@ -598,8 +598,8 @@ model = DDP(model, device_ids=[local_rank])
 for batch in dataloader:
     optimizer.zero_grad()
     loss = model(batch)
-    loss.backward()  # Gradients automatically synchronized!
-    optimizer.step()
+    loss.backward()  # Gradients automatically synchronized across all GPUs via all-reduce
+    optimizer.step() # Update model with averaged gradients
 ```
 
 **Advantages**:
@@ -667,11 +667,11 @@ class ModelPart2(nn.Module):  # On GPU 1
     def __init__(self):
         self.layer2 = nn.Linear(1000, 10)
 
-# Forward pass
+# Forward pass with manual data transfer
 x = x.to('cuda:0')
-x = model_part1(x)
-x = x.to('cuda:1')  # Transfer to GPU 1
-x = model_part2(x)
+x = model_part1(x)  # Compute first part on GPU 0
+x = x.to('cuda:1')  # Transfer intermediate activation to GPU 1
+x = model_part2(x)  # Compute second part on GPU 1
 ```
 
 **Challenges**:
@@ -738,7 +738,7 @@ for batch in dataloader:
 # Pipeline (25% bubble)
 microbatches = split_batch(batch, num_microbatches=4)
 for mb in microbatches:
-    # All GPUs working on different microbatches
+    # Schedule microbatches across GPUs to overlap computation
     async_forward(mb)
 ```
 
@@ -829,9 +829,9 @@ ray.init()
 def square(x):
     return x * x
 
-# Launch parallel tasks
+# Launch parallel tasks (non-blocking)
 futures = [square.remote(i) for i in range(4)]
-# Retrieve results
+# Retrieve results (blocking wait)
 print(ray.get(futures))  # [0, 1, 4, 9]
 ```
 
@@ -846,6 +846,7 @@ class Counter:
         return self.value
 
 counter = Counter.remote()
+# Invoke method on actor (state persists)
 print(ray.get(counter.increment.remote()))
 ```
 
@@ -884,7 +885,7 @@ train_sampler = torch.utils.data.distributed.DistributedSampler(
 optimizer = optim.SGD(model.parameters(), lr=0.01 * hvd.size())
 optimizer = hvd.DistributedOptimizer(optimizer, named_parameters=model.named_parameters())
 
-# 5. Broadcast initial variables
+# 5. Broadcast initial variables from rank 0 to all other processes
 hvd.broadcast_parameters(model.state_dict(), root_rank=0)
 ```
 
@@ -896,7 +897,7 @@ hvd.broadcast_parameters(model.state_dict(), root_rank=0)
         optimizer.zero_grad()
         output = model(batch)
         loss = criterion(output, labels)
-        loss.backward()  # Gradients automatically all-reduced!
+        loss.backward()  # Hooks trigger all-reduce to average gradients
         optimizer.step()
 ```
 
@@ -1492,9 +1493,9 @@ Failure:
 # Worker sends heartbeat every 10s
 last_heartbeat = time.time()
 
-# Coordinator checks
+# Coordinator checks heartbeats
 if time.time() - last_heartbeat > 30:
-    # Worker considered dead
+    # Worker considered dead if no heartbeat for 30s
     handle_failure(worker_id)
 ```
 
@@ -1556,14 +1557,14 @@ def train_with_fault_tolerance():
                     save_checkpoint()
 
     except RuntimeError as e:
-        if "NCCL" in str(e):  # Communication failure
+        if "NCCL" in str(e):  # Communication failure detected
             # Node failed during training
 
-            # Option 1: Restart all from checkpoint
+            # Option 1: Restart all from last checkpoint
             load_checkpoint()
-            dist.init_process_group(...)  # Re-init with fewer nodes
+            dist.init_process_group(...)  # Re-init with fewer nodes or replacement
 
-            # Option 2: Exit and let job scheduler restart
+            # Option 2: Exit and let job scheduler (e.g., K8s) restart pod
             sys.exit(1)
 ```
 
@@ -1621,7 +1622,7 @@ class ParameterServer:
         return self.params
 
     def push(self, gradients):
-        # Update parameters
+        # Update parameters with received gradients
         for param, grad in zip(self.params, gradients):
             param -= learning_rate * grad
 
@@ -1635,7 +1636,7 @@ def worker():
         batch = get_batch()
         gradients = compute_gradients(params, batch)
 
-        # Push gradients
+        # Push gradients to PS for update
         ps.push(gradients)
 ```
 
@@ -1755,7 +1756,7 @@ def gossip_step():
     my_state = get_local_state()
     peer_state = peer.get_state()
 
-    # Merge states (e.g., average)
+    # Merge states (e.g., average weights)
     new_state = merge(my_state, peer_state)
     update_local_state(new_state)
 
@@ -1907,7 +1908,7 @@ if rank == 0:
 else:
     tensor = torch.zeros(3)
 dist.broadcast(tensor, src=0)
-# All ranks now have [1, 2, 3]
+# All ranks now have [1, 2, 3] from rank 0
 
 # Gather
 tensor = torch.tensor([rank])
@@ -1998,8 +1999,8 @@ for i, batch in enumerate(dataloader):
     loss.backward()  # Gradients synchronized by DDP!
 
     if (i + 1) % accumulation_steps == 0:
-        optimizer.step()
-        optimizer.zero_grad()
+        optimizer.step()        # Update model parameters
+        optimizer.zero_grad()   # Reset gradients for next accumulation cycle
 ```
 
 **Trade-offs**:

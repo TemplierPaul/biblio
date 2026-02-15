@@ -1151,6 +1151,15 @@ output = Network(input)  # action distribution
 
 **Fictitious Play**: Iterative algorithm where players best-respond to opponent's **empirical frequency**.
 
+**Empirical Frequency (Average Strategy)**:
+The empirical frequency $\hat{\sigma}_{-i}(t)$ is the historical proportion of times the opponent has played each action up to time $t$. It serves as a *belief* about the opponent's mixed strategy.
+
+*   **Formula**: For each action $a$:
+    $$\hat{\sigma}_{-i}(a, t) = \frac{\text{Number of times opponent played } a \text{ in rounds } 1..t}{t}$$
+*   **Interpretation**: If the opponent played Rock 30 times, Paper 50 times, and Scissors 20 times over 100 rounds, the empirical frequency is the mixed strategy $(0.3, 0.5, 0.2)$.
+*   **Why it matters**: Instead of reacting to the opponent's *last* move (which causes cycling), Fictitious Play smooths over the full history. This averaging effect is what drives convergence in certain game classes.
+*   **Connection to Nash**: At convergence, the empirical frequencies of both players form a Nash Equilibrium — no player can improve by changing their strategy unilaterally.
+
 **Algorithm**:
 1. Initialize: Play arbitrary action
 2. Track: Opponent's action history
@@ -1167,6 +1176,20 @@ output = Network(input)  # action distribution
 ### How does FSP use RL and SL?
 
 **Fictitious Self-Play** (sample-based version):
+
+**FP vs FSP — Key Differences:**
+
+| Aspect | **Fictitious Play (FP)** | **Fictitious Self-Play (FSP)** |
+| :--- | :--- | :--- |
+| **Era** | Classical game theory (1951, Brown) | Modern ML (2015, Heinrich et al.) |
+| **Average Strategy** | Exact empirical frequency (count actions) | *Learned* via Supervised Learning network |
+| **Best Response** | Exact BR (solve LP / enumerate) | *Approximate* BR via Reinforcement Learning |
+| **State Space** | Tabular (small action sets only) | Scales to large / continuous state spaces |
+| **Representation** | Lookup tables | Neural Networks |
+| **Self-Play** | Against fixed empirical avg. | Against a *mixture* of RL and SL policies |
+| **Data** | Full history stored as counts | Two replay buffers ($M_{RL}$, $M_{SL}$) |
+
+**In short**: FSP replaces the two exact computations of FP (counting → SL network, exact BR → RL agent) with learned approximations, enabling it to scale to complex games like Poker.
 
 **Two components**:
 1. **RL**: Learn best response to current average strategy

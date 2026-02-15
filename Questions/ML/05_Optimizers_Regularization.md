@@ -7,15 +7,15 @@ Comprehensive coverage of optimization algorithms and regularization techniques.
 
 ## Table of Contents
 
-- [[#Part 4: Optimizers]]
+- [[#Part 1: Optimizers]]
   - [[#Name different types of optimizers and their intuitions (e.g., Adam, RMSProp)]]
-- [[#Part 5: Regularization & Overfitting]]
+- [[#Part 2: Regularization & Overfitting]]
   - [[#What is the difference between L1 and L2 regularization? When would you use each?]]
   - [[#Explain overfitting and strategies to mitigate it]]
 
 ---
 
-## Part 4: Optimizers
+## Part 1: Optimizers
 
 ### Name different types of optimizers and their intuitions (e.g., Adam, RMSProp)
 
@@ -320,7 +320,7 @@ for epoch in range(epochs):
 ---
 
 
-## Part 5: Regularization & Overfitting
+## Part 2: Regularization & Overfitting
 
 ### What is the difference between L1 and L2 regularization? When would you use each?
 

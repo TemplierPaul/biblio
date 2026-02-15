@@ -124,22 +124,27 @@ Essential CS interview topics:
 **Start Here**: Use [STUDY_TRACKER.md](Questions/STUDY_TRACKER.md) to track progress across all topics
 
 **ML/AI Roles:**
-1. **Fundamentals** (Week 1-2): Questions/ML/07, 08, 11
-2. **Deep Learning** (Week 3-4): Questions/ML/01, 02, 03
-3. **Specialization** (Week 5-6): Questions/ML/06 (RL), 05 (Game Theory), or 09 (Systems)
+1. **Fundamentals** (Week 1-2): Questions/ML/01 (Math), 02 (Prob), 03 (ML Fund), 06 (Classical)
+2. **Deep Learning** (Week 3-4): Questions/ML/07 (Arch), 04 (Loss), 05 (Optim), 09 (LLM)
+3. **Specialization** (Week 5-6): Questions/ML/10 (RL), 11 (Game Theory), or 12 (Systems)
 4. **Practice**: Code implementations, mock interviews
 
 **SWE Roles:**
-1. **Data Structures** (Week 1-2): Questions/CS/01
+1. **Data Structures** (Week 1-2): Questions/CS/01, 07 (Databases)
 2. **Algorithms** (Week 3-4): Questions/CS/02
-3. **Systems** (Week 5): Questions/CS/03, 04
-4. **ML Basics** (Week 6): Questions/ML/07, 08
+3. **Systems** (Week 5): Questions/CS/03 (SysProg), 05 (Distributed), 06 (Design)
+4. **ML Basics** (Week 6): Questions/ML/03 (Fundamentals), 06 (Classical)
 
 **Research Scientist:**
-1. **Theory**: Questions/ML/08, 11, 04
-2. **Core**: Questions/ML/06 (full RL), 05 (Game Theory)
-3. **Advanced**: Questions/ML/02, 03
+1. **Theory**: Questions/ML/01 (Math), 02 (Prob), 04 (Loss), 05 (Optim)
+2. **Core**: Questions/ML/10 (RL), 11 (Game Theory), 08 (Advanced DL)
+3. **Advanced**: Questions/ML/09 (LLM), 13 (Ethics)
 4. **Practice**: Implement algorithms from Learning/
+
+**ML Infrastructure Engineer:**
+1. **Systems**: Questions/CS/03, 05, 06, 08 (ML Infra)
+2. **Engineering**: Questions/CS/04 (Lang), 09 (SWE), 07 (DB)
+3. **ML Core**: Questions/ML/03, 07, 09 (LLM), 12 (ML Systems)
 
 See specific README files in Questions/ML and Questions/CS for detailed study paths.
 
@@ -216,22 +221,19 @@ biblio/
     │
     ├── ML/                      # ML/AI interviews (11 files)
     │   ├── README.md            # ML study paths & organization
-    │   ├── 01_ANN_Architecture.md
-    │   ├── 02_LLM_Training.md
-    │   ├── 06_Reinforcement_Learning.md ⭐
-    │   ├── 07_ML_Fundamentals.md ⭐
-    │   ├── 08_Probability_Statistics.md ⭐
-    │   ├── 09_ML_Systems.md
-    │   ├── 10_Ethics_AI.md
-    │   ├── 11_Math_Foundations.md
-    │   └── ...
+    │   ├── 01_Math_Foundations.md
+    │   ├── 02_Probability_Statistics.md
+    │   ├── 03_ML_Fundamentals.md
+    │   ├── 04_Loss_Functions.md
+    │   ├── 05_Optimizers_Regularization.md
+    │   ├── ...
     │
     └── CS/                      # CS fundamentals (4 files)
         ├── README.md            # CS study paths & tips
         ├── 01_Data_Structures.md
         ├── 02_Algorithms.md
         ├── 03_Systems_Programming.md
-        └── 04_Programming_Languages.md
+        └── ...
 ```
 
 ---

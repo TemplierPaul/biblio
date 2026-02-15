@@ -7,7 +7,7 @@
 
 ---
 
-## Part 0: Convolutional Neural Networks (CNNs)
+## Part 1: Convolutional Neural Networks (CNNs)
 
 > **Note**: Comprehensive CNN content (convolution operations, pooling, LeNet/AlexNet/VGG/ResNet, skip connections, U-Net) to be added.
 
@@ -16,8 +16,8 @@
 
 ## Table of Contents
 
-- [[#Part 0: Convolutional Neural Networks (CNNs)]]
-- [[#Part 1: LSTM]]
+- [[#Part 1: Convolutional Neural Networks (CNNs)]]
+- [[#Part 2: LSTM]]
   - [[#What problem does LSTM solve compared to vanilla RNN?]]
   - [[#Explain the three gates in LSTM and their purposes (forget, input, output)]]
   - [[#Write the cell state update equation and explain why it prevents vanishing gradients]]
@@ -25,7 +25,7 @@
   - [[#LSTM vs GRU: when to use each?]]
   - [[#Why do transformers dominate over LSTMs in NLP today?]]
   - [[#When would you still use LSTM over transformer?]]
-- [[#Part 2: Attention Mechanism]]
+- [[#Part 3: Attention Mechanism]]
   - [[#What is the scaled dot-product attention formula?]]
   - [[#Why do we scale by √d_k?]]
   - [[#What are Q, K, V matrices and what do they represent?]]
@@ -33,7 +33,7 @@
   - [[#What is multi-head attention and why use it?]]
   - [[#What's the computational complexity of attention? What's the bottleneck?]]
   - [[#How does attention compare to RNN for long-range dependencies?]]
-- [[#Part 3: Transformer Architecture]]
+- [[#Part 4: Transformer Architecture]]
   - [[#Draw transformer encoder and decoder architecture]]
   - [[#What are the key components in each transformer layer?]]
   - [[#Why do we need positional encoding?]]
@@ -43,7 +43,7 @@
   - [[#Why are decoder-only models dominant for LLMs?]]
   - [[#What is masked language modeling (MLM)?]]
   - [[#Explain the 80/10/10 split in BERT's MLM]]
-- [[#Part 4: Graph Neural Networks]]
+- [[#Part 5: Graph Neural Networks]]
   - [[#What is message passing in GNNs?]]
   - [[#Explain GCN, GraphSAGE, and GAT - key differences?]]
   - [[#What's the over-smoothing problem?]]
@@ -55,7 +55,7 @@
 
 ---
 
-## Part 1: LSTM
+## Part 2: LSTM
 
 ### What problem does LSTM solve compared to vanilla RNN?
 
@@ -123,7 +123,7 @@ Think: Cell state is internal memory, hidden state is what you share with others
 
 ---
 
-## Part 2: Attention Mechanism
+## Part 3: Attention Mechanism
 
 ### What is the scaled dot-product attention formula?
 
@@ -221,7 +221,7 @@ This is why transformers revolutionized NLP - direct modeling of long-range depe
 
 ---
 
-## Part 3: Transformer Architecture
+## Part 4: Transformer Architecture
 
 ### Draw transformer encoder and decoder architecture
 
@@ -398,7 +398,7 @@ Without 10/10, model would only see [MASK] during pre-training but never during 
 
 ---
 
-## Part 4: Graph Neural Networks
+## Part 5: Graph Neural Networks
 
 ### What is message passing in GNNs?
 

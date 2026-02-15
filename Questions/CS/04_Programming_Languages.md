@@ -60,7 +60,7 @@
 def factorial(n):
     if n <= 1:
         return 1
-    return n * factorial(n - 1)
+    return n * factorial(n - 1)  # Concise recursive call
 
 print(factorial(5))
 ```
@@ -73,12 +73,12 @@ int factorial(int n) {
     if (n <= 1) {
         return 1;
     }
-    return n * factorial(n - 1);
+    return n * factorial(n - 1);  # Explicit type declarations required
 }
 
 int main() {
     std::cout << factorial(5) << std::endl;
-    return 0;
+    return 0;  # Entry point required
 }
 ```
 
@@ -90,21 +90,22 @@ int main() {
 
 **Development speed**:
 ```python
-# Python - 5 lines
-data = [x**2 for x in range(100)]
-result = sum(x for x in data if x % 2 == 0)
+# Python - 5 lines (Concise and readable)
+data = [x**2 for x in range(100)]  # List comprehension
+result = sum(x for x in data if x % 2 == 0)  # Generator expression for filtering and summing
 ```
 
 ```cpp
-// C++ - 15+ lines
+// C++ - 15+ lines (Verbose but strict)
 #include <vector>
 #include <numeric>
 
 std::vector<int> data;
 for (int x = 0; x < 100; ++x) {
-    data.push_back(x * x);
+    data.push_back(x * x);  # Manual loop and push_back
 }
 
+// STL algorithm with lambda for summation and filtering
 int result = std::accumulate(data.begin(), data.end(), 0,
     [](int sum, int x) { return (x % 2 == 0) ? sum + x : sum; });
 ```
@@ -160,16 +161,16 @@ int y = x + 5;  // Compile error!
 
 **Python**: Dynamic typing, variables are references
 ```python
-x = 10          # x refers to int object
+x = 10          # x refers to int object (name bound to object)
 type(x)         # <class 'int'>
 
-x = "hello"     # x now refers to str object
+x = "hello"     # x now refers to str object (dynamic re-binding)
 type(x)         # <class 'str'>
 
 # Everything is an object
-y = x           # y refers to same object
-y += " world"   # Creates new object, y refers to it
-# x unchanged: "hello"
+y = x           # y refers to same string object as x
+y += " world"   # Strings are immutable; creates NEW object "hello world"
+# x unchanged: "hello" (y now points to new object)
 ```
 
 **C++**: Static typing, variables have fixed type
@@ -229,18 +230,18 @@ int* y = new int(10); // Heap
 ```cpp
 void leak() {
     int* ptr = new int(42);
-    // Forgot to delete - leak!
+    // Forgot to delete - leak! Memory remains allocated
 }
 
 void correct() {
     int* ptr = new int(42);
-    delete ptr;  // Must manually free
+    delete ptr;  // Must manually free heap memory
 }
 
 // Better: RAII
 void raii() {
     std::unique_ptr<int> ptr = std::make_unique<int>(42);
-    // Automatically deleted
+    // Automatically deleted when ptr goes out of scope
 }
 ```
 
@@ -248,7 +249,7 @@ void raii() {
 ```python
 def no_leak():
     data = [1, 2, 3]
-    # Garbage collector frees when no references
+    # Garbage collector frees data when function returns (ref count -> 0)
 
 # But can have memory issues:
 class Node:
@@ -258,8 +259,8 @@ class Node:
 a = Node()
 b = Node()
 a.ref = b
-b.ref = a  # Circular reference
-# Eventually garbage collected (CPython has cycle detector)
+b.ref = a  # Circular reference: a -> b -> a
+# Ref count never hits 0, relies on GC cycle detector to clean up
 ```
 
 **C++ memory issues**:
@@ -313,7 +314,7 @@ account.deposit(100);  // Must use public interface
 ```python
 class BankAccount:
     def __init__(self, initial):
-        self._balance = initial  # Single underscore: internal use
+        self._balance = initial  # Single underscore: convention for "internal use only"
 
     def deposit(self, amount):
         self._balance += amount
@@ -322,18 +323,18 @@ class BankAccount:
         return self._balance
 
 account = BankAccount(1000)
-account._balance = 9999  # Allowed but discouraged
+account._balance = 9999  # Technically allowed (no strict enforcement), but violates convention
 ```
 
 **Name mangling** (Python):
 ```python
 class BankAccount:
     def __init__(self, initial):
-        self.__balance = initial  # Double underscore
+        self.__balance = initial  # Double underscore triggers name mangling
 
 account = BankAccount(1000)
-# account.__balance  # AttributeError
-account._BankAccount__balance = 9999  # Can still access (mangled name)
+# account.__balance  # AttributeError: seems private
+account._BankAccount__balance = 9999  # Can still access via mangled name (ClassName__variable)
 ```
 
 **Can you write secure software in Python?**
@@ -399,11 +400,11 @@ car.start()  # Simple interface
 ```python
 class ElectricCar(Car):
     def __init__(self, make, model, battery):
-        super().__init__(make, model)
+        super().__init__(make, model)  # Initialize parent attributes
         self.battery = battery
 
     def charge(self):
-        print("Charging battery")
+        print("Charging battery")  # New method specific to ElectricCar
 ```
 
 **4. Polymorphism**: Same interface, different implementations
@@ -805,7 +806,7 @@ x = "hello"  # OK
 def greet(name: str) -> str:
     return f"Hello, {name}"
 
-# Type checker (mypy) catches errors
+# Type checker (mypy) catches errors at static analysis time, not runtime
 greet(123)  # Error: Argument 1 has incompatible type "int"
 ```
 
@@ -852,8 +853,8 @@ def greet(name: str) -> str:
     return f"Hello, {name}"
 
 age: int = 25
-names: list[str] = ["Alice", "Bob"]
-scores: dict[str, int] = {"Alice": 90, "Bob": 85}
+names: list[str] = ["Alice", "Bob"]  # List of strings
+scores: dict[str, int] = {"Alice": 90, "Bob": 85}  # Dict mapping string keys to int values
 ```
 
 **Generics**:
@@ -864,7 +865,7 @@ def process(data: List[int]) -> Dict[str, int]:
     return {"sum": sum(data), "count": len(data)}
 
 def find(arr: List[int], target: int) -> Optional[int]:
-    # Returns int or None
+    # Returns int if found, otherwise None (Optional[int] is Union[int, None])
     try:
         return arr.index(target)
     except ValueError:
@@ -925,10 +926,10 @@ class Person:
         print("I'm imitating a duck!")
 
 def make_it_quack(thing):
-    thing.quack()  # Don't care about type, just needs quack()
+    thing.quack()  # Don't care about type, just needs quack() method
 
-make_it_quack(Duck())    # Works
-make_it_quack(Person())  # Also works!
+make_it_quack(Duck())    # Works (Duck has quack)
+make_it_quack(Person())  # Also works! (Person has quack)
 ```
 
 **Protocols** (Python 3.8+):
@@ -970,11 +971,11 @@ def read_data(file):
 ```python
 def outer(x):
     def inner(y):
-        return x + y  # Captures x from outer
+        return x + y  # Captures x from outer scope (closure)
     return inner
 
-add_five = outer(5)
-print(add_five(3))  # 8 (remembers x=5)
+add_five = outer(5) # Returns inner function with x=5 trapped
+print(add_five(3))  # 8 (uses trapped x=5)
 print(add_five(7))  # 12
 ```
 
@@ -1035,9 +1036,9 @@ auto add_x_ref = [&x](int y) { return x + y; };  // Capture x by reference
 ```python
 def decorator(func):
     def wrapper(*args, **kwargs):
-        # Before
+        # Before: code to run before original function
         result = func(*args, **kwargs)
-        # After
+        # After: code to run after original function
         return result
     return wrapper
 
@@ -1089,15 +1090,15 @@ def memoize(func):
     cache = {}
     def wrapper(*args):
         if args not in cache:
-            cache[args] = func(*args)
-        return cache[args]
+            cache[args] = func(*args)  # Compute and store if not cached
+        return cache[args]  # Return cached result
     return wrapper
 
 @memoize
 def fibonacci(n):
     if n < 2:
         return n
-    return fibonacci(n-1) + fibonacci(n-2)
+    return fibonacci(n-1) + fibonacci(n-2)  # Recursive calls hit cache, making it O(n)
 ```
 
 **With arguments**:
@@ -1148,11 +1149,11 @@ def get_numbers(n):
 # Generator (memory efficient)
 def get_numbers_gen(n):
     for i in range(n):
-        yield i  # One at a time
+        yield i  # Yields one value at a time, doesn't store all in memory
 
 # Example
-numbers = get_numbers(10**9)  # Out of memory!
-numbers_gen = get_numbers_gen(10**9)  # OK!
+numbers = get_numbers(10**9)  # Crashes: tries to create massive list
+numbers_gen = get_numbers_gen(10**9)  # OK: Creates generator object, values generated on-demand
 ```
 
 **2. Infinite sequences**:
@@ -1161,12 +1162,12 @@ def fibonacci():
     a, b = 0, 1
     while True:
         yield a
-        a, b = b, a + b
+        a, b = b, a + b  # Infinite sequence generation
 
 # Take first 10
 import itertools
 fib = fibonacci()
-first_10 = list(itertools.islice(fib, 10))
+first_10 = list(itertools.islice(fib, 10))  # Consume only what's needed
 ```
 
 **3. Pipeline processing**:

@@ -70,18 +70,19 @@
 ```python
 def merge_sort(arr):
     if len(arr) <= 1:
-        return arr
+        return arr  # Base case: array of 0 or 1 element is sorted
 
     mid = len(arr) // 2
-    left = merge_sort(arr[:mid])
-    right = merge_sort(arr[mid:])
+    left = merge_sort(arr[:mid])   # Recursively sort left half
+    right = merge_sort(arr[mid:])  # Recursively sort right half
 
-    return merge(left, right)
+    return merge(left, right)      # Merge sorted halves
 
 def merge(left, right):
     result = []
     i = j = 0
 
+    # Compare elements from distinct lists and add smaller to result
     while i < len(left) and j < len(right):
         if left[i] <= right[j]:
             result.append(left[i])
@@ -90,6 +91,7 @@ def merge(left, right):
             result.append(right[j])
             j += 1
 
+    # Add remaining elements (if any)
     result.extend(left[i:])
     result.extend(right[j:])
     return result
@@ -119,19 +121,21 @@ def merge(left, right):
 ```python
 def quick_sort(arr, low, high):
     if low < high:
+        # pi is partitioning index, arr[pi] is now at right place
         pi = partition(arr, low, high)
-        quick_sort(arr, low, pi - 1)
-        quick_sort(arr, pi + 1, high)
+        quick_sort(arr, low, pi - 1)  # Recursively sort elements before partition
+        quick_sort(arr, pi + 1, high) # Recursively sort elements after partition
 
 def partition(arr, low, high):
-    pivot = arr[high]
-    i = low - 1
+    pivot = arr[high]  # Pivot choice (here: last element)
+    i = low - 1        # Index of smaller element
 
     for j in range(low, high):
         if arr[j] <= pivot:
             i += 1
-            arr[i], arr[j] = arr[j], arr[i]
+            arr[i], arr[j] = arr[j], arr[i]  # Swap smaller element to left
 
+    # Place pivot in correct position (after all smaller elements)
     arr[i + 1], arr[high] = arr[high], arr[i + 1]
     return i + 1
 ```
@@ -220,16 +224,16 @@ def binary_search(arr, target):
     left, right = 0, len(arr) - 1
 
     while left <= right:
-        mid = left + (right - left) // 2
+        mid = left + (right - left) // 2  # Correct way to calculate mid to avoid overflow
 
         if arr[mid] == target:
-            return mid
+            return mid  # Found match
         elif arr[mid] < target:
-            left = mid + 1
+            left = mid + 1  # Target is in right half
         else:
-            right = mid - 1
+            right = mid - 1 # Target is in left half
 
-    return -1
+    return -1  # Not found
 ```
 
 **Time**: O(log n)
@@ -255,8 +259,8 @@ def find_first(arr, target):
         mid = left + (right - left) // 2
 
         if arr[mid] == target:
-            result = mid
-            right = mid - 1  # Continue searching left
+            result = mid     # Found candidate
+            right = mid - 1  # Continue searching left to find first occurrence
         elif arr[mid] < target:
             left = mid + 1
         else:
@@ -304,9 +308,9 @@ def two_sum_sorted(arr, target):
         if current_sum == target:
             return [left, right]
         elif current_sum < target:
-            left += 1
+            left += 1  # Sum too small, need larger value from left
         else:
-            right -= 1
+            right -= 1 # Sum too large, need smaller value from right
 
     return []
 ```
@@ -317,23 +321,26 @@ def remove_duplicates(arr):
     if not arr:
         return 0
 
-    slow = 0
+    slow = 0  # Pointer for unique elements
 
     for fast in range(1, len(arr)):
+        # If new element found
         if arr[fast] != arr[slow]:
             slow += 1
-            arr[slow] = arr[fast]
+            arr[slow] = arr[fast]  # Move unique element to next position
 
-    return slow + 1
+    return slow + 1  # Length of unique subarray
 ```
 
 **3. Sliding window**:
 ```python
 def max_sum_subarray(arr, k):
-    window_sum = sum(arr[:k])
+    window_sum = sum(arr[:k]) # Initial window sum
     max_sum = window_sum
 
+    # Slide window one step at a time
     for i in range(k, len(arr)):
+        # Add new element coming in, subtract element going out
         window_sum += arr[i] - arr[i - k]
         max_sum = max(max_sum, window_sum)
 
@@ -402,9 +409,11 @@ def fib_dp(n):
     if n <= 1:
         return n
 
+    # Table to store results of subproblems
     dp = [0] * (n + 1)
     dp[1] = 1
 
+    # Fill table iteratively
     for i in range(2, n + 1):
         dp[i] = dp[i-1] + dp[i-2]
 
@@ -439,14 +448,15 @@ def fib_optimized(n):
 ```python
 def knapsack(weights, values, W):
     n = len(weights)
+    # dp[i][w] = max value using first i items with capacity w
     dp = [[0] * (W + 1) for _ in range(n + 1)]
 
     for i in range(1, n + 1):
         for w in range(W + 1):
-            # Don't take item i
+            # Option 1: Don't take item i
             dp[i][w] = dp[i-1][w]
 
-            # Take item i if fits
+            # Option 2: Take item i if it fits in current capacity w
             if weights[i-1] <= w:
                 dp[i][w] = max(dp[i][w],
                               dp[i-1][w - weights[i-1]] + values[i-1])
@@ -478,13 +488,16 @@ dp[i][w] = max(
 ```python
 def lcs(text1, text2):
     m, n = len(text1), len(text2)
+    # dp[i][j] stores LCS length of text1[:i] and text2[:j]
     dp = [[0] * (n + 1) for _ in range(m + 1)]
 
     for i in range(1, m + 1):
         for j in range(1, n + 1):
             if text1[i-1] == text2[j-1]:
+                # Characters match: extend LCS from previous diagonal
                 dp[i][j] = dp[i-1][j-1] + 1
             else:
+                # Characters match: take max of excluding either char
                 dp[i][j] = max(dp[i-1][j], dp[i][j-1])
 
     return dp[m][n]
@@ -572,16 +585,17 @@ else:
 def activity_selection(start, end):
     n = len(start)
 
-    # Sort by end time
+    # Sort by end time (greedy choice: finish earliest to leave room for others)
     activities = sorted(zip(start, end), key=lambda x: x[1])
 
-    count = 1
+    count = 1  # Always pick the first activity (ends earliest)
     last_end = activities[0][1]
 
     for i in range(1, n):
+        # If current activity starts after or when the last one ended
         if activities[i][0] >= last_end:
             count += 1
-            last_end = activities[i][1]
+            last_end = activities[i][1]  # Update last end time
 
     return count
 ```
@@ -620,25 +634,27 @@ def huffman_encoding(text):
     for char in text:
         freq[char] = freq.get(char, 0) + 1
 
-    # Create heap
+    # Create heap of nodes (min-heap based on frequency)
     heap = [Node(f, c) for c, f in freq.items()]
     heapq.heapify(heap)
 
-    # Build tree
+    # Build tree by merging two smallest nodes
     while len(heap) > 1:
-        left = heapq.heappop(heap)
-        right = heapq.heappop(heap)
+        left = heapq.heappop(heap)   # Smallest freq
+        right = heapq.heappop(heap)  # Second smallest
+        # Merge them into a new node with sum of frequencies
         merged = Node(left.freq + right.freq, left=left, right=right)
         heapq.heappush(heap, merged)
 
-    # Generate codes
+    # Generate codes by traversing tree
     root = heap[0]
     codes = {}
 
     def generate_codes(node, code):
         if node.char:
-            codes[node.char] = code
+            codes[node.char] = code  # Leaf node: store code
             return
+        # Append '0' for left, '1' for right
         generate_codes(node.left, code + "0")
         generate_codes(node.right, code + "1")
 
@@ -694,12 +710,13 @@ def subsets(nums):
     result = []
 
     def backtrack(start, path):
+        # Add current subset (copy of path) to results
         result.append(path[:])
 
         for i in range(start, len(nums)):
-            path.append(nums[i])
-            backtrack(i + 1, path)
-            path.pop()
+            path.append(nums[i])    # Choose
+            backtrack(i + 1, path)  # Explore (move specific index forward to avoid duplicates)
+            path.pop()              # Unchoose (backtrack)
 
     backtrack(0, [])
     return result
@@ -717,16 +734,17 @@ def permute(nums):
     result = []
 
     def backtrack(path):
+        # Base case: permutation is complete
         if len(path) == len(nums):
             result.append(path[:])
             return
 
         for num in nums:
             if num in path:
-                continue
-            path.append(num)
-            backtrack(path)
-            path.pop()
+                continue           # Skip used numbers
+            path.append(num)       # Choose
+            backtrack(path)        # Explore
+            path.pop()             # Unchoose
 
     backtrack([])
     return result
@@ -788,15 +806,16 @@ def solve_n_queens(n):
         return True
 
     def backtrack(row):
+        # Base case: all queens placed
         if row == n:
             result.append([''.join(row) for row in board])
             return
 
         for col in range(n):
             if is_valid(row, col):
-                board[row][col] = 'Q'
-                backtrack(row + 1)
-                board[row][col] = '.'
+                board[row][col] = 'Q'  # Place Queen
+                backtrack(row + 1)     # Move to next row
+                board[row][col] = '.'  # Remove Queen (backtrack)
 
     backtrack(0)
     return result

@@ -6,25 +6,30 @@ Comprehensive coverage of evaluation metrics and model debugging strategies.
 
 ## Table of Contents
 
-- [[#Part 2: Evaluation Metrics]]
-  - [[#Explain Precision, Recall, F1-Score, and ROC-AUC]]
+- [[#Part 1: Evaluation Metrics]]
+  - [[#Explain Accuracy, Precision, Recall, F1-Score, and ROC-AUC]]
   - [[#What are BLEU, ROUGE, and Perplexity metrics used in NLP?]]
-- [[#Part 6: Model Debugging & Improvement]]
+- [[#Part 2: Model Debugging & Improvement]]
   - [[#You have a classification model with 80% accuracy. What steps would you take to improve it?]]
 
 ---
 
-## Part 2: Evaluation Metrics
+## Part 1: Evaluation Metrics
 
-### Explain Precision, Recall, F1-Score, and ROC-AUC
+### Explain Accuracy, Precision, Recall, F1-Score, and ROC-AUC
 
 **Confusion Matrix Foundation:**
 
 ```
                 Predicted Positive    Predicted Negative
-Actual Positive      TP                    FN
-Actual Negative      FP                    TN
+Actual Positive      TP (True Pos)         FN (False Neg/Type II)
+Actual Negative      FP (False Pos/Type I) TN (True Neg)
 ```
+
+**Accuracy:**
+- **Definition**: The overall correctness of the model.
+- **Formula**: (TP + TN) / (TP + TN + FP + FN)
+- **Use Case**: Balanced datasets. **Avoid** for imbalanced datasets (e.g., 99% negative class).
 
 **Precision:**
 - **Definition**: Of all predicted positive samples, how many are actually positive?
@@ -35,6 +40,11 @@ Actual Negative      FP                    TN
 - **Definition**: Of all actual positive samples, how many did we correctly identify?
 - **Formula**: Recall = TP / (TP + FN)
 - **Use Case**: When false negatives are costly (e.g., disease detection - don't miss sick patients)
+
+**Specificity (True Negative Rate):**
+- **Definition**: Of all actual negative samples, how many did we correctly identify?
+- **Formula**: Specificity = TN / (TN + FP)
+- **Use Case**: When false positives are costly (e.g., email filtering - don't lose good emails)
 
 **F1-Score:**
 - **Definition**: Harmonic mean of precision and recall
@@ -51,7 +61,7 @@ Actual Negative      FP                    TN
 
 ```python
 from sklearn.metrics import (
-    precision_score, recall_score, f1_score,
+    accuracy_score, precision_score, recall_score, f1_score,
     roc_auc_score, roc_curve, classification_report,
     confusion_matrix, average_precision_score
 )
@@ -63,13 +73,20 @@ y_pred = [0, 1, 1, 0, 0, 1, 0, 1, 1, 0]
 y_proba = [0.1, 0.9, 0.8, 0.3, 0.4, 0.85, 0.2, 0.6, 0.95, 0.15]
 
 # Basic metrics
+accuracy = accuracy_score(y_true, y_pred)
 precision = precision_score(y_true, y_pred)
 recall = recall_score(y_true, y_pred)
 f1 = f1_score(y_true, y_pred)
 
-print(f"Precision: {precision:.3f}")  # 0.750
-print(f"Recall: {recall:.3f}")        # 0.750
-print(f"F1-Score: {f1:.3f}")          # 0.750
+# Specificity (TN / (TN + FP)) - not directly in sklearn, derive from CM
+tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+specificity = tn / (tn + fp)
+
+print(f"Accuracy: {accuracy:.3f}")    # 0.800
+print(f"Precision: {precision:.3f}")   # 0.750
+print(f"Recall: {recall:.3f}")         # 0.750
+print(f"Specificity: {specificity:.3f}") # 0.833
+print(f"F1-Score: {f1:.3f}")           # 0.750
 
 # ROC-AUC (requires probability scores)
 auc = roc_auc_score(y_true, y_proba)
@@ -330,7 +347,7 @@ def calculate_bpc(loss):
 
 ---
 
-## Part 6: Model Debugging & Improvement
+## Part 2: Model Debugging & Improvement
 
 ### You have a classification model with 80% accuracy. What steps would you take to improve it?
 

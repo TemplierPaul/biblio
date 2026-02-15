@@ -29,8 +29,6 @@ Comprehensive interview questions and answers organized by topic, covering ML/AI
 - **Part 1: Optimization Theory** - Gradient descent, second-order methods, Newton's method
 - **Part 2: Linear Algebra** - Jacobian, gradients, derivatives
 - **Part 3: Tensors & Decompositions** - Eigenvalues, SVD, matrix factorization
-- **Part 4: Generative Models** - VAE, GAN, training dynamics
-- **Part 5: Advanced Topics** - Mixture of Experts, conditional computation
 
 ### [[02_Probability_Statistics]] ⭐
 **Statistical foundations for ML**:
@@ -47,11 +45,11 @@ Comprehensive interview questions and answers organized by topic, covering ML/AI
 
 ### [[04_Loss_Functions]]
 **Comprehensive loss function coverage**:
-- Regression losses (MSE, MAE, Huber)
-- Classification losses (Cross-entropy, Focal, Label smoothing)
-- Contrastive & metric learning (Triplet, InfoNCE)
-- RL losses (Policy gradient, value, advantage)
-- Advanced losses (GAN, Diffusion, Alignment)
+- **Part 1: Core Supervised** - Regression, Classification, Contrastive, Regularization
+- **Part 2: Generative** - Probabilistic, GANs, Diffusion
+- **Part 3: RL & Control** - Policy/Value losses, MARL, Quality-Diversity
+- **Part 4: LLM Alignment** - RLHF, DPO, GRPO
+- **Part 5: Synthesis** - Cross-cutting connections
 
 ### [[05_Optimizers_Regularization]]
 **Optimization and regularization techniques**:
@@ -65,36 +63,62 @@ Comprehensive interview questions and answers organized by topic, covering ML/AI
 
 ### [[07_Neural_Architectures]]
 **Neural network architectures**:
-- **Part 0: CNNs** - Convolutions, pooling, ResNet, skip connections, U-Net *(to be expanded)*
-- **Part 1: LSTM** - Recurrent networks, vanishing gradients, gates
-- **Part 2: Attention Mechanism** - Scaled dot-product, Q/K/V, multi-head attention
-- **Part 3: Transformer Architecture** - Encoder-decoder, positional encoding, masking
-- **Part 4: Graph Neural Networks** - Message passing, GCN/GraphSAGE/GAT, applications
+- **Part 1: CNNs** - Convolutions, pooling, ResNet, skip connections, U-Net
+- **Part 2: LSTM** - Recurrent networks, vanishing gradients, gates
+- **Part 3: Attention Mechanism** - Scaled dot-product, Q/K/V, multi-head attention
+- **Part 4: Transformer Architecture** - Encoder-decoder, positional encoding, masking
+- **Part 5: Graph Neural Networks** - Message passing, GCN/GraphSAGE/GAT, applications
 
 ### [[08_Advanced_Deep_Learning]]
 **Advanced deep learning topics**:
-- **Part 1: Diffusion Models** - DDPM, DDIM, latent diffusion, classifier-free guidance
-- **Part 2: Vision-Language-Action** - RT-1/RT-2, VLA models, robotics
+- **Part 1: Generative Models** - VAE, GAN
+- **Part 2: Diffusion Models** - DDPM, DDIM, latent diffusion
+- **Part 3: Vision-Language-Action** - RT-1/RT-2, VLA models
+- **Part 4: Advanced Architectures** - Mixture of Experts (MoE)
 
-### 09_ML_Systems.md
-**Scalable ML systems and deployment**:
-- **Part 1: Scalable ML** - Model optimization, distributed serving, caching, Kubernetes
-- **Part 2: Recommendation Systems** - Collaborative filtering, two-tower models, ANN search, ranking
+### [[09_LLM_Training]]
+**Large Language Models**:
+- **Part 1: Large Language Models** - Architecture, pre-training
+- **Part 2: Fine-tuning & PEFT** - LoRA, instruction tuning
+- **Part 3: Alignment & RLHF** - PPO, reward modeling
 
-### 10_Ethics_AI.md
-**Responsible AI and ethics**:
-- **Part 1: Ethical Considerations** - Fairness, transparency, privacy, accountability, safety
-- **Part 2: Bias Mitigation** - Identifying bias, pre/in/post-processing fairness techniques
-- **Part 3: Practical Considerations** - Fairness-accuracy tradeoffs, deployment
-- **Part 4: Interview Q&A** - Common ethics interview questions
+### [[10_Reinforcement_Learning]] ⭐
+**Reinforcement Learning**:
+- **Part 1: MDP Foundations**
+- **Part 2: Value Functions**
+- **Part 3: Dynamic Programming**
+- **Part 4: Monte Carlo**
+- **Part 5: TD Learning**
+- **Part 6: Function Approximation**
+- **Part 7: Policy Gradient**
+- **Part 8: Actor-Critic**
+- **Part 9: DQN**
+- **Part 10: Continuous Control**
+- **Part 11: Advanced Topics**
+- **Part 12: Practical Considerations**
 
-### 11_Math_Foundations.md
-**Mathematical foundations for ML**:
-- **Part 1: Optimization Theory** - Gradient descent, second-order methods, Newton's method
-- **Part 2: Linear Algebra** - Jacobian, gradients, derivatives
-- **Part 3: Tensors & Decompositions** - Eigenvalues, SVD, matrix factorization
-- **Part 4: Generative Models** - VAE, GAN, training dynamics
-- **Part 5: Advanced Topics** - Mixture of Experts, conditional computation
+### [[11_Game_Theory]]
+**Game Theory & Multi-Agent RL**:
+- **Part 1: Foundations** - Nash equilibrium, normal/extensive form
+- **Part 2: Social Dilemmas** - Prisoner's dilemma
+- **Part 3: Classical Algorithms** - Minimax, fictitious play
+- **Part 4: AlphaZero** - MCTS
+- **Part 5: PSRO** - Population-based training
+- **Part 6: NeuPL** - Neural population learning
+- **Part 7: Fictitious Self-Play**
+- **Part 8: CFR** - Regret minimization
+
+### [[12_ML_Systems]]
+**Scalable ML systems**:
+- **Part 1: Scalable ML** - Distributed training, serving
+- **Part 2: Recommendation Systems** - Filtering, ranking
+
+### [[13_Ethics_AI]]
+**Responsible AI**:
+- **Part 1: Ethical Considerations**
+- **Part 2: Bias Mitigation**
+- **Part 3: Practical Considerations**
+- **Part 4: Interview Q&A**
 
 ## 🎯 How to Use
 
