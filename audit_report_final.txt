@@ -1,0 +1,52 @@
+
+=== AUDIT REPORT ===
+Total notes scanned: 127
+Already Indexed: 64
+
+--- Missing Paper Info (47) ---
+- Learning/Evolutionary Optimization/Open-Ended/Digital_Red_Queen.md (+ _detailed)
+- Learning/Evolutionary Optimization/QD/Quality_Diversity.md (+ _detailed)
+- Learning/Game Theory/Evolutionary Stable Strategies.md
+- Learning/Game Theory/Extensive Form.md
+- Learning/Game Theory/MCTS.md
+- Learning/Game Theory/Minimax.md
+- Learning/Game Theory/Normal Form.md
+- Learning/Game Theory/Partial Observation/Partial Observation.md
+- Learning/Game Theory/Prisoners-Dilemma.md
+- Learning/Game Theory/Rating/Game_Theoretic_Rating_Methods.md
+- Learning/Game Theory/Rating/Maximum_Entropy_Nash.md
+- Learning/Game Theory/Rating/Nash Equilibrium.md
+- Learning/Game Theory/Rating/PRD_Rectified_Nash.md (+ _detailed)
+- Learning/Game Theory/Self-play/SP/SP.md (+ _detailed)
+- Learning/Game Theory/Self-play/Self-play.md
+- Learning/JAX Tools/JAX Tools.md
+- Learning/JAX Tools/JAX_Ecosystem_detailed.md
+- Learning/JAX Tools/JAX_JIT_Practices.md (+ _detailed)
+- Learning/Machine Learning/Attention.md
+- Learning/Machine Learning/Diffusion.md
+- Learning/Machine Learning/Fine-tuning.md
+- Learning/Machine Learning/GNN.md
+- Learning/Machine Learning/Gaussian-Processes.md
+- Learning/Machine Learning/LLMs.md
+- Learning/Machine Learning/LSTM.md
+- Learning/Machine Learning/LoRA.md
+- Learning/Machine Learning/Losses.md (+ _detailed)
+- Learning/Machine Learning/Masking.md
+- Learning/Machine Learning/RLHF.md
+- Learning/Machine Learning/Transformer.md
+- Learning/Machine Learning/VLA.md
+- Learning/Reinforcement Learning/Continual_RL.md (+ _detailed)
+- Learning/Reinforcement Learning/GRPO.md (+ _detailed)
+- Learning/Reinforcement Learning/RL_Methods_for_PSRO.md (+ _detailed)
+- Learning/Reinforcement Learning/RNN_Policies.md (+ _detailed)
+- Learning/Reinforcement Learning/World Models/Dreamer.md
+- Learning/Reinforcement Learning/World Models/MuZero.md
+
+--- Fetch Failed / Needs Retry (4) ---
+- Learning/Game Theory/Rating/Deviation_Ratings.md (+ _detailed)
+- Learning/Game Theory/Rating/Nash_Averaging.md (+ _detailed)
+
+--- Index/MOC/Overview (Ignored) (12) ---
+
+--- Key Normalization Complete ---
+Fixed 0 keys.

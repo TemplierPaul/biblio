@@ -1,0 +1,227 @@
+{
+    "Learning/Evolutionary Optimization/QD-RL/DCG-ME_detailed.md": {
+        "algo_name": "DCG-MAP-Elites",
+        "paper_title": "MAP-Elites with Descriptor-Conditioned Gradients and Archive Distillation",
+        "bib_key": "DCG_MAP_Elites"
+    },
+    "Learning/Evolutionary Optimization/QD-RL/PGA-ME_detailed.md": {
+        "algo_name": "PGA-MAP-Elites",
+        "paper_title": "Policy Gradient Assisted MAP-Elites",
+        "bib_key": "PGA_MAP_Elites"
+    },
+    "Learning/Evolutionary Optimization/QD-RL/QDAC_detailed.md": {
+        "algo_name": "QDAC",
+        "paper_title": "Quality-Diversity Actor-Critic: Learning High-Performing and Diverse Behaviors via Value and Successor Features Critics",
+        "bib_key": "QDAC"
+    },
+    "Learning/Evolutionary Optimization/QD-RL/DCRL-ME_detailed.md": {
+        "algo_name": "DCRL-MAP-Elites",
+        "paper_title": "Synergizing Quality-Diversity with Descriptor-Conditioned Reinforcement Learning",
+        "bib_key": "DCRL_MAP_Elites"
+    },
+    "Learning/Evolutionary Optimization/QD-Uncertain/Extract_QD_detailed.md": {
+        "algo_name": "Extract-QD Framework -",
+        "paper_title": "Extract-QD: A Generic Approach for Quality-Diversity in Noisy, Stochastic or Uncertain Domains",
+        "bib_key": "Extract_QD_Framework"
+    },
+    "Learning/Evolutionary Optimization/QD-Uncertain/Extract_QD.md": {
+        "algo_name": "Extract-QD Framework (EQD Framework)",
+        "paper_title": "Extract-QD Framework: A Generic Approach for Quality-Diversity in Noisy, Stochastic or Uncertain Domains",
+        "bib_key": "EQD_Framework"
+    },
+    "Learning/Evolutionary Optimization/QD/QDHF_detailed.md": {
+        "algo_name": "QDHF",
+        "paper_title": "Quality Diversity through Human Feedback: Towards Open-Ended Diversity-Driven Optimization",
+        "bib_key": "QDHF"
+    },
+    "Learning/Evolutionary Optimization/QD/QDAIF_detailed.md": {
+        "algo_name": "QDAIF",
+        "paper_title": "Quality-Diversity through AI Feedback",
+        "bib_key": "QDAIF"
+    },
+    "Learning/Game Theory/Rating/AlphaRank.md": {
+        "algo_name": "\u03b1-Rank: Multi-Agent Evaluation by Evolution",
+        "paper_title": "\u03b1-Rank: Multi-Agent Evaluation by Evolution",
+        "bib_key": "Alpha_Rank"
+    },
+    "Learning/Game Theory/Partial Observation/CFR_detailed.md": {
+        "algo_name": "CFR",
+        "paper_title": "Regret Minimization in Games with Incomplete Information",
+        "bib_key": "CFR"
+    },
+    "Learning/Game Theory/Self-play/AlphaZero_detailed.md": {
+        "algo_name": "AlphaZero",
+        "paper_title": "Mastering Chess and Shogi by Self-Play with a General Reinforcement Learning Algorithm",
+        "bib_key": "AlphaZero"
+    },
+    "Learning/Game Theory/Self-play/SP/FSP_detailed.md": {
+        "algo_name": "Fictitious Self-Play",
+        "paper_title": "Deep Reinforcement Learning from Self-Play in Imperfect-Information Games",
+        "bib_key": "Fictitious_Self_Play"
+    },
+    "Learning/Evolutionary Optimization/Open-Ended/Open-Endedness_ASI_detailed.md": {
+        "algo_name": "Open-Endedness is Essential for ASI -",
+        "paper_title": "Open-Endedness is Essential for Artificial Superhuman Intelligence",
+        "bib_key": "Open_Endedness_is"
+    },
+    "Learning/Evolutionary Optimization/QD/MAP_Elites_detailed.md": {
+        "algo_name": "MAP-Elites",
+        "paper_title": "Illuminating Search Spaces by Mapping Elites",
+        "bib_key": "MAP_Elites"
+    },
+    "Learning/Game Theory/Self-play/NeuPL/NeuPL_JPSRO_detailed.md": {
+        "algo_name": "NeuPL-JPSRO",
+        "paper_title": "Neural Population Learning beyond Symmetric Zero-sum Games",
+        "bib_key": "NeuPL_JPSRO"
+    },
+    "Learning/Game Theory/Self-play/NeuPL/Simplex_NeuPL_detailed.md": {
+        "algo_name": "Simplex-NeuPL",
+        "paper_title": "Simplex Neural Population Learning: Any-Mixture Bayes-Optimality in Symmetric Zero-sum Games",
+        "bib_key": "Simplex_NeuPL"
+    },
+    "Learning/Game Theory/Self-play/NeuPL/NeuPL_detailed.md": {
+        "algo_name": "NeuPL",
+        "paper_title": "NeuPL: Neural Population Learning",
+        "bib_key": "NeuPL"
+    },
+    "Learning/Game Theory/Self-play/PSRO/PSRO_detailed.md": {
+        "algo_name": "PSRO",
+        "paper_title": "A Unified Game-Theoretic Approach to Multiagent Reinforcement Learning",
+        "bib_key": "PSRO"
+    },
+    "Learning/Game Theory/Self-play/PSRO/SP_PSRO_detailed.md": {
+        "algo_name": "SP-PSRO",
+        "paper_title": "Self-Play PSRO: Toward Optimal Populations in Two-Player Zero-Sum Games",
+        "bib_key": "SP_PSRO"
+    },
+    "Learning/Game Theory/Self-play/PSRO/SF_PSRO_detailed.md": {
+        "algo_name": "SF-PSRO",
+        "paper_title": "Simulation-Free PSRO: Removing Game Simulation from Policy Space Response Oracles",
+        "bib_key": "SF_PSRO"
+    },
+    "Learning/Game Theory/Self-play/PSRO/JPSRO_detailed.md": {
+        "algo_name": "JPSRO",
+        "paper_title": "Multi-Agent Training beyond Zero-Sum with Correlated Equilibrium Meta-Solvers",
+        "bib_key": "JPSRO"
+    },
+    "Learning/Game Theory/Self-play/PSRO/PSRO_Rectified_Nash_Response.md": {
+        "algo_name": "PSRO with Rectified Nash Response (PSRO-rN)",
+        "paper_title": "Open-ended Learning in Symmetric Zero-sum Games",
+        "bib_key": "PSRO_rN"
+    },
+    "Learning/Game Theory/Self-play/PSRO/Pipeline_PSRO_detailed.md": {
+        "algo_name": "Pipeline PSRO",
+        "paper_title": "Pipeline PSRO: A Scalable Approach for Finding Approximate Nash Equilibria in Large Games",
+        "bib_key": "Pipeline_PSRO"
+    },
+    "Learning/Evolutionary Optimization/QD/DNS.md": {
+        "algo_name": "Dominated Novelty Search (DNS)",
+        "paper_title": "Dominated Novelty Search: Rethinking Local Competition in Quality-Diversity",
+        "bib_key": "DNS"
+    },
+    "Learning/Evolutionary Optimization/QD/DNS_detailed.md": {
+        "algo_name": "Dominated Novelty Search (DNS)",
+        "paper_title": "Dominated Novelty Search: Rethinking Local Competition in Quality-Diversity",
+        "bib_key": "DNS"
+    },
+    "Learning/Evolutionary Optimization/JEDi.md": {
+        "algo_name": "JEDi",
+        "paper_title": "Quality with Just Enough Diversity in Evolutionary Policy Search",
+        "bib_key": "JEDi"
+    },
+    "Learning/Evolutionary Optimization/JEDi_detailed.md": {
+        "algo_name": "JEDi",
+        "paper_title": "Quality with Just Enough Diversity in Evolutionary Policy Search",
+        "bib_key": "JEDi"
+    },
+    "Learning/Evolutionary Optimization/Open-Ended/OMNI-EPIC.md": {
+        "algo_name": "OMNI-EPIC",
+        "paper_title": "OMNI-EPIC: Open-endedness via Models of human Notions of Interestingness with Environments Programmed in Code",
+        "bib_key": "OMNI_EPIC"
+    },
+    "Learning/Evolutionary Optimization/Open-Ended/OMNI_EPIC_detailed.md": {
+        "algo_name": "OMNI-EPIC",
+        "paper_title": "OMNI-EPIC: Open-endedness via Models of human Notions of Interestingness with Environments Programmed in Code",
+        "bib_key": "OMNI_EPIC"
+    },
+    "Learning/Evolutionary Optimization/QD/Soft_QD.md": {
+        "algo_name": "Soft-QD",
+        "paper_title": "Soft Quality-Diversity Optimization",
+        "bib_key": "Soft_QD"
+    },
+    "Learning/Evolutionary Optimization/QD/Soft_QD_detailed.md": {
+        "algo_name": "Soft-QD",
+        "paper_title": "Soft Quality-Diversity Optimization",
+        "bib_key": "Soft_QD"
+    },
+    "Learning/Evolutionary Optimization/Open-Ended/POET.md": {
+        "algo_name": "POET",
+        "paper_title": "Paired Open-Ended Trailblazer (POET)",
+        "bib_key": "POET"
+    },
+    "Learning/Evolutionary Optimization/Open-Ended/POET_detailed.md": {
+        "algo_name": "POET",
+        "paper_title": "Paired Open-Ended Trailblazer (POET)",
+        "bib_key": "POET"
+    },
+    "Learning/Evolutionary Optimization/Open-Ended/Enhanced_POET.md": {
+        "algo_name": "Enhanced POET",
+        "paper_title": "Enhanced POET: Open-Ended Reinforcement Learning through Unbounded Invention of Learning Challenges and their Solutions",
+        "bib_key": "Enhanced_POET"
+    },
+    "Learning/Evolutionary Optimization/Open-Ended/Enhanced_POET_detailed.md": {
+        "algo_name": "Enhanced POET",
+        "paper_title": "Enhanced POET: Open-Ended Reinforcement Learning through Unbounded Invention of Learning Challenges and their Solutions",
+        "bib_key": "Enhanced_POET"
+    },
+    "Learning/Reinforcement Learning/Voyager.md": {
+        "algo_name": "Voyager",
+        "paper_title": "Voyager: An Open-Ended Embodied Agent with Large Language Models",
+        "bib_key": "Voyager"
+    },
+    "Learning/Reinforcement Learning/Voyager_detailed.md": {
+        "algo_name": "Voyager",
+        "paper_title": "Voyager: An Open-Ended Embodied Agent with Large Language Models",
+        "bib_key": "Voyager"
+    },
+    "Learning/Evolutionary Optimization/GAME.md": {
+        "algo_name": "GAME",
+        "paper_title": "Tournament Informed Adversarial Quality Diversity",
+        "bib_key": "GAME"
+    },
+    "Learning/Evolutionary Optimization/GAME_detailed.md": {
+        "algo_name": "GAME",
+        "paper_title": "Tournament Informed Adversarial Quality Diversity",
+        "bib_key": "GAME"
+    },
+    "Learning/Evolutionary Optimization/QD-MultiTask/MTMB-ME.md": {
+        "algo_name": "MTMB-ME",
+        "paper_title": "Multi-Task Multi-Behavior MAP-Elites",
+        "bib_key": "MTMB_ME"
+    },
+    "Learning/Evolutionary Optimization/QD-MultiTask/MTMB-ME_detailed.md": {
+        "algo_name": "MTMB-ME",
+        "paper_title": "Multi-Task Multi-Behavior MAP-Elites",
+        "bib_key": "MTMB_ME"
+    },
+    "Learning/Evolutionary Optimization/QD-MultiTask/PT-ME.md": {
+        "algo_name": "PT-ME",
+        "paper_title": "Parametric-Task MAP-Elites",
+        "bib_key": "PT_ME"
+    },
+    "Learning/Evolutionary Optimization/QD-MultiTask/PT-ME_detailed.md": {
+        "algo_name": "PT-ME",
+        "paper_title": "Parametric-Task MAP-Elites",
+        "bib_key": "PT_ME"
+    },
+    "Learning/Game Theory/Self-play/PSRO/A_PSRO.md": {
+        "algo_name": "A-PSRO",
+        "paper_title": "A-PSRO: A Unified Strategy Learning Method with Advantage Metric for Normal-form Games",
+        "bib_key": "A_PSRO"
+    },
+    "Learning/Game Theory/Self-play/PSRO/A_PSRO_detailed.md": {
+        "algo_name": "A-PSRO",
+        "paper_title": "A-PSRO: A Unified Strategy Learning Method with Advantage Metric for Normal-form Games",
+        "bib_key": "A_PSRO"
+    }
+}

@@ -95,6 +95,16 @@ Quick reference for evolutionary algorithms, quality-diversity methods, and open
 
 ---
 
+## Soft-QD (SQUAD)
+**Paper**: "Soft Quality-Diversity Optimization" (Hedayatian & Nikolaidis, USC)
+**What**: Continuous QD formulation eliminating discrete archive discretization
+**How**: Soft QD Score (integral of behavior values), SQUAD optimizes lower bound via attractive/repulsive forces
+**Key innovation**: End-to-end differentiable, no curse of dimensionality from tessellation
+**When to use**: High-D behavior spaces, differentiable domains (DQD), gradient-based optimization
+**Difference from MAP-Elites**: Continuous formulation vs. discrete cells, gradient descent vs. mutations
+
+---
+
 ## GAME (Generational Adversarial MAP-Elites)
 **Paper**: "Tournament Informed Adversarial Quality Diversity" (Anne et al., 2026)
 **What**: Coevolutionary QD illuminating BOTH sides of adversarial problems simultaneously
@@ -160,6 +170,7 @@ Folder: `QD-RL/` — Three progressive algorithms combining QD with Deep RL for 
 | **OMNI-EPIC** | LLM-driven | Unlimited tasks | Code generation, natural language |
 | **Digital Red Queen** | Adversarial self-play | LLM code evolution, cybersecurity | Convergent evolution, robust generalists |
 | **DNS** | Parameter-free QD | High-D, unsupervised | No tuning, scales naturally |
+| **Soft-QD (SQUAD)** | Continuous QD | High-D, differentiable | No discretization, gradient-based |
 | **GAME** | Adversarial QD | Red teaming, game balancing | Both-sided illumination, tournament metrics |
 | **Extract-QD** | Uncertain QD | Noisy/stochastic domains | Adaptive sampling, reproducibility |
 | **PGA-ME** | QD-RL | Neuroevolution (unidirectional) | Hybrid GA+PG, 10× speedup |
@@ -183,6 +194,7 @@ Folder: `QD-RL/` — Three progressive algorithms combining QD with Deep RL for 
 ### QD Variants
 - **MAP-Elites** → **JEDi**: Add intelligent targeting with GP
 - **MAP-Elites** → **DNS**: Remove grid, use dominated novelty
+- **MAP-Elites** → **Soft-QD**: Remove discretization entirely, continuous formulation with gradients
 - **MAP-Elites** → **GAME**: Extend to adversarial coevolution (uses MTMB-ME internally)
 - **Enhanced POET** (PATA-EC) → **GAME** (Ranking): Ranking vectors for task selection
 - **MAP-Elites** → **Extract-QD**: Add uncertainty handling via resampling

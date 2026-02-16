@@ -8,11 +8,19 @@ Overview of algorithms that enable continuous, unbounded generation of challenge
 
 **Goal**: Create systems that continuously discover novel and increasingly complex behaviors without predefined endpoints or curricula.
 
-**Key principles**:
+**Formal definition** (Hughes et al., 2024): A system is **open-ended** from an observer's perspective iff the sequence of artifacts it produces is both:
+1. **Novel**: Increasingly unpredictable to observer's current model
+2. **Learnable**: More predictable given longer observation history
+
+**Intuition**: "We'll be surprised but we'll be surprised in a way that makes sense in retrospect" (Lisa B. Soros)
+
+**Key principles** (practical implementation):
 - **No fixed objective**: The target changes and expands during evolution
 - **Automatic curriculum**: System generates its own sequence of challenges
 - **Sustained innovation**: Complexity/capability increases over extended runs
 - **Stepping stones**: Intermediate challenges enable eventual solutions to hard problems
+
+See [[Open-Endedness_ASI]] for complete theoretical framework and connection to ASI.
 
 ---
 
@@ -64,6 +72,24 @@ Overview of algorithms that enable continuous, unbounded generation of challenge
 
 ---
 
+### Open-Endedness is Essential for ASI (Position Paper)
+**Type**: Theoretical Framework / Position Paper
+**Innovation**: First formal definition of open-endedness (novelty + learnability)
+**Contribution**: Argues open-endedness essential for ASI, proposes open-ended foundation models
+**Files**: `Open-Endedness_ASI.md`, `Open-Endedness_ASI_detailed.md`
+
+**When to use**: Understanding theoretical foundations, designing open-ended systems, ASI safety research
+
+**Key Contributions**:
+- **Formal definition**: System is open-ended iff artifacts are both novel (increasingly unpredictable) and learnable (predictable given more history)
+- **Observer-dependent**: Open-endedness relative to observer's knowledge and capabilities
+- **Four paths to open-ended FMs**: RL, self-improvement, task generation, evolutionary algorithms
+- **Safety framework**: Co-development of capability and safety
+
+**Not an algorithm**: Conceptual framework for understanding and building open-ended systems
+
+---
+
 ## Comparison
 
 | Algorithm | What Evolves | Generator | Typical Runtime | Key Metric |
@@ -110,6 +136,20 @@ Overview of algorithms that enable continuous, unbounded generation of challenge
 
 ---
 
+## Theoretical Foundation
+
+**Open-Endedness & ASI** (Hughes et al., 2024) provides:
+- First formal definition of open-endedness
+- Observer-dependent framework (human vs ASI observers)
+- Connection to ASI: Open-endedness is essential, not optional
+- Safety implications: Co-develop capability and safety
+
+**How algorithms relate to theory**:
+- POET, Enhanced POET, OMNI-EPIC: Open-ended to human observers, but finitely so (plateau eventually)
+- DRQ: Open-ended via Red Queen dynamics (adversarial pressure sustains novelty)
+- Foundation models alone: NOT open-ended (fixed datasets)
+- **Open-ended FMs** (proposed): Combination of FMs + algorithms in this folder = path to ASI
+
 ## Related Work
 
 **Other open-ended methods not in this folder:**
@@ -121,7 +161,9 @@ Overview of algorithms that enable continuous, unbounded generation of challenge
 - POET family shares lineage: POET → Enhanced POET → OMNI-EPIC
 - DRQ uses MAP-Elites internally for intra-round optimization
 - All benefit from diversity preservation mechanisms (niching, archives, MAP-Elites)
+- All satisfy novelty but may fail learnability (POET) or have finite time horizons (AdA)
 
 ---
 
 **See individual files for detailed algorithms, mathematical formulations, pseudocode, and implementation notes.**
+

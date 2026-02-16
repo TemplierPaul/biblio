@@ -6,16 +6,18 @@ Algorithms combining Quality-Diversity with Deep RL for efficient neuroevolution
 
 ## Overview
 
-This folder contains three related algorithms that progressively solve limitations of their predecessors:
+This folder contains QD-RL algorithms combining evolutionary and reinforcement learning approaches:
 
-### 1. **PGA-ME** (Policy Gradient Assisted MAP-Elites)
+### Evolutionary QD-RL (Population-Based)
+
+#### 1. **PGA-ME** (Policy Gradient Assisted MAP-Elites)
 - **Key idea**: Hybrid variation operator (50% GA + 50% PG)
 - **Paper**: Nilsson & Cully (2021)
 - **Status**: [[PGA-ME]] overview | [[PGA-ME_detailed]] implementation
 - **Best for**: Unidirectional tasks with high-dimensional policies
 - **Limitation**: Fails on omnidirectional tasks (diversity collapses)
 
-### 2. **DCG-ME** (Descriptor-Conditioned Gradients MAP-Elites)
+#### 2. **DCG-ME** (Descriptor-Conditioned Gradients MAP-Elites)
 - **Key idea**: Descriptor-conditioned critic Q(s,a|d) + archive distillation
 - **Paper**: Faldor et al. (2023)
 - **Status**: [[DCG-ME]] overview | [[DCG-ME_detailed]] implementation
@@ -23,7 +25,7 @@ This folder contains three related algorithms that progressively solve limitatio
 - **Bonus**: Distills entire archive into single versatile policy
 - **Limitation**: Actor evaluation overhead (~20% sample efficiency cost)
 
-### 3. **DCRL-ME** (Descriptor-Conditioned RL MAP-Elites)
+#### 3. **DCRL-ME** (Descriptor-Conditioned RL MAP-Elites)
 - **Key idea**: Use descriptor-conditioned actor as generative model (Actor Injection)
 - **Paper**: Faldor et al. (2024)
 - **Status**: [[DCRL-ME]] overview | [[DCRL-ME_detailed]] implementation
@@ -31,9 +33,21 @@ This folder contains three related algorithms that progressively solve limitatio
 - **Innovation**: Weight extraction technique for actor specialization
 - **Best**: Combines all benefits with maximum efficiency
 
+### Pure RL QD (Single Policy)
+
+#### 4. **QDAC** (Quality-Diversity Actor-Critic)
+- **Key idea**: Dual critics (value + successor features) with Lagrangian optimization
+- **Paper**: Grillotti et al. (2024)
+- **Status**: [[QDAC]] overview | [[QDAC_detailed]] implementation
+- **Advantage**: Single policy (no population), explicit skill execution
+- **Performance**: 15% more diverse, 38% higher performance vs baselines
+- **Innovation**: Constrained optimization balances quality-diversity automatically
+
 ---
 
-## Algorithm Progression
+## Algorithm Evolution
+
+### Population-Based Branch (MAP-Elites variants)
 
 ```
 MAP-Elites (2015): Grid-based QD with GA mutations
@@ -56,9 +70,32 @@ DCRL-ME (2024): Replace actor evaluation with actor injection
     Final result: Efficient neuroevolution with descriptor control
 ```
 
+### Pure RL Branch (Single Policy)
+
+```
+GCRL / URL: Goal-conditioned or unsupervised RL
+    ↓
+    Problem: No quality-diversity trade-off
+    ↓
+SMERL (2020): MI-based diversity + near-optimality threshold
+    ↓
+    Problem: Reward engineering, can't execute specific skills
+    ↓
+DOMiNO (2022): Successor features for diversity
+    ↓
+    Problem: Discovers diverse behaviors but can't target specific skills
+    ↓
+QDAC (2024): Dual critics (V + ψ) + Lagrangian optimization
+    ↓ Explicit skill execution + adaptive quality-diversity trade-off
+    ↓
+    Final result: Single versatile policy with constrained optimization
+```
+
 ---
 
 ## Quick Comparison
+
+### Population-Based Algorithms
 
 | Feature | PGA-ME | DCG-ME | DCRL-ME |
 |---------|--------|--------|---------|
@@ -69,31 +106,63 @@ DCRL-ME (2024): Replace actor evaluation with actor injection
 | **Works omnidirectional** | ✗ Fails | ✓ Works | ✓ Works |
 | **Evaluations/iter** | 256 | 704 | 256 |
 | **Speedup vs MAP-Elites** | 10× | 5× | 10× |
+| **Output** | Population | Population + Policy | Population + Policy |
+
+### Population vs Pure RL
+
+| Feature | DCRL-ME | QDAC |
+|---------|---------|------|
+| **Approach** | Evolutionary + RL | Pure RL |
+| **Output** | Population + Policy | Single Policy |
+| **Skill execution** | Via distilled policy | Native |
+| **Quality-diversity trade-off** | Archive selection | Lagrangian (adaptive λ) |
+| **Critics** | Q(s,a\|d) | V(s,z) + ψ(s,z) |
+| **Successor features** | ❌ | ✅ |
+| **Conflicting skills** | Limited | ✅ Excellent |
+| **Performance vs baselines** | +82% (vs PGA-ME) | +38% (vs all) |
+| **Diversity vs baselines** | +82% (vs PGA-ME) | +15% (vs all) |
+| **Best for** | Population diversity | Single versatile policy |
 
 ---
 
 ## When to Use Each
 
-### PGA-ME
+### Population-Based (MAP-Elites variants)
+
+#### PGA-ME
 - ✅ Unidirectional locomotion tasks
 - ✅ Maximization problems (not minimization)
 - ✅ Simplest algorithm, fewest dependencies
 - ❌ Omnidirectional motion
 - ❌ Energy minimization
 
-### DCG-ME
+#### DCG-ME
 - ✅ Omnidirectional tasks
 - ✅ Want archive distillation
 - ✅ Evaluation budget available
 - ✅ Deceptive fitness landscapes
 - ❌ Very tight evaluation budget
 
-### DCRL-ME
+#### DCRL-ME
 - ✅ Omnidirectional tasks with tight budget
 - ✅ Maximum sample efficiency needed
 - ✅ Want descriptor conditioning + distillation
 - ✅ Suitable for expensive evaluations (robot sim, etc)
+- ✅ Need population for diversity analysis
 - ❌ Evaluation is bottleneck (not computation)
+
+### Pure RL (Single Policy)
+
+#### QDAC
+- ✅ Need single versatile policy (not population)
+- ✅ Skills defined by trajectory statistics (e.g., feet contact proportions)
+- ✅ Want explicit skill execution (target specific z)
+- ✅ Skills may conflict with reward (e.g., negative velocity)
+- ✅ Need adaptation/transfer/hierarchical RL capabilities
+- ✅ Off-policy RL infrastructure available (SAC/DreamerV2)
+- ✅ Automatic quality-diversity balancing (adaptive λ)
+- ❌ Need population for evolutionary analysis
+- ❌ Want archive of discrete solutions
 
 ---
 
@@ -103,11 +172,13 @@ DCRL-ME (2024): Replace actor evaluation with actor injection
 - **PGA-ME.md** (~4KB): Concept, key innovation, when to use
 - **DCG-ME.md** (~5.5KB): Descriptor conditioning idea, why it works
 - **DCRL-ME.md** (~7KB): Actor injection mechanism, sample efficiency gains
+- **QDAC.md** (~13KB): Dual critics architecture, Lagrangian optimization, applications
 
 ### Detailed Files (Full Implementation)
 - **PGA-ME_detailed.md** (~7KB): Complete algorithm, all operators, hyperparameters
 - **DCG-ME_detailed.md** (~10KB): Descriptor-conditioned critic/actor, training procedure
 - **DCRL-ME_detailed.md** (~11KB): Weight extraction, actor injection, worked examples
+- **QDAC_detailed.md** (~26KB): Complete implementation, theoretical proofs, evaluation metrics, ablations
 
 ---
 
@@ -137,6 +208,31 @@ New policy = π_d(s) = existing_layers(W_state @ s + new_bias)
 - PG offspring: Target descriptor = parent descriptor
 - AI offspring: Target descriptor = sampled descriptor
 - Result: Natural positive/negative sample mix
+
+### 4. Successor Features for Skills (QDAC)
+**Problem**: Can't execute skills defined by trajectory statistics using naive approach.
+
+**Example**: Feet contact z = [0.1, 0.6] means "use foot 1 10% of time, foot 2 60% of time" over entire trajectory.
+
+**Naive approach fails**: Minimize Σ γ^t ||φ_t - z|| requires φ_t = z at every timestep (impossible for proportions).
+
+**Solution**: Successor features ψ(s,z) = E[Σ γ^i φ_{t+i}] captures expected features over trajectory.
+
+**Result**: Constraint ||(1-γ)ψ(s,z) - z|| ≤ ε ensures average features match skill.
+
+### 5. Lagrangian Quality-Diversity Trade-off (QDAC)
+**Objective**: Maximize (1 - λ(s,z))·V(s,z) - λ(s,z)·||(1-γ)ψ(s,z) - z||
+
+**Components**:
+- Red term: Maximize return (quality)
+- Blue term: Execute skill (diversity)
+- λ ∈ [0,1]: Adaptive multiplier
+
+**Adaptation**:
+- λ↑ when skill constraint violated → focus on diversity
+- λ↓ when skill achieved → focus on quality
+
+**Advantage**: Automatic balancing without manual tuning.
 
 ---
 
@@ -177,9 +273,13 @@ New policy = π_d(s) = existing_layers(W_state @ s + new_bias)
 
 ## Papers & Code
 
+### Population-Based
 - **PGA-ME**: Nilsson & Cully, GECCO 2021 | [[PGA-ME_detailed]]
 - **DCG-ME**: Faldor et al., GECCO 2023 | [[DCG-ME_detailed]]
 - **DCRL-ME**: Faldor et al., TELO 2024 | [[DCRL-ME_detailed]]
+
+### Pure RL
+- **QDAC**: Grillotti, Faldor, González León, Cully, ICML 2024 | [[QDAC_detailed]] | [Code](https://github.com/adaptive-intelligent-robotics/QDAC)
 
 ---
 
@@ -205,9 +305,22 @@ New policy = π_d(s) = existing_layers(W_state @ s + new_bias)
 
 ## Summary
 
-**QD-RL is a successful paradigm** for evolving neural networks:
+**QD-RL combines Quality-Diversity with Deep RL** in two paradigms:
+
+### Population-Based (Evolutionary + RL)
 - **PGA-ME**: 10× speedup over MAP-Elites for neuroevolution
 - **DCG-ME**: Fixes omnidirectional tasks, adds archive distillation
 - **DCRL-ME**: Improves sample efficiency 2.75× via actor injection
+- **Best for**: Maintaining diverse population, evolutionary analysis
 
-Choose your algorithm based on task type and budget constraints.
+### Pure RL (Single Policy)
+- **QDAC**: Dual critics (V + ψ) with Lagrangian optimization
+- **Performance**: 38% higher quality, 15% more diversity vs baselines
+- **Innovation**: Successor features enable trajectory-level skill execution
+- **Best for**: Single versatile policy, adaptation, hierarchical RL
+
+**Choose based on**:
+- **Population needed?** → DCRL-ME
+- **Single policy preferred?** → QDAC
+- **Skills = trajectory statistics?** → QDAC (successor features crucial)
+- **Maximum sample efficiency?** → DCRL-ME (if population OK) or QDAC (if single policy)

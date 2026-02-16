@@ -19,6 +19,7 @@ Comprehensive interview questions and answers organized by topic, covering ML/AI
 | [[11_Game_Theory]] | Nash, MCTS, AlphaZero, PSRO | Hard | Multi-agent, game AI |
 | [[12_ML_Systems]] | Scalability, RecSys, deployment | Medium-Hard | MLOps, infrastructure |
 | [[13_Ethics_AI]] | Fairness, bias, transparency | Medium | Responsible AI, all roles |
+| [[14_Open_Endedness]] | Open-ended learning, POET, QDAC | Hard | Research, open-ended AI |
 
 ⭐ = Essential for interview prep
 
@@ -120,6 +121,17 @@ Comprehensive interview questions and answers organized by topic, covering ML/AI
 - **Part 3: Practical Considerations**
 - **Part 4: Interview Q&A**
 
+### [[14_Open_Endedness]]
+**Open-Ended Learning & ASI**:
+- **Part 1: Formal Definition & Theory** - Novelty, learnability, observer-dependence, ASI connection
+- **Part 2: Foundation Models & Open-Endedness** - Open-ended FMs, four paths (RL, self-improvement, task generation, evolution)
+- **Part 3: POET** - Paired Open-Ended Trailblazer, coevolution, stepping stones
+- **Part 4: Enhanced POET** - PATA-EC, CPPNs, unbounded complexity
+- **Part 5: OMNI-EPIC** - Darwin Completeness, LLM task generation, Model of Interestingness
+- **Part 6: Digital Red Queen** - Adversarial self-play, Red Queen dynamics, convergent evolution
+- **Part 7: QDAC** - Quality-Diversity Actor-Critic, dual critics (V + ψ), Lagrangian optimization
+- **Part 8: Safety & Practical Considerations** - ASI safety, anti-fragile safety, measuring open-endedness
+
 ## 🎯 How to Use
 
 ### For Interview Prep
@@ -152,18 +164,21 @@ Comprehensive interview questions and answers organized by topic, covering ML/AI
 **Generative Models Path**:
 01 (Math: Parts 4-5) → 08 (Advanced DL: Diffusion) → 09 (LLM Training) → Practice with GANs/VAEs
 
+**Open-Ended AI / ASI Research Path**:
+14 (Open-Endedness) → 10 (RL: Parts 1-11) → 11 (Game Theory) → 09 (LLM Training) → 01 (Math) → 13 (Ethics: Safety)
+
 **Complete Prep** (comprehensive):
-01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12 → 13
+01 → 02 → 03 → 04 → 05 → 06 → 07 → 08 → 09 → 10 → 11 → 12 → 13 → 14
 
 ## 📊 Content Statistics
 
-- **Total Questions**: ~700+
+- **Total Questions**: ~800+
 - **Code Examples**: ~400+
-- **Equations**: ~400+
+- **Equations**: ~450+
 - **Implementations**: Python, PyTorch, sklearn, fairlearn, scipy
 - **Difficulty Range**: Fundamentals → PhD-level research
-- **Topics Covered**: 11 major areas
-- **Total Pages**: ~500+ pages of interview material
+- **Topics Covered**: 14 major areas
+- **Total Pages**: ~600+ pages of interview material
 
 ## 🔑 Key Concepts by Topic
 
@@ -237,6 +252,16 @@ Comprehensive interview questions and answers organized by topic, covering ML/AI
 - VAE (variational inference, ELBO, reparameterization trick)
 - GAN (adversarial training, mode collapse, WGAN)
 - Mixture of Experts (gating, sparsity, load balancing)
+
+### Open-Endedness & ASI (14)
+- Formal definition (novelty + learnability, observer-dependent)
+- Open-ended foundation models (FMs + open-ended algorithms)
+- POET (environment-agent coevolution, stepping stones)
+- Enhanced POET (PATA-EC, CPPNs, unbounded complexity)
+- OMNI-EPIC (Darwin Completeness, LLM task generation)
+- Digital Red Queen (adversarial self-play, convergent evolution)
+- QDAC (dual critics V + ψ, Lagrangian optimization)
+- Anti-fragile safety, measuring open-endedness
 
 ## 💡 Tips for Success
 
@@ -352,6 +377,8 @@ After mastering these topics:
 - [ ] Understand SVD and its applications (01)
 - [ ] Design novel algorithm for specific problem
 - [ ] Understand game theory algorithms (11)
+- [ ] Explain formal definition of open-endedness (14)
+- [ ] Understand POET, QDAC, and open-ended FMs (14)
 
 **ML Infra/MLOps**:
 - [ ] Design model serving architecture (12)

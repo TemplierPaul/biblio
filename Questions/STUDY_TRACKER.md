@@ -31,8 +31,8 @@ Track your progress by File and Part. Focus on mastering one section at a time. 
 - [ ] Part 5: Synthesis & Quick Reference
 
 ### [[05_Optimizers_Regularization]]
-- [ ] Part 1: Optimizers
-- [ ] Part 2: Regularization & Overfitting
+- [x] Part 1: Optimizers
+- [x] Part 2: Regularization & Overfitting
 
 ### [[06_Classical_ML]]
 - [ ] Part 1: Classification & Regression Models
@@ -89,6 +89,17 @@ Track your progress by File and Part. Focus on mastering one section at a time. 
 - [ ] Part 2: Bias Mitigation
 - [ ] Part 3: Practical Considerations
 - [ ] Part 4: Interview Questions & Answers
+
+### [[14_Open_Endedness]]
+- [x] Part 1: Formal Definition & Theory
+- [x] Part 2: Foundation Models & Open-Endedness
+- [x] Part 3: POET (Paired Open-Ended Trailblazer)
+- [x] Part 4: Enhanced POET
+- [x] Part 5: OMNI-EPIC
+- [x] Part 6: Digital Red Queen
+- [x] Part 7: Quality-Diversity Actor-Critic (QDAC)
+- [x] Part 8: Safety & Practical Considerations
+- [x] Part 9: LLM-Guided QD & Creative Exploration
 
 ---
 

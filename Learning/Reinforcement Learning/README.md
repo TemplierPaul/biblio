@@ -48,6 +48,23 @@ Quick reference for RL algorithms, world models, and specialized methods.
 
 ---
 
+## LLM-Based Embodied Agents
+
+### Voyager
+**Paper**: "Voyager: An Open-Ended Embodied Agent with Large Language Models" (Wang et al., NVIDIA, 2023)
+**What**: First LLM-powered embodied lifelong learning agent (Minecraft)
+**How**: GPT-4 for automatic curriculum + skill library + iterative code generation
+**Key innovation**: Code as action space, self-verification, gradient-free learning
+**When to use**: Open-ended exploration, lifelong learning, need interpretable behaviors
+**Components**:
+- **Automatic curriculum**: GPT-4 proposes tasks based on agent state
+- **Skill library**: Vector DB of executable code skills (compositional)
+- **Iterative prompting**: Environment feedback + execution errors + self-verification
+**Results**: 3.3× more items, 2.3× longer distances, 15.3× faster tech tree vs baselines
+**Unique**: No gradient updates, blackbox LLM queries only
+
+---
+
 ## Specialized RL Components
 
 ### RNN Policies
@@ -86,6 +103,7 @@ See **Questions/ML/06_Reinforcement_Learning.md** (12 parts, comprehensive cover
 | Planning + learned model | MuZero | MCTS with latent dynamics |
 | Partial observability | RNN Policies | Memory via recurrence |
 | Multi-agent games | RL for PSRO | Game-theoretic adaptations |
+| Open-ended exploration, lifelong learning | Voyager | LLM-powered, automatic curriculum, skill composition |
 | Foundational RL algorithms | See Questions/ML/06 | Comprehensive coverage (Q-learning, DQN, SAC, etc.) |
 
 ---
@@ -96,6 +114,7 @@ See **Questions/ML/06_Reinforcement_Learning.md** (12 parts, comprehensive cover
 - **AlphaZero** → **MuZero**: Perfect info → Imperfect info, learned model
 - **Feed-forward policies** → **RNN Policies**: Add memory/recurrence
 - **Single-agent RL** → **RL for PSRO**: Multi-agent, game theory integration
+- **Gradient-based RL** → **Voyager**: LLM-based, code actions, gradient-free lifelong learning
 
 ---
 
@@ -112,6 +131,10 @@ See **Questions/ML/06_Reinforcement_Learning.md** (12 parts, comprehensive cover
 **Latent vs. Pixel Reconstruction**:
 - Latent (MuZero, DreamerV2/V3): Model predicts in abstract space
 - Reconstruction (Early world models): Explicitly reconstruct pixels (wasteful)
+
+**Gradient-Based vs. LLM-Based**:
+- Gradient-based (PPO, SAC, Dreamer): Backprop through networks, optimize loss
+- LLM-based (Voyager): Blackbox LLM queries, in-context learning, no gradient updates
 
 ---
 

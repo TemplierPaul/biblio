@@ -2,3 +2,4 @@ papers/*
 .obsidian/*
 biblio/*
 .DS_Store
+.venv/
