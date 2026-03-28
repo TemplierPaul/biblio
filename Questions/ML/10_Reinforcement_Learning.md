@@ -251,7 +251,7 @@ $$G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \ldots = \sum_{k=0}^\infty
 
 **Mathematical**:
 - Without discount ($\gamma=1$): $\sum_{t=0}^\infty R_t$ may diverge
-- With discount ($\gamma<1$): $\sum_{t=0}^\infty \gamma^t R_t < \frac{R_{max}}{1-\gamma}$ (bounded)
+- With discount ($\gamma<1$): $\sum_{t=0}^\infty \gamma^t R_t < \frac{R_{\max}}{1-\gamma}$ (bounded)
 
 **Special case**: Episodic tasks (finite horizon) can use $\gamma=1$.
 
@@ -522,7 +522,7 @@ $$V(s) = \max_a \underbrace{\sum_{s'} P(s'|s,a)[R(s,a,s') + \gamma V(s')]}_{\tex
 - Use all occurrences of state $s$ in episode
 - Average returns from every visit
 
-**Both converge** to $V^\pi(s)$ as episodes → ∞
+**Both converge** to $V^\pi(s)$ as episodes $\to \infty$
 
 **In practice**: First-visit more common (simpler analysis).
 
@@ -772,12 +772,12 @@ $$G_t^{(n)} = R_{t+1} + \gamma R_{t+2} + \ldots + \gamma^{n-1} R_{t+n} + \gamma^
 $$V(s_t) \leftarrow V(s_t) + \alpha[G_t^{(n)} - V(s_t)]$$
 
 **Spectrum**:
-- n=1: TD(0) (one-step)
-- n=∞: Monte Carlo (complete return)
+- $n=1$: TD(0) (one-step)
+- $n=\infty$: Monte Carlo (complete return)
 
 **Trade-off**: Bias-variance
-- Small n: Low variance, high bias
-- Large n: High variance, low bias
+- Small $n$: Low variance, high bias
+- Large $n$: High variance, low bias
 
 ---
 
@@ -1019,8 +1019,8 @@ $$\theta \leftarrow \theta + \alpha_\theta \delta \nabla_\theta \log \pi_\theta(
 
 **Architecture**:
 - Shared network: $s \to$ features
-- Actor head: features → $\pi(a|s)$
-- Critic head: features → $V(s)$
+- Actor head: features $\to \pi(a|s)$
+- Critic head: features $\to V(s)$
 
 **Loss**:
 $$\mathcal{L} = \mathcal{L}_{actor} + c_1 \mathcal{L}_{critic} - c_2 H(\pi)$$
@@ -1132,7 +1132,7 @@ $$\text{s.t. } \mathbb{E}[KL(\pi_{\theta_{old}} \| \pi_\theta)] \leq \delta$$
 2. **Target network**: Stabilize training
 3. **CNN**: Process raw pixels
 
-**Architecture**: $s \to$ CNN → FC → $Q(s,a)$ for each action
+**Architecture**: $s \to \text{CNN} \to \text{FC} \to Q(s,a)$ for each action
 
 **Loss**:
 $$L(\theta) = \mathbb{E}[(r + \gamma \max_{a'} Q(s',a';\theta^-) - Q(s,a;\theta))^2]$$
@@ -1219,7 +1219,7 @@ $$w_i = \left(\frac{1}{N} \cdot \frac{1}{P(i)}\right)^\beta$$
 **Discrete actions**: Iterate over all actions (feasible if small set).
 
 **Continuous actions**: Infinite actions, can't enumerate.
-- Example: Robot joint angles ∈ ℝⁿ
+- Example: Robot joint angles $\in \mathbb{R}^n$
 
 **Solutions**:
 - Discretize (loses precision, curse of dimensionality)
@@ -2152,7 +2152,7 @@ for each task i = 1..N:
 - Full performance matrix $P_{ij}$
 - All three dimensions: forgetting, transfer, resources
 - Multiple task orderings (random + adversarial minimum)
-- ≥5 random seeds with variance
+- $\geq 5$ random seeds with variance
 - Learning curves, not just final numbers
 
 **Red flags in CRL papers**:
@@ -2174,7 +2174,7 @@ for each task i = 1..N:
 
 **Choosing**: Robotics → Continual World. General algorithm → CORA. Visual → COOM/Atari. Quick iteration → Minigrid.
 
-**Report on ≥2 benchmarks from different domains.**
+**Report on $\geq 2$ benchmarks from different domains.**
 
 ---
 

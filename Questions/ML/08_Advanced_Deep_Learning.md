@@ -40,73 +40,73 @@
 
 **The Goal:**
 
-Learn a generative model of data p(x) that can:
+Learn a generative model of data $p(x)$ that can:
 1. Generate new samples similar to training data
 2. Learn meaningful latent representations
 3. Handle uncertainty
 
 **Architecture:**
 
-**Encoder:** q(z|x) - Maps data x to latent code z
-**Decoder:** p(x|z) - Reconstructs x from latent code z
+**Encoder:** $q(z|x)$ - Maps data $x$ to latent code $z$
+**Decoder:** $p(x|z)$ - Reconstructs $x$ from latent code $z$
 
 **Key Idea - Variational Inference:**
 
-We want to learn p(z|x), but it's intractable. Instead, learn an approximate distribution q(z|x) that's close to the true posterior.
+We want to learn $p(z|x)$, but it's intractable. Instead, learn an approximate distribution $q(z|x)$ that's close to the true posterior.
 
 **The VAE Loss (ELBO):**
 
 Maximize Evidence Lower Bound:
 
-ELBO = E_q[log p(x|z)] - KL(q(z|x) || p(z))
+$$\text{ELBO} = \mathbb{E}_q[\log p(x|z)] - \text{KL}(q(z|x) \| p(z))$$
 
 **Two terms:**
 
-1. **Reconstruction loss**: E[log p(x|z)]
-   - How well can we reconstruct x from z?
+1. **Reconstruction loss**: $\mathbb{E}[\log p(x|z)]$
+   - How well can we reconstruct $x$ from $z$?
    - Typically: MSE for continuous data, BCE for binary
 
-2. **KL divergence**: KL(q(z|x) || p(z))
-   - How different is q(z|x) from prior p(z)?
+2. **KL divergence**: $\text{KL}(q(z|x) \| p(z))$
+   - How different is $q(z|x)$ from prior $p(z)$?
    - Regularizes latent space
-   - Typically: KL between Gaussian q(z|x) and standard normal p(z)
+   - Typically: KL between Gaussian $q(z|x)$ and standard normal $p(z)$
 
 **Reparameterization Trick:**
 
-Problem: Can't backpropagate through sampling z ~ q(z|x)
+Problem: Can't backpropagate through sampling $z \sim q(z|x)$
 
 Solution: Reparameterize as:
-- Sample ε ~ N(0, I)
-- Compute z = μ(x) + σ(x) ⊙ ε
+- Sample $\varepsilon \sim \mathcal{N}(0, I)$
+- Compute $z = \mu(x) + \sigma(x) \odot \varepsilon$
 
-Now gradients flow through μ and σ!
+Now gradients flow through $\mu$ and $\sigma$!
 
 **Intuition:**
 
-- **Encoder** compresses x into mean μ and variance σ²
-- **Sample** z from N(μ, σ²) using reparameterization
-- **Decoder** reconstructs x from z
+- **Encoder** compresses $x$ into mean $\mu$ and variance $\sigma^2$
+- **Sample** $z$ from $\mathcal{N}(\mu, \sigma^2)$ using reparameterization
+- **Decoder** reconstructs $x$ from $z$
 - **KL term** keeps latent space organized (prevents overfitting)
 
 **Why the KL term matters:**
 
-Without it, encoder could map each x to a unique z with zero variance → no generalization.
+Without it, encoder could map each $x$ to a unique $z$ with zero variance → no generalization.
 
 With it, similar inputs get mapped to overlapping regions in latent space → smooth interpolation.
 
 **Training Process:**
 
-1. Input image x
-2. Encode to μ(x), σ(x)
-3. Sample z = μ + σ ⊙ ε
-4. Decode to x̂
-5. Compute loss: ||x - x̂||² + KL(N(μ,σ²) || N(0,I))
+1. Input image $x$
+2. Encode to $\mu(x)$, $\sigma(x)$
+3. Sample $z = \mu + \sigma \odot \varepsilon$
+4. Decode to $\hat{x}$
+5. Compute loss: $\|x - \hat{x}\|^2 + \text{KL}(\mathcal{N}(\mu, \sigma^2) \| \mathcal{N}(0, I))$
 6. Backpropagate, update weights
 
 **Generating New Samples:**
 
-1. Sample z ~ N(0, I) from prior
-2. Decode z to get x = decoder(z)
+1. Sample $z \sim \mathcal{N}(0, I)$ from prior
+2. Decode $z$ to get $x = \text{decoder}(z)$
 3. Since latent space is continuous, can interpolate between points
 
 **Applications:**
@@ -139,26 +139,26 @@ Two neural networks compete in a game:
 **The Adversarial Game:**
 
 - **D's goal**: Maximize ability to classify real vs fake
-  - D(x_real) → 1
-  - D(G(z)) → 0
+  - $D(x_{\text{real}}) \to 1$
+  - $D(G(z)) \to 0$
 
 - **G's goal**: Fool D by generating realistic data
-  - D(G(z)) → 1
+  - $D(G(z)) \to 1$
 
 **Objective Function:**
 
-min_G max_D V(D,G) = E[log D(x)] + E[log(1 - D(G(z)))]
+$$\min_G \max_D V(D, G) = \mathbb{E}[\log D(x)] + \mathbb{E}[\log(1 - D(G(z)))]$$
 
 **Training Alternates:**
 
 1. **Update D** (discriminator):
-   - Sample real data x
-   - Sample noise z, generate fake G(z)
-   - Train D to maximize V (classify correctly)
+   - Sample real data $x$
+   - Sample noise $z$, generate fake $G(z)$
+   - Train D to maximize $V$ (classify correctly)
 
 2. **Update G** (generator):
-   - Sample noise z
-   - Train G to minimize V (fool D)
+   - Sample noise $z$
+   - Train G to minimize $V$ (fool D)
 
 **Intuition - Counterfeiter vs Police:**
 
@@ -188,8 +188,8 @@ At this point:
 - **Solution**: Careful tuning, Wasserstein GAN
 
 **3. Vanishing Gradients:**
-- When D is perfect, log(1-D(G(z))) saturates
-- **Solution**: Use -log D(G(z)) instead (non-saturating loss)
+- When D is perfect, $\log(1 - D(G(z)))$ saturates
+- **Solution**: Use $-\log D(G(z))$ instead (non-saturating loss)
 
 **GAN Variants:**
 
@@ -206,8 +206,8 @@ At this point:
 - Clip weights or use gradient penalty
 
 **Conditional GAN:**
-- Condition on class label y
-- G(z, y) and D(x, y)
+- Condition on class label $y$
+- $G(z, y)$ and $D(x, y)$
 - Can control what type of image to generate
 
 **StyleGAN:**
@@ -270,9 +270,9 @@ At this point:
 
 ### Explain forward diffusion process (noising)
 
-**Forward process**: Gradually add Gaussian noise over T steps
+**Forward process**: Gradually add Gaussian noise over $T$ steps
 
-$$q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t} x_{t-1}, \beta_t I)$$
+$$q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t}\, x_{t-1},\, \beta_t I)$$
 
 Where:
 - $x_0$: Original image
@@ -280,11 +280,11 @@ Where:
 - $\beta_t$: Noise schedule (increases: 0.0001 → 0.02)
 
 **Closed form** (key property):
-$$x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1-\bar{\alpha}_t} \epsilon, \quad \epsilon \sim \mathcal{N}(0,I)$$
+$$x_t = \sqrt{\bar{\alpha}_t}\, x_0 + \sqrt{1-\bar{\alpha}_t}\, \epsilon, \quad \epsilon \sim \mathcal{N}(0,I)$$
 
 Where $\bar{\alpha}_t = \prod_{s=1}^t (1-\beta_s)$
 
-**Intuition**: After T=1000 steps, image becomes pure noise (destroys information).
+**Intuition**: After $T=1000$ steps, image becomes pure noise (destroys information).
 
 ### What does the model predict during training (noise, x_0, or score)?
 
@@ -294,7 +294,7 @@ Where $\bar{\alpha}_t = \prod_{s=1}^t (1-\beta_s)$
 1. Sample $x_0$ from dataset
 2. Sample timestep $t$ uniformly
 3. Sample noise $\epsilon \sim \mathcal{N}(0,I)$
-4. Create noisy image: $x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1-\bar{\alpha}_t} \epsilon$
+4. Create noisy image: $x_t = \sqrt{\bar{\alpha}_t}\, x_0 + \sqrt{1-\bar{\alpha}_t}\, \epsilon$
 5. Predict noise: $\hat{\epsilon} = \epsilon_\theta(x_t, t)$
 
 **Alternatives**:
@@ -308,11 +308,11 @@ Where $\bar{\alpha}_t = \prod_{s=1}^t (1-\beta_s)$
 
 ### Write the training objective for DDPM
 
-$$\mathcal{L} = \mathbb{E}_{t, x_0, \epsilon} \left[ \| \epsilon - \epsilon_\theta(\sqrt{\bar{\alpha}_t} x_0 + \sqrt{1-\bar{\alpha}_t} \epsilon, t) \|^2 \right]$$
+$$\mathcal{L} = \mathbb{E}_{t, x_0, \epsilon} \left[ \| \epsilon - \epsilon_\theta(\sqrt{\bar{\alpha}_t}\, x_0 + \sqrt{1-\bar{\alpha}_t}\, \epsilon,\, t) \|^2 \right]$$
 
 **Components**:
 - $t \sim \text{Uniform}(1, T)$: Random timestep
-- $x_0 \sim p_{data}$: Real image
+- $x_0 \sim p_{\text{data}}$: Real image
 - $\epsilon \sim \mathcal{N}(0, I)$: Random noise
 - $\epsilon_\theta$: Noise prediction network
 
@@ -322,16 +322,16 @@ $$\mathcal{L} = \mathbb{E}_{t, x_0, \epsilon} \left[ \| \epsilon - \epsilon_\the
 
 ### What's the reparameterization trick for x_t?
 
-Instead of sampling $x_t$ sequentially (apply noise T times):
+Instead of sampling $x_t$ sequentially (apply noise $T$ times):
 
-$$x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1-\bar{\alpha}_t} \epsilon$$
+$$x_t = \sqrt{\bar{\alpha}_t}\, x_0 + \sqrt{1-\bar{\alpha}_t}\, \epsilon$$
 
 Where $\bar{\alpha}_t = \prod_{s=1}^t (1-\beta_s)$
 
 **Advantages**:
-1. **Direct sampling**: Jump to any timestep t in one step
-2. **Efficient training**: No need to run forward process T times
-3. **Parallelizable**: Sample different t's independently
+1. **Direct sampling**: Jump to any timestep $t$ in one step
+2. **Efficient training**: No need to run forward process $T$ times
+3. **Parallelizable**: Sample different $t$'s independently
 
 **Derivation**: Apply Gaussian convolution repeatedly (product of Gaussians).
 
@@ -360,9 +360,9 @@ Where $\bar{\alpha}_t = \prod_{s=1}^t (1-\beta_s)$
 **Latent Diffusion**: Run diffusion in **compressed latent space** instead of pixel space
 
 **Architecture**:
-1. **VAE encoder**: $z = E(x)$ (512×512 → 64×64 latent)
+1. **VAE encoder**: $z = E(x)$ ($512 \times 512 \to 64 \times 64$ latent)
 2. **Diffusion**: Denoise in latent space
-3. **VAE decoder**: $x = D(z)$ (64×64 → 512×512 image)
+3. **VAE decoder**: $x = D(z)$ ($64 \times 64 \to 512 \times 512$ image)
 
 **Why use it**:
 - **4-8x faster**: Smaller spatial dimensions ($64^2$ vs $512^2$)
@@ -370,8 +370,8 @@ Where $\bar{\alpha}_t = \prod_{s=1}^t (1-\beta_s)$
 - **Same quality**: VAE learned good compression
 
 **Example** (Stable Diffusion):
-- Pixel diffusion: 512×512×3 = 786K dimensions
-- Latent diffusion: 64×64×4 = 16K dimensions (~50x reduction)
+- Pixel diffusion: $512 \times 512 \times 3 = 786\text{K}$ dimensions
+- Latent diffusion: $64 \times 64 \times 4 = 16\text{K}$ dimensions (~50x reduction)
 
 **Trade-off**: Slight VAE artifacts, but huge efficiency gain.
 
@@ -394,10 +394,9 @@ Where:
 - $w = 1$: Standard conditional
 - $w > 1$: Amplify conditioning (sharper, more aligned)
 
-**Trade-off**: Higher w → better alignment but less diversity
+**Trade-off**: Higher $w$ → better alignment but less diversity
 
 **Training requirement**: Randomly drop conditioning (10-20% of time) during training to learn $\epsilon_\theta(x_t, \emptyset)$
-
 
 
 
@@ -461,7 +460,7 @@ Perception → State Estimation → Planning → Control
 
 ### How are actions represented (discretization)?
 
-**Continuous actions**: 7-DoF (x, y, z, roll, pitch, yaw, gripper) ∈ ℝ⁷
+**Continuous actions**: 7-DoF $(x, y, z, \text{roll}, \text{pitch}, \text{yaw}, \text{gripper}) \in \mathbb{R}^7$
 
 **Discretization** (RT-1):
 - Bin each dimension into 256 values
@@ -573,21 +572,22 @@ Instead of one large model, use multiple specialized "expert" networks, and lear
 
 **Architecture:**
 
-1. **Multiple expert networks**: E₁, E₂, ..., Eₙ
+1. **Multiple expert networks**: $E_1, E_2, \ldots, E_n$
 2. **Gating network**: Decides which experts to use
 3. **Combiner**: Aggregates expert outputs
 
 **How It Works:**
 
-For input x:
-1. Gating network outputs weights: g(x) = [g₁, g₂, ..., gₙ]
-2. Each expert produces output: yᵢ = Eᵢ(x)
-3. Final output: y = Σᵢ gᵢ(x) · yᵢ
+For input $x$:
+1. Gating network outputs weights: $g(x) = [g_1, g_2, \ldots, g_n]$
+2. Each expert produces output: $y_i = E_i(x)$
+3. Final output: $y = \sum_i g_i(x) \cdot y_i$
 
 **Gating Function:**
 
 Typically softmax over expert scores:
-g(x) = softmax(Wx)
+
+$$g(x) = \text{softmax}(Wx)$$
 
 This ensures weights sum to 1 and are non-negative.
 
@@ -599,7 +599,7 @@ This ensures weights sum to 1 and are non-negative.
 - More computation (run all experts)
 
 **Hard MoE (Sparse MoE):**
-- Only activate top-k experts
+- Only activate top-$k$ experts
 - Efficient (fewer computations)
 - Requires tricks for gradients (Gumbel-softmax, straight-through estimators)
 

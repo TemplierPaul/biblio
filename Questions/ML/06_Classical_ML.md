@@ -29,20 +29,20 @@ Comprehensive coverage of classical ML algorithms: SVM, k-NN, Gaussian Processes
 
 ### What is the difference between generative and non-generative (discriminative) models?
 
-**Discriminative Models** learn the decision boundary directly by modeling P(y|x) - the probability of the label given the features.
+**Discriminative Models** learn the decision boundary directly by modeling $P(y|x)$ - the probability of the label given the features.
 - **Goal**: Separate classes or predict outputs directly
 - **Examples**: Logistic Regression, SVM, Neural Networks, BERT
 - **Advantages**: Usually better performance for classification tasks, require less data
 - **Question answered**: "What is y given x?"
 
-**Generative Models** learn the joint distribution P(x, y) = P(y)P(x|y), modeling how the data is generated.
+**Generative Models** learn the joint distribution $P(x, y) = P(y)P(x|y)$, modeling how the data is generated.
 - **Goal**: Understand the underlying data distribution
 - **Examples**: Naive Bayes, Gaussian Mixture Models, VAEs, GANs, GPT
 - **Advantages**: Can generate new samples, handle missing data, provide probability estimates
 - **Question answered**: "How is the data generated?" and "What is the probability of this data?"
 
 **Why BERT is not generative:**
-BERT is trained with masked language modeling (predicting masked tokens given context) but uses bidirectional attention, making it unsuitable for sequential generation. It learns P(word|context) but cannot naturally generate sequences left-to-right like GPT.
+BERT is trained with masked language modeling (predicting masked tokens given context) but uses bidirectional attention, making it unsuitable for sequential generation. It learns $P(\text{word}|\text{context})$ but cannot naturally generate sequences left-to-right like GPT.
 
 **Code Example - Discriminative vs Generative:**
 ```python
@@ -68,22 +68,22 @@ SVM finds the optimal hyperplane that maximizes the margin between classes. The 
 
 **Key Components:**
 
-1. **Hyperplane**: Decision boundary defined by w·x + b = 0
+1. **Hyperplane**: Decision boundary defined by $\mathbf{w} \cdot \mathbf{x} + b = 0$
 2. **Support Vectors**: Data points closest to the hyperplane that define the margin
-3. **Margin**: Distance from hyperplane to nearest points (2/||w||)
+3. **Margin**: Distance from hyperplane to nearest points ($2/\|\mathbf{w}\|$)
 4. **Kernel Trick**: Map data to higher dimensions for non-linear separation
 
 **Mathematical Formulation:**
 
-Minimize: (1/2)||w||² + C∑ξᵢ
+$$\min_{\mathbf{w}, b, \boldsymbol{\xi}} \frac{1}{2}\|\mathbf{w}\|^2 + C\sum_i \xi_i$$
 
-Subject to: yᵢ(w·xᵢ + b) ≥ 1 - ξᵢ, ξᵢ ≥ 0
+Subject to: $y_i(\mathbf{w} \cdot \mathbf{x}_i + b) \geq 1 - \xi_i$, $\xi_i \geq 0$
 
 where:
-- w: weight vector (defines hyperplane)
-- b: bias
-- C: regularization parameter (tradeoff between margin and misclassification)
-- ξᵢ: slack variables (allow some misclassification)
+- $\mathbf{w}$: weight vector (defines hyperplane)
+- $b$: bias
+- $C$: regularization parameter (tradeoff between margin and misclassification)
+- $\xi_i$: slack variables (allow some misclassification)
 
 **Common Kernels:**
 
@@ -115,7 +115,7 @@ svm_poly.fit(X_train, y_train)
 - Works well with clear margin of separation
 
 **Disadvantages:**
-- Slow for large datasets (O(n²) to O(n³) complexity)
+- Slow for large datasets ($O(n^2)$ to $O(n^3)$ complexity)
 - Sensitive to feature scaling
 - Requires careful kernel selection and parameter tuning
 - Doesn't provide probability estimates directly
@@ -131,14 +131,14 @@ svm_poly.fit(X_train, y_train)
 ### Explain k-Nearest Neighbors (k-NN). What is the concept?
 
 **Core Concept:**
-k-NN is a non-parametric, instance-based learning algorithm that classifies new data points based on the majority vote of its k nearest neighbors in the feature space.
+k-NN is a non-parametric, instance-based learning algorithm that classifies new data points based on the majority vote of its $k$ nearest neighbors in the feature space.
 
 **Algorithm Steps:**
 
-1. Choose k (number of neighbors)
+1. Choose $k$ (number of neighbors)
 2. Calculate distance between query point and all training points
-3. Sort distances and select k nearest neighbors
-4. Classification: majority vote; Regression: average of k neighbors
+3. Sort distances and select $k$ nearest neighbors
+4. Classification: majority vote; Regression: average of $k$ neighbors
 
 **Distance Metrics:**
 
@@ -220,11 +220,11 @@ plt.show()
 - Can learn complex decision boundaries
 
 **Disadvantages:**
-- Slow prediction for large datasets (O(nd) per query)
+- Slow prediction for large datasets ($O(nd)$ per query)
 - Memory intensive (stores all training data)
 - Sensitive to irrelevant features and feature scaling
 - Curse of dimensionality (performance degrades in high dimensions)
-- Need to choose k and distance metric
+- Need to choose $k$ and distance metric
 
 **When to use k-NN:**
 - Small to medium datasets
@@ -341,9 +341,9 @@ Where:
 - **Far from data**: High variance (uncertain)
 
 **Example**:
-- Training points: x = [1, 2, 3], test point x = 1.5
+- Training points: $x = [1, 2, 3]$, test point $x = 1.5$
 - Variance at 1.5: Low (interpolating)
-- Test point x = 10: High variance (extrapolating)
+- Test point $x = 10$: High variance (extrapolating)
 
 **Contrast with NN**:
 - NN gives point prediction (no uncertainty)
@@ -422,7 +422,7 @@ Where $K_y = K(X,X) + \sigma_n^2 I$
 - **Deep GP**: Stack GPs (compositional)
 - **Structured kernels**: Exploit Kronecker, Toeplitz structure
 
-**Modern**: For very large n, use neural networks with uncertainty (ensembles, Bayesian NNs).
+**Modern**: For very large $n$, use neural networks with uncertainty (ensembles, Bayesian NNs).
 
 ### When to use GP vs neural network?
 
@@ -431,7 +431,7 @@ Where $K_y = K(X,X) + \sigma_n^2 I$
 - ✅ Need uncertainty quantification
 - ✅ Structured problem (can encode via kernel)
 - ✅ Interpretability important
-- ❌ Doesn't scale to large n or high dimensions
+- ❌ Doesn't scale to large $n$ or high dimensions
 - **Use**: Bayesian optimization, robotics, active learning
 
 **Neural Network**:

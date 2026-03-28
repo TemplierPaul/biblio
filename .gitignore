@@ -3,3 +3,5 @@ papers/*
 biblio/*
 .DS_Store
 .venv/
+Todo.md
+Sources/

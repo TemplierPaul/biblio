@@ -140,7 +140,7 @@ Defect   (0,-3)     (-2,-2)
 - Deterministic
 
 **Mixed strategy NE**: Players randomize over actions
-- Example: Rock-Paper-Scissors → (1/3, 1/3, 1/3) for each player
+- Example: Rock-Paper-Scissors → $(1/3, 1/3, 1/3)$ for each player
 - Probability distribution over pure strategies
 
 **Finding mixed NE**: Make opponent **indifferent** between their actions
@@ -212,7 +212,7 @@ Every finite game (finite players, finite actions) has **at least one Nash equil
 1. Start at **terminal nodes** (leaves)
 2. Assign payoffs from game definition
 3. Move to **parent nodes**:
-   - If parent is Player i's turn, choose action maximizing $u_i$
+   - If parent is Player $i$'s turn, choose action maximizing $u_i$
    - Assign that payoff to parent
 4. Repeat until **root**
 
@@ -249,7 +249,7 @@ Every finite game (finite players, finite actions) has **at least one Nash equil
 **Example** (Entry game):
 - Entrant: Enter or Stay Out
 - Incumbent: Fight or Accommodate
-- Payoffs: Fight (-1,-1), Accommodate (1,1), Stay Out (0,2)
+- Payoffs: Fight $(-1,-1)$, Accommodate $(1,1)$, Stay Out $(0,2)$
 
 **Nash**: (Enter, Fight) - but Fight is non-credible threat
 **SPE**: (Enter, Accommodate) - only credible strategies
@@ -258,15 +258,15 @@ Every finite game (finite players, finite actions) has **at least one Nash equil
 
 ### Nash equilibrium vs social optimum - are they the same?
 
-**No** - Nash equilibrium ≠ Social optimum in general.
+**No** - Nash equilibrium $\neq$ Social optimum in general.
 
 **Nash equilibrium**: No player wants to deviate unilaterally (individual rationality)
 
 **Social optimum**: Maximizes sum of utilities (collective rationality)
 
 **Counterexample** (Prisoner's Dilemma):
-- Nash: (Defect, Defect) with payoff (-2, -2), sum = -4
-- Social optimum: (Cooperate, Cooperate) with payoff (-1, -1), sum = -2
+- Nash: (Defect, Defect) with payoff $(-2, -2)$, sum $= -4$
+- Social optimum: (Cooperate, Cooperate) with payoff $(-1, -1)$, sum $= -2$
 
 **Key insight**: Individual incentives don't always align with collective welfare.
 
@@ -281,13 +281,13 @@ Every finite game (finite players, finite actions) has **at least one Nash equil
 **(Defect, Defect)** - both players defect.
 
 **Why**:
-- If opponent cooperates: Defect gives 0 > -1 (Cooperate)
-- If opponent defects: Defect gives -2 > -3 (Cooperate)
+- If opponent cooperates: Defect gives $0 > -1$ (Cooperate)
+- If opponent defects: Defect gives $-2 > -3$ (Cooperate)
 - **Dominant strategy**: Defect regardless of opponent
 
 **Verification**: Neither player can improve by deviating:
-- P1: Can't improve from (D,D) by switching to C (-3 < -2)
-- P2: Can't improve from (D,D) by switching to C (-3 < -2)
+- P1: Can't improve from (D,D) by switching to C ($-3 < -2$)
+- P2: Can't improve from (D,D) by switching to C ($-3 < -2$)
 
 ### Is Nash equilibrium Pareto optimal in PD?
 
@@ -296,8 +296,8 @@ Every finite game (finite players, finite actions) has **at least one Nash equil
 **Pareto optimal**: Can't make any player better off without making another worse off.
 
 **PD outcomes**:
-- (D, D): (-2, -2) - **Nash equilibrium**
-- (C, C): (-1, -1) - **Pareto optimal** (both better than Nash!)
+- (D, D): $(-2, -2)$ - **Nash equilibrium**
+- (C, C): $(-1, -1)$ - **Pareto optimal** (both better than Nash!)
 
 **Pareto dominance**: (C, C) is better for **both** players than (D, D)
 
@@ -323,8 +323,8 @@ $$u_i(s_i^*, s_{-i}) \geq u_i(s_i, s_{-i}) \quad \forall s_i, s_{-i}$$
 
 **Components**:
 1. **Dominant strategy**: Defect (individual incentive)
-2. **Nash equilibrium**: (D, D) with payoff (-2, -2)
-3. **Pareto optimum**: (C, C) with payoff (-1, -1)
+2. **Nash equilibrium**: (D, D) with payoff $(-2, -2)$
+3. **Pareto optimum**: (C, C) with payoff $(-1, -1)$
 4. **Gap**: Nash is worse for everyone than cooperation
 
 **Insight**: What's rational individually leads to collectively bad outcome.
@@ -342,7 +342,7 @@ $$u_i(s_i^*, s_{-i}) \geq u_i(s_i, s_{-i}) \quad \forall s_i, s_{-i}$$
 
 **Key difference**:
 - **One-shot**: Defect dominant
-- **Repeated**: Cooperate if you value future (discount factor δ high enough)
+- **Repeated**: Cooperate if you value future (discount factor $\delta$ high enough)
 
 **Intuition**: "I'll cooperate if you do, otherwise I'll punish you" becomes credible threat.
 
@@ -350,7 +350,7 @@ $$u_i(s_i^*, s_{-i}) \geq u_i(s_i, s_{-i}) \quad \forall s_i, s_{-i}$$
 
 **Tit-for-tat**:
 1. **Round 1**: Cooperate
-2. **Round t**: Do whatever opponent did in round t-1 (copy opponent's last move)
+2. **Round $t$**: Do whatever opponent did in round $t-1$ (copy opponent's last move)
 
 **Properties**:
 - **Nice**: Never defects first
@@ -419,7 +419,7 @@ $$u_i(s_i^*, s_{-i}) \geq u_i(s_i, s_{-i}) \quad \forall s_i, s_{-i}$$
 
 **Dilemma**:
 - **Individual incentive**: Contribute 0 (free ride)
-- **Collective optimum**: Everyone contributes C
+- **Collective optimum**: Everyone contributes $C$
 
 **Nash equilibrium**: Everyone contributes 0 (tragedy of the commons)
 
@@ -434,10 +434,10 @@ $$u_i(s_i^*, s_{-i}) \geq u_i(s_i, s_{-i}) \quad \forall s_i, s_{-i}$$
 **Minimax**: Choose action that **maximizes** your **minimum** payoff (worst-case optimization).
 
 **For maximizing player**:
-$$\max_{a} \min_{opponent} value(a, opponent)$$
+$$\max_{a} \min_{\text{opponent}} \text{value}(a, \text{opponent})$$
 
 **For minimizing player**:
-$$\min_{a} \max_{opponent} value(a, opponent)$$
+$$\min_{a} \max_{\text{opponent}} \text{value}(a, \text{opponent})$$
 
 **Assumption**: Opponent plays **optimally** to hurt you.
 
@@ -547,7 +547,7 @@ $$UCT(s,a) = \frac{W(s,a)}{N(s,a)} + c\sqrt{\frac{\ln N(s)}{N(s,a)}}$$
 
 **4. Backup**: **Propagate** result back to root
 - Update visit counts: $N(s,a) \leftarrow N(s,a) + 1$
-- Update values: $W(s,a) \leftarrow W(s,a) + result$
+- Update values: $W(s,a) \leftarrow W(s,a) + \text{result}$
 - Update all nodes on path
 
 **Repeat** until budget exhausted → select most visited action.
@@ -569,18 +569,18 @@ $$UCT(s, a) = \underbrace{\frac{W(s,a)}{N(s,a)}}_{\text{exploitation}} + \underb
 - High exploration term: Exploration (action rarely visited)
 - Logarithm: Grows slowly (diminishing exploration bonus)
 
-**Convergence**: UCT → optimal policy as visits → ∞ (proven).
+**Convergence**: UCT $\to$ optimal policy as visits $\to \infty$ (proven).
 
 ### What's PUCT and how does it use neural networks?
 
 **PUCT** (Predictor + UCT): UCT enhanced with neural network prior.
 
-$$PUCT(s,a) = Q(s,a) + c_{puct} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+$$PUCT(s,a) = Q(s,a) + c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
 
 **Components**:
 - $Q(s,a)$: Mean action value (like $W/N$ in UCT)
 - $P(s,a)$: **Prior probability** from policy network
-- $c_{puct}$: Exploration constant
+- $c_{\text{puct}}$: Exploration constant
 
 **Key difference from UCT**: Uses learned $P(s,a)$ to guide exploration
 
@@ -644,7 +644,7 @@ $$p(a|s) = \text{softmax}(\text{PolicyNet}(s))$$
 **2. Value head** ($v$):
 $$v(s) \in [-1, +1]$$
 - Outputs: Scalar game outcome prediction
-- -1 = loss, 0 = draw, +1 = win
+- $-1$ = loss, $0$ = draw, $+1$ = win
 - Used as: Evaluation in MCTS (replaces rollout)
 
 **Shared**: Single ResNet backbone, two heads branch at end.
@@ -652,7 +652,7 @@ $$v(s) \in [-1, +1]$$
 ### How does PUCT use the policy network?
 
 **PUCT selection** formula:
-$$PUCT(s,a) = Q(s,a) + c_{puct} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
+$$PUCT(s,a) = Q(s,a) + c_{\text{puct}} \cdot P(s,a) \cdot \frac{\sqrt{N(s)}}{1 + N(s,a)}$$
 
 **Policy network provides** $P(s,a)$:
 - Network's prior belief about move quality
@@ -732,7 +732,7 @@ $$\mathcal{L} = \underbrace{(z - v)^2}_{\text{value loss}} - \underbrace{\pi^T \
 **Rollout** (classic MCTS):
 1. From leaf node, play random moves
 2. Reach terminal state
-3. Get outcome (+1/-1/0)
+3. Get outcome $(+1/-1/0)$
 4. Slow, noisy
 
 **Value network** (AlphaZero):
@@ -841,10 +841,10 @@ $$\pi(a|s) \propto N(s,a)^{1/\tau}$$
    - Linear programming or iterative solver
 
 **4. Best Response**: Train BR policy to $\sigma$ using RL oracle
-   - Each player trains $\pi_i^{new} = BR(\sigma_{-i})$
+   - Each player trains $\pi_i^{\text{new}} = BR(\sigma_{-i})$
 
 **5. Expand**: Add new BRs to population
-   - $\Pi_i^{(k+1)} = \Pi_i^{(k)} \cup \{\pi_i^{new}\}$
+   - $\Pi_i^{(k+1)} = \Pi_i^{(k)} \cup \{\pi_i^{\text{new}}\}$
 
 **Repeat** until convergence (no profitable BR).
 
@@ -943,7 +943,7 @@ $$\pi_i^{BR} = \arg\max_{\pi_i} \mathbb{E}_{\sigma_{-i}}[u_i(\pi_i, \sigma_{-i})
 **Setup**: Mediator samples $(a_1, \ldots, a_n) \sim \mu$, recommends $a_i$ to each player privately.
 
 **Condition**: No incentive to deviate:
-$$\mathbb{E}_{a_{-i} | a_i}[u_i(a_i, a_{-i})] \geq \mathbb{E}_{a_{-i} | a_i}[u_i(a'_i, a_{-i})]$$
+$$\mathbb{E}_{a_{-i} \mid a_i}[u_i(a_i, a_{-i})] \geq \mathbb{E}_{a_{-i} \mid a_i}[u_i(a'_i, a_{-i})]$$
 for all players $i$, actions $a_i$, deviations $a'_i$.
 
 **Example** (Traffic):
@@ -952,8 +952,8 @@ for all players $i$, actions $a_i$, deviations $a'_i$.
 Up       (5,5)   (0,0)
 Down     (0,0)   (5,5)
 ```
-CE: Flip coin → both Up-Left or both Down-Right (EU = 5)
-Nash: Mix 50-50 independently (EU = 2.5)
+CE: Flip coin → both Up-Left or both Down-Right ($\mathbb{E}[u] = 5$)
+Nash: Mix 50-50 independently ($\mathbb{E}[u] = 2.5$)
 
 **Why better**: Coordination via mediator.
 
@@ -987,7 +987,7 @@ $$\text{Nash Equilibrium} \subseteq \text{Correlated Equilibrium} \subseteq \tex
 - CCE: No profitable deviation **before** seeing recommendation
 
 **Why hierarchy matters**:
-- Easier to compute: Nash (hardest) < CE < CCE (easiest)
+- Easier to compute: Nash (hardest) $<$ CE $<$ CCE (easiest)
 - CCE largest set (most solutions)
 - Nash smallest (most restrictive)
 
@@ -1039,7 +1039,7 @@ $$\text{Nash Equilibrium} \subseteq \text{Correlated Equilibrium} \subseteq \tex
 - No transfer between strategies
 
 **NeuPL**: **Single conditional network** for all strategies
-$$\pi_\theta(a | s, i)$$
+$$\pi_\theta(a \mid s, i)$$
 where $i$ is policy index.
 
 **Memory**: $O(1)$ network (constant, regardless of $N$)
@@ -1075,12 +1075,12 @@ output = Network(input)  # action distribution
 **PSRO**:
 - Population size: $N$ policies
 - Storage: $N \times$ (network parameters)
-- Example: 100 policies × 10M params = 1B parameters
+- Example: 100 policies $\times$ 10M params = 1B parameters
 
 **NeuPL**:
 - Population size: $N$ policies
 - Storage: 1 network + $N$ embeddings
-- Example: 10M params + 100 × 128 (embeddings) ≈ 10M parameters
+- Example: 10M params + $100 \times 128$ (embeddings) $\approx$ 10M parameters
 
 **Reduction**: ~100x for population size 100
 
@@ -1212,7 +1212,7 @@ The empirical frequency $\hat{\sigma}_{-i}(t)$ is the historical proportion of t
 **Two networks**:
 1. **Q-network**: Best-response (DQN-style)
    - Trained from $M_{RL}$ (RL buffer)
-   - $\epsilon$-greedy behavior
+   - $\varepsilon$-greedy behavior
 
 2. **$\Pi$-network**: Average strategy
    - Trained from $M_{SL}$ (SL buffer)
@@ -1257,7 +1257,7 @@ The empirical frequency $\hat{\sigma}_{-i}(t)$ is the historical proportion of t
 2. **Best response**: Each iteration plays BR to opponent's average
 
 3. **Regret minimization**: Average regret goes to 0
-   $$\frac{1}{T}\sum_{t=1}^T [u_i(BR_i^t, \bar{\sigma}_{-i}^t) - u_i(\bar{\sigma}_i^t, \bar{\sigma}_{-i}^t)] \to 0$$
+   $$\frac{1}{T}\sum_{t=1}^T \left[u_i\!\left(BR_i^t, \bar{\sigma}_{-i}^t\right) - u_i\!\left(\bar{\sigma}_i^t, \bar{\sigma}_{-i}^t\right)\right] \to 0$$
 
 4. **Folk theorem**: No-regret in two-player zero-sum → Nash
 
@@ -1277,7 +1277,7 @@ The empirical frequency $\hat{\sigma}_{-i}(t)$ is the historical proportion of t
 
 **Example** (Rock-Paper-Scissors):
 - Vanilla SP: Cycles through pure strategies
-- FSP: Converges to (1/3, 1/3, 1/3) mixed Nash
+- FSP: Converges to $(1/3, 1/3, 1/3)$ mixed Nash
 
 **Why**: Averaging acts as regularization, prevents exploitation of single strategy.
 
@@ -1336,7 +1336,7 @@ The empirical frequency $\hat{\sigma}_{-i}(t)$ is the historical proportion of t
 2. Then **follow** strategy $\sigma$ from $I$ onward
 
 **Formula**:
-$$v_i(\sigma, I) = \sum_{h \in I} \sum_{z \in Z} \pi_{-i}^\sigma(h) \pi^\sigma(h, z) u_i(z)$$
+$$v_i(\sigma, I) = \sum_{h \in I} \sum_{z \in Z} \pi_{-i}^\sigma(h)\, \pi^\sigma(h, z)\, u_i(z)$$
 
 Where:
 - $h$: History (node in $I$)
@@ -1349,7 +1349,7 @@ Where:
 ### Explain regret matching strategy update
 
 **Regret** for action $a$ at infoset $I$:
-$$R^T(I, a) = \sum_{t=1}^T [v_i(\sigma^t_{I \to a}, I) - v_i(\sigma^t, I)]$$
+$$R^T(I, a) = \sum_{t=1}^T \left[v_i(\sigma^t_{I \to a}, I) - v_i(\sigma^t, I)\right]$$
 
 Cumulative difference between playing $a$ and current strategy.
 
@@ -1358,7 +1358,7 @@ $$\sigma^{T+1}(I, a) = \frac{R^{T,+}(I, a)}{\sum_{a'} R^{T,+}(I, a')}$$
 
 Where $R^{+} = \max(R, 0)$ (positive part).
 
-**If all regrets ≤ 0**: Play uniform random.
+**If all regrets $\leq 0$**: Play uniform random.
 
 **Intuition**: Play actions proportional to how much we regret not playing them.
 
@@ -1367,13 +1367,13 @@ Where $R^{+} = \max(R, 0)$ (positive part).
 **Current strategy** $\sigma^T$: Can oscillate (like vanilla self-play)
 
 **Average strategy** $\bar{\sigma}^T$:
-$$\bar{\sigma}^T(I, a) = \frac{\sum_{t=1}^T \pi_i^{\sigma^t}(I) \sigma^t(I, a)}{\sum_{t=1}^T \pi_i^{\sigma^t}(I)}$$
+$$\bar{\sigma}^T(I, a) = \frac{\sum_{t=1}^T \pi_i^{\sigma^t}(I)\, \sigma^t(I, a)}{\sum_{t=1}^T \pi_i^{\sigma^t}(I)}$$
 
 Weighted by reach probability.
 
 **Convergence**: $\bar{\sigma}^T \to$ Nash equilibrium
 
-**Why**: Regret matching guarantees **average** regret → 0, not instantaneous regret.
+**Why**: Regret matching guarantees **average** regret $\to 0$, not instantaneous regret.
 
 **Analogy**: Like FSP - averaging prevents cycling.
 
@@ -1382,7 +1382,7 @@ Weighted by reach probability.
 **CFR+** improvements over vanilla CFR:
 
 1. **Regret floor**: Cumulative regrets never go below 0
-   $$R^{t+1}(I, a) = \max(R^t(I, a) + r^{t+1}(I, a), 0)$$
+   $$R^{t+1}(I, a) = \max\!\left(R^t(I, a) + r^{t+1}(I, a),\, 0\right)$$
    (Reset negative regrets to 0)
 
 2. **Alternating updates**: Update one player at a time (not simultaneous)
@@ -1449,7 +1449,7 @@ Weighted by reach probability.
 **Convergence**: $O(1/\sqrt{T})$ to Nash
 - After $T$ iterations, exploitability $\propto 1/\sqrt{T}$
 
-**Total cost**: $O(|I| \cdot T)$ for $\epsilon$-Nash where $T \propto 1/\epsilon^2$
+**Total cost**: $O(|I| \cdot T)$ for $\varepsilon$-Nash where $T \propto 1/\varepsilon^2$
 
 **Practical**: Millions of iterations for poker, but feasible.
 
@@ -1457,15 +1457,13 @@ Weighted by reach probability.
 
 **Proof sketch**:
 
-1. **Regret minimization**: CFR guarantees average regret → 0
+1. **Regret minimization**: CFR guarantees average regret $\to 0$
    $$\frac{1}{T}\sum_{t=1}^T r_i^t \to 0$$
 
 2. **Zero-sum + regret minimization**: Folk theorem
    - If both players have no-regret, their average strategies form Nash
 
 3. **Formal**: Average exploitability bounded by average regret
-   $$\epsilon = \max_{\pi_i} u_i(\pi_i, \bar{\sigma}_{-i}) - u_i(\bar{\sigma}) \leq \frac{1}{T}\sum_{t=1}^T R_i^t$$
+   $$\varepsilon = \max_{\pi_i} u_i(\pi_i, \bar{\sigma}_{-i}) - u_i(\bar{\sigma}) \leq \frac{1}{T}\sum_{t=1}^T R_i^t$$
 
 **Key insight**: Regret matching is no-regret algorithm → convergence.
-
-**Extension**: Works for broader class (two-player general-sum with modifications).

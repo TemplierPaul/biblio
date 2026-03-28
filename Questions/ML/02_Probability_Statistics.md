@@ -37,27 +37,27 @@ A random variable $X$ is a function that maps outcomes from a random process to 
 **1. Discrete Random Variable**
 *   **Definition**: Takes primarily countable values (e.g., integers).
 *   **PMF (Probability Mass Function)**: $P(X=x)$. Probability that $X$ equals a specific value $x$.
-*   **CDF (Cumulative Distribution Function)**: $F(x) = P(X \le x)$. Sum of probabilities for all outcomes $\le x$.
+*   **CDF (Cumulative Distribution Function)**: $F(x) = P(X \leq x)$. Sum of probabilities for all outcomes $\leq x$.
 *   **Example**: Rolling a Fair Die.
     *   Sample Space: $\{1, 2, 3, 4, 5, 6\}$
-    *   PMF: $P(X=k) = 1/6$ for all $k \in \{1..6\}$.
+    *   PMF: $P(X=k) = \frac{1}{6}$ for all $k \in \{1..6\}$.
 
 **2. Continuous Random Variable**
 *   **Definition**: Takes values from an uncountably infinite range (e.g., real numbers, time, height).
 *   **PDF (Probability Density Function)**: $f(x)$. Represents the *density* of probability at point $x$.
     *   *Crucial Note*: The probability of any single exact point is zero ($P(X=x) = 0$). Probabilities are only defined over intervals (area under the curve).
-*   **CDF**: $F(x) = \int_{-\infty}^{x} f(t) dt$. The area under the PDF curve up to $x$.
+*   **CDF**: $F(x) = \int_{-\infty}^{x} f(t) \, dt$. The area under the PDF curve up to $x$.
 *   **Example**: Standard Normal Distribution $Z \sim \mathcal{N}(0, 1)$.
 
 **Key Properties:**
 
 *   **Expected Value (Mean)**: The long-run average.
-    *   Discrete: $E[X] = \sum x_i \cdot P(x_i)$
-    *   Continuous: $E[X] = \int x \cdot f(x) dx$
-    *   *Linearity*: $E[aX + bY] = aE[X] + bE[Y]$ (Works for dependent variables too!).
+    *   Discrete: $\mathbb{E}[X] = \sum x_i \cdot P(x_i)$
+    *   Continuous: $\mathbb{E}[X] = \int x \cdot f(x) \, dx$
+    *   *Linearity*: $\mathbb{E}[aX + bY] = a\mathbb{E}[X] + b\mathbb{E}[Y]$ (Works for dependent variables too!).
 
 *   **Variance**: Measure of spread or dispersion around the mean.
-    *   $\text{Var}(X) = E[(X - E[X])^2] = E[X^2] - (E[X])^2$
+    *   $\text{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2] = \mathbb{E}[X^2] - (\mathbb{E}[X])^2$
     *   *Properties*: $\text{Var}(aX + b) = a^2 \text{Var}(X)$. (Adding a constant $b$ shifts the distribution but doesn't widen it; multiplying by $a$ scales the spread by $a^2$).
 
 *   **Standard Deviation**: $\sigma = \sqrt{\text{Var}(X)}$. Reported in the same units as the original data.
@@ -97,7 +97,7 @@ If $Y = g(X)$, how does the distribution change?
 **1. Correlation (Pearson Correlation, $\rho$)**:
 *   Measures statistical **Linear relationships** only.
 *   Range: $[-1, 1]$.
-*   $\rho = 0$ means *no linear relationship*, but variables could still be strongly dependent in a non-linear way (e.g., $Y=X^2$ over a symmetric range has $\rho = 0$).
+*   $\rho = 0$ means *no linear relationship*, but variables could still be strongly dependent in a non-linear way (e.g., $Y = X^2$ over a symmetric range has $\rho = 0$).
 
 **2. Dependence**:
 *   General concept: Knowing $X$ gives *any* information about $Y$.
@@ -114,7 +114,7 @@ If $Y = g(X)$, how does the distribution change?
 | :--- | :--- | :--- |
 | **Pearson Correlation** | Linear only | Standard continuous data, Gaussian assumptions. |
 | **Spearman Rank** | Monotonic (Linear or curved) | **Rank-based**. Robust to outliers. Non-linear but monotonic. |
-| **Mutual Information** | Any dependence | Complex, non-linear relationships. Based on entropy: $I(X;Y) = H(X) - H(X|Y)$. |
+| **Mutual Information** | Any dependence | Complex, non-linear relationships. Based on entropy: $I(X;Y) = H(X) - H(X \mid Y)$. |
 
 ---
 
@@ -132,10 +132,10 @@ If $Y = g(X)$, how does the distribution change?
 
 4.  **Uniform ($a, b$)**: "Box" shape. Every value in $[a, b]$ is equally likely.
 5.  **Normal / Gaussian ($\mu, \sigma^2$)**: The "Bell Curve". Central to statistics due to the CLT. Max entropy distribution for fixed variance. 68% of data is within $1\sigma$, 95% within $2\sigma$.
-6.  **Exponential ($\lambda$)**: Time *between* events in a Poisson process. **Memoryless**: $P(T>t+s|T>s) = P(T>t)$.
+6.  **Exponential ($\lambda$)**: Time *between* events in a Poisson process. **Memoryless**: $P(T > t+s \mid T > s) = P(T > t)$.
 7.  **Beta ($\alpha, \beta$)**: Defined on $[0,1]$. Used to model *probabilities* (e.g., the probability of heads). Conjugate prior for Bernoulli/Binomial.
 8.  **Gamma ($k, \theta$)**: Generalizes Exponential. Sum of $k$ exponentials. Conjugate prior for Poisson.
-9.  **Student's t ($\nu$)**: Like Normal but with heavier tails. Used for small samples ($n<30$). As $\nu \to \infty$, converges to Normal.
+9.  **Student's t ($\nu$)**: Like Normal but with heavier tails. Used for small samples ($n < 30$). As $\nu \to \infty$, converges to Normal.
 10. **Chi-Squared ($k$)**: Sum of squared standard normals ($Z^2$). Used in variance testing and goodness-of-fit.
 
 **Summary Table:**
@@ -147,7 +147,7 @@ If $Y = g(X)$, how does the distribution change?
 | **Poisson** | Discrete | $\lambda$ | $\{0,1,...\}$ | $\lambda$ | Call center arrivals per hour |
 | **Uniform** | Cont. | $a, b$ | $[a, b]$ | $\frac{a+b}{2}$ | Random number generation |
 | **Normal** | Cont. | $\mu, \sigma^2$ | $\mathbb{R}$ | $\mu$ | Errors, Heights, IQ |
-| **Exponential** | Cont. | $\lambda$ | $[0, \infty)$ | $1/\lambda$ | Time until next bus |
+| **Exponential** | Cont. | $\lambda$ | $[0, \infty)$ | $\frac{1}{\lambda}$ | Time until next bus |
 | **Beta** | Cont. | $\alpha, \beta$ | $[0, 1]$ | $\frac{\alpha}{\alpha+\beta}$ | Modeling prob. of success |
 | **t-dist** | Cont. | $\nu$ | $\mathbb{R}$ | $0$ | Inference with small $n$ |
 | **Chi-Squared** | Cont. | $k$ | $[0, \infty)$ | $k$ | Variance tests, Independence |
@@ -163,10 +163,10 @@ If $Y = g(X)$, how does the distribution change?
 **Bayes' Theorem:**
 Provides a way to update probabilities based on new evidence.
 
-$$ P(H|D) = \frac{P(D|H) \cdot P(H)}{P(D)} $$
+$$ P(H \mid D) = \frac{P(D \mid H) \cdot P(H)}{P(D)} $$
 
-*   **$P(H|D)$ (Posterior)**: Probability of Hypothesis $H$ given Data $D$. (What we want).
-*   **$P(D|H)$ (Likelihood)**: Probability of observing Data $D$ if Hypothesis $H$ is true.
+*   **$P(H \mid D)$ (Posterior)**: Probability of Hypothesis $H$ given Data $D$. (What we want).
+*   **$P(D \mid H)$ (Likelihood)**: Probability of observing Data $D$ if Hypothesis $H$ is true.
 *   **$P(H)$ (Prior)**: Initial belief about $H$ before seeing data.
 *   **$P(D)$ (Evidence)**: Total probability of the data (normalizing constant).
 
@@ -174,17 +174,17 @@ $$ P(H|D) = \frac{P(D|H) \cdot P(H)}{P(D)} $$
 
 *   **Scenario**: A test for a rare disease (prevalence 1%) is 99% sensitive and 95% specific.
 *   **Prior**: $P(\text{Disease}) = 0.01$.
-*   **Sensitivity**: $P(\text{Pos}|\text{Disease}) = 0.99$.
-*   **False Positive Rate**: $P(\text{Pos}|\text{Healthy}) = 0.05$ (since Specificity is 0.95).
+*   **Sensitivity**: $P(\text{Pos} \mid \text{Disease}) = 0.99$.
+*   **False Positive Rate**: $P(\text{Pos} \mid \text{Healthy}) = 0.05$ (since Specificity is 0.95).
 
 **Question**: If you test positive, what is the probability you have the disease?
 
 **Calculation**:
-$$ P(\text{Dis}|\text{Pos}) = \frac{P(\text{Pos}|\text{Dis})P(\text{Dis})}{P(\text{Pos})} $$
+$$ P(\text{Dis} \mid \text{Pos}) = \frac{P(\text{Pos} \mid \text{Dis}) \cdot P(\text{Dis})}{P(\text{Pos})} $$
 
 1.  **Numerator**: $0.99 \times 0.01 = 0.0099$ (True Positives)
 2.  **Denominator (Evidence)**:
-    $$ P(\text{Pos}) = P(\text{Pos}|\text{Dis})P(\text{Dis}) + P(\text{Pos}|\text{Healthy})P(\text{Healthy}) $$
+    $$ P(\text{Pos}) = P(\text{Pos} \mid \text{Dis}) \cdot P(\text{Dis}) + P(\text{Pos} \mid \text{Healthy}) \cdot P(\text{Healthy}) $$
     $$ P(\text{Pos}) = (0.99 \times 0.01) + (0.05 \times 0.99) \approx 0.0099 + 0.0495 = 0.0594 $$
 3.  **Result**: $0.0099 / 0.0594 \approx \mathbf{16.7\%}$
 
@@ -220,8 +220,8 @@ A prior distribution is **conjugate** to a likelihood function if the resulting 
 1.  **Prior**: You believe a coin is fair, but aren't sure. $\text{Beta}(\alpha=2, \beta=2)$. (Equivalent to seeing 1 head, 1 tail conceptually).
 2.  **Data**: You flip it 10 times and get 7 Heads, 3 Tails.
 3.  **Posterior**:
-    *   $\alpha_{new} = \alpha_{old} + 7 = 9$
-    *   $\beta_{new} = \beta_{old} + 3 = 5$
+    *   $\alpha_{\text{new}} = \alpha_{\text{old}} + 7 = 9$
+    *   $\beta_{\text{new}} = \beta_{\text{old}} + 3 = 5$
     *   Result: $\text{Beta}(9, 5)$. The distribution shifts towards $0.64$ (mean).
 
 ---
@@ -239,7 +239,7 @@ A prior distribution is **conjugate** to a likelihood function if the resulting 
 
 **Decision Rule:**
 *   If p-value $< \alpha$: Reject $H_0$ (Results are "statistically significant").
-*   If p-value $\ge \alpha$: Fail to reject $H_0$ (Not enough evidence).
+*   If p-value $\geq \alpha$: Fail to reject $H_0$ (Not enough evidence).
 
 **2. Tests for Means (t-test):**
 Used when sample size is small ($n < 30$) or population variance is unknown.
@@ -288,7 +288,7 @@ $$ \frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \to \mathcal{N}(0, 1) \quad \text{as 
 ### Explain the bias-variance tradeoff
 
 **Decomposition of Expected Test Error:**
-$$ E[\text{Error}] = \text{Bias}^2 + \text{Variance} + \text{Irreducible Error} $$
+$$ \mathbb{E}[\text{Error}] = \text{Bias}^2 + \text{Variance} + \text{Irreducible Error} $$
 
 **1. Definitions:**
 
@@ -323,24 +323,24 @@ $$ E[\text{Error}] = \text{Bias}^2 + \text{Variance} + \text{Irreducible Error} 
 ### Explain KL Divergence (Relative Entropy)
 
 **Definition:**
-Kullback-Leibler (KL) Divergence measures how one probability distribution $Q$ differs from a second, reference probability distribution $P$. Only defined if $P(x)=0 \implies Q(x)=0$.
+Kullback-Leibler (KL) Divergence measures how one probability distribution $Q$ differs from a second, reference probability distribution $P$. Only defined if $P(x) = 0 \implies Q(x) = 0$.
 
-$$D_{KL}(P || Q) = \sum_{x} P(x) \log \left( \frac{P(x)}{Q(x)} \right)$$
+$$D_{KL}(P \| Q) = \sum_{x} P(x) \log \left( \frac{P(x)}{Q(x)} \right)$$
 
 **Key Properties:**
-1.  **Non-negative**: $D_{KL}(P || Q) \ge 0$.
-2.  **Not Symmetric**: $D_{KL}(P || Q) \neq D_{KL}(Q || P)$. (It matters which one is the "true" distribution).
-3.  **Zero**: $D_{KL}(P || Q) = 0$ if and only if $P = Q$.
+1.  **Non-negative**: $D_{KL}(P \| Q) \geq 0$.
+2.  **Not Symmetric**: $D_{KL}(P \| Q) \neq D_{KL}(Q \| P)$. (It matters which one is the "true" distribution).
+3.  **Zero**: $D_{KL}(P \| Q) = 0$ if and only if $P = Q$.
 
 **Intuition/Meaning:**
 *   **Information Code**: The expected number of *extra* bits required to code samples from $P$ using a code optimized for $Q$.
 *   **"Surprise"**: Expectation of the logarithmic difference between the probabilities.
 
 **Usage in Machine Learning:**
-1.  **Variational Autoencoders (VAEs)**: Regularizes the latent space. We minimize $D_{KL}(q(z|x) || p(z))$, forcing the learned posterior to be close to a unit Gaussian prior.
+1.  **Variational Autoencoders (VAEs)**: Regularizes the latent space. We minimize $D_{KL}(q(z \mid x) \| p(z))$, forcing the learned posterior to be close to a unit Gaussian prior.
 2.  **Classification (Cross-Entropy)**: Minimizing Cross-Entropy is equivalent to minimizing KL Divergence between true labels and predicted probs.
-    *   $CE(P, Q) = H(P) + D_{KL}(P || Q)$. Since $H(P)$ is constant for fixed labels, minimizing $CE$ minimizes $D_{KL}$.
-3.  **Reinforcement Learning (PPO, TRPO)**: Used as a constraint (trust region) to prevent the policy from changing too drastically between updates ($D_{KL}(\pi_{old} || \pi_{new}) < \delta$).
+    *   $CE(P, Q) = H(P) + D_{KL}(P \| Q)$. Since $H(P)$ is constant for fixed labels, minimizing $CE$ minimizes $D_{KL}$.
+3.  **Reinforcement Learning (PPO, TRPO)**: Used as a constraint (trust region) to prevent the policy from changing too drastically between updates ($D_{KL}(\pi_{\text{old}} \| \pi_{\text{new}}) < \delta$).
 
 
 **Links to other Concepts:**

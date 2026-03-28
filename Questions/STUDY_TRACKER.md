@@ -10,6 +10,7 @@ Track your progress by File and Part. Focus on mastering one section at a time. 
 - [x] Part 1: Optimization Theory
 - [x] Part 2: Linear Algebra
 - [ ] Part 3: Tensors & Decompositions
+- [ ] Part 4: Backpropagation & Derivatives
 
 ### [[02_Probability_Statistics]]
 - [x] Part 1: Probability Fundamentals
@@ -61,14 +62,14 @@ Track your progress by File and Part. Focus on mastering one section at a time. 
 - [x] Part 2: Value Functions & Bellman Equations
 - [x] Part 3: Dynamic Programming
 - [x] Part 4: Monte Carlo Methods
-- [ ] Part 5: Temporal Difference Learning
-- [ ] Part 6: Function Approximation
-- [ ] Part 7: Policy Gradient Methods
-- [ ] Part 8: Actor-Critic Methods
-- [ ] Part 9: Deep Q-Networks (DQN)
-- [ ] Part 10: Continuous Control
-- [ ] Part 11: Advanced Topics
-- [ ] Part 12: Practical Considerations
+- [x] Part 5: Temporal Difference Learning
+- [x] Part 6: Function Approximation
+- [x] Part 7: Policy Gradient Methods
+- [x] Part 8: Actor-Critic Methods
+- [x] Part 9: Deep Q-Networks (DQN)
+- [x] Part 10: Continuous Control
+- [x] Part 11: Advanced Topics
+- [x] Part 12: Practical Considerations
 
 ### [[11_Game_Theory]]
 - [x] Part 1: Game Theory Foundations
@@ -108,15 +109,15 @@ Track your progress by File and Part. Focus on mastering one section at a time. 
 ### [[01_Data_Structures]]
 - [x] Part 1: Arrays & Strings
 - [x] Part 2: Linked Lists
-- [ ] Part 3: Stacks & Queues
-- [ ] Part 4: Trees
+- [x] Part 3: Stacks & Queues
+- [x] Part 4: Trees
 - [ ] Part 5: Heaps & Priority Queues
 - [x] Part 6: Hash Tables
-- [ ] Part 7: Graphs
+- [x] Part 7: Graphs
 - [ ] Part 8: Tries
 
 ### [[02_Algorithms]]
-- [ ] Part 1: Sorting Algorithms
+- [x] Part 1: Sorting Algorithms
 - [ ] Part 2: Searching Algorithms
 - [ ] Part 3: Dynamic Programming
 - [ ] Part 4: Greedy Algorithms

@@ -28,27 +28,27 @@ Actual Negative      FP (False Pos/Type I) TN (True Neg)
 
 **Accuracy:**
 - **Definition**: The overall correctness of the model.
-- **Formula**: (TP + TN) / (TP + TN + FP + FN)
+- **Formula**: $\text{Accuracy} = \dfrac{TP + TN}{TP + TN + FP + FN}$
 - **Use Case**: Balanced datasets. **Avoid** for imbalanced datasets (e.g., 99% negative class).
 
 **Precision:**
 - **Definition**: Of all predicted positive samples, how many are actually positive?
-- **Formula**: Precision = TP / (TP + FP)
+- **Formula**: $\text{Precision} = \dfrac{TP}{TP + FP}$
 - **Use Case**: When false positives are costly (e.g., spam detection - don't mark important emails as spam)
 
 **Recall (Sensitivity, True Positive Rate):**
 - **Definition**: Of all actual positive samples, how many did we correctly identify?
-- **Formula**: Recall = TP / (TP + FN)
+- **Formula**: $\text{Recall} = \dfrac{TP}{TP + FN}$
 - **Use Case**: When false negatives are costly (e.g., disease detection - don't miss sick patients)
 
 **Specificity (True Negative Rate):**
 - **Definition**: Of all actual negative samples, how many did we correctly identify?
-- **Formula**: Specificity = TN / (TN + FP)
+- **Formula**: $\text{Specificity} = \dfrac{TN}{TN + FP}$
 - **Use Case**: When false positives are costly (e.g., email filtering - don't lose good emails)
 
 **F1-Score:**
 - **Definition**: Harmonic mean of precision and recall
-- **Formula**: F1 = 2 × (Precision × Recall) / (Precision + Recall)
+- **Formula**: $F_1 = \dfrac{2 \times \text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}$
 - **Use Case**: Balance between precision and recall, especially with imbalanced classes
 
 **ROC-AUC (Receiver Operating Characteristic - Area Under Curve):**
@@ -232,12 +232,13 @@ print(f"BLEU-4: {bleu4:.3f}")
 ```
 
 **Formula**:
-BLEU = BP × exp(∑(wₙ × log(pₙ)))
+
+$$\text{BLEU} = BP \times \exp\!\left(\sum_n w_n \log p_n\right)$$
 
 where:
-- pₙ: modified n-gram precision
-- wₙ: weights (typically uniform)
-- BP: brevity penalty (penalizes short outputs)
+- $p_n$: modified n-gram precision
+- $w_n$: weights (typically uniform)
+- $BP$: brevity penalty (penalizes short outputs)
 
 **Advantages**:
 - Language-independent
@@ -311,9 +312,10 @@ print(f"Perplexity: {perplexity:.2f}")
 ```
 
 **Formula**:
-Perplexity = exp(-1/N × ∑ log P(wᵢ|w₁...wᵢ₋₁))
 
-where N is the number of tokens
+$$\text{Perplexity} = \exp\!\left(-\frac{1}{N} \sum_{i=1}^N \log P(w_i \mid w_1 \ldots w_{i-1})\right)$$
+
+where $N$ is the number of tokens
 
 **Interpretation**:
 - Perplexity of 10: Model is "perplexed" between ~10 choices per token
@@ -340,8 +342,8 @@ def calculate_bpc(loss):
 |--------|------|-------|-------|--------|
 | BLEU | Translation | Precision | 0-1 | Higher |
 | ROUGE | Summarization | Recall | 0-1 | Higher |
-| Perplexity | LM quality | Probability | 1-∞ | Lower |
-| BPC | Char LM | Bits | 0-∞ | Lower |
+| Perplexity | LM quality | Probability | $1$-$\infty$ | Lower |
+| BPC | Char LM | Bits | $0$-$\infty$ | Lower |
 
 ---
 

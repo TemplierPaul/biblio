@@ -80,7 +80,7 @@ $$C_t = f_t \odot C_{t-1} + i_t \odot \tilde{C}_t$$
 **Why it prevents vanishing gradients**:
 - **Additive** update (not multiplicative like RNN)
 - Gradient: $\frac{\partial C_t}{\partial C_{t-1}} = f_t$ (elementwise)
-- If forget gate saturates near 1, gradient ≈ 1 (flows unchanged)
+- If forget gate saturates near 1, gradient $\approx 1$ (flows unchanged)
 - Creates "highway" for gradients to travel back through time
 - Contrast with RNN: $\frac{\partial h_t}{\partial h_{t-1}} = W^T \sigma'$ (repeated multiplication causes exponential decay)
 
@@ -108,15 +108,15 @@ Think: Cell state is internal memory, hidden state is what you share with others
 ### Why do transformers dominate over LSTMs in NLP today?
 
 1. **Parallelization**: LSTMs process sequentially (can't parallelize across time). Transformers process entire sequence in parallel → 10-100x faster training
-2. **Long-range dependencies**: Direct connections via attention (O(1) path) vs O(n) for LSTM
+2. **Long-range dependencies**: Direct connections via attention ($O(1)$ path) vs $O(n)$ for LSTM
 3. **No vanishing gradients**: Even with LSTM's improvements, very long sequences still degrade
 4. **Scalability**: Transformers scale better with data and compute
 5. **Transfer learning**: Pre-trained transformers (BERT, GPT) transfer extremely well
 
 ### When would you still use LSTM over transformer?
 
-1. **Streaming/online data**: Process one token at a time with O(1) memory (transformer needs full sequence)
-2. **Very long sequences**: O(n) memory vs O(n²) for transformer attention
+1. **Streaming/online data**: Process one token at a time with $O(1)$ memory (transformer needs full sequence)
+2. **Very long sequences**: $O(n)$ memory vs $O(n^2)$ for transformer attention
 3. **Edge deployment**: Lower memory footprint
 4. **Time series forecasting**: Inherently sequential data where recurrence is natural
 5. **Small datasets**: Less prone to overfitting than transformers
@@ -130,20 +130,20 @@ Think: Cell state is internal memory, hidden state is what you share with others
 $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
 
 Where:
-- $Q$ (queries): What we're looking for (n × d_k)
-- $K$ (keys): What we're matching against (m × d_k)
-- $V$ (values): What we retrieve (m × d_v)
-- Output: n × d_v weighted values
+- $Q$ (queries): What we're looking for ($n \times d_k$)
+- $K$ (keys): What we're matching against ($m \times d_k$)
+- $V$ (values): What we retrieve ($m \times d_v$)
+- Output: $n \times d_v$ weighted values
 
-### Why do we scale by √d_k?
+### Why do we scale by $\sqrt{d_k}$?
 
-Without scaling, dot products $QK^T$ grow large in magnitude as dimension $d_k$ increases (variance of dot product ∝ d_k).
+Without scaling, dot products $QK^T$ grow large in magnitude as dimension $d_k$ increases (variance of dot product $\propto d_k$).
 
 Large dot products → softmax saturates → extremely small gradients → training difficulties.
 
-Scaling by $\sqrt{d_k}$ keeps dot products in reasonable range (~N(0,1) if Q,K are normalized), ensuring softmax doesn't saturate.
+Scaling by $\sqrt{d_k}$ keeps dot products in reasonable range ($\sim \mathcal{N}(0,1)$ if $Q$, $K$ are normalized), ensuring softmax doesn't saturate.
 
-**Example**: If $d_k = 512$, dot products could be ±200+. After dividing by √512 ≈ 22.6, they're ~±10 (good range for softmax).
+**Example**: If $d_k = 512$, dot products could be $\pm 200+$. After dividing by $\sqrt{512} \approx 22.6$, they're $\sim \pm 10$ (good range for softmax).
 
 ### What are Q, K, V matrices and what do they represent?
 
@@ -155,18 +155,18 @@ Scaling by $\sqrt{d_k}$ keeps dot products in reasonable range (~N(0,1) if Q,K a
 **In attention**:
 - Compute compatibility: $QK^T$ (how well each query matches each key)
 - Get attention weights: softmax (which keys are most relevant)
-- Retrieve weighted values: multiply by V (get relevant information)
+- Retrieve weighted values: multiply by $V$ (get relevant information)
 
-All three are linear projections of input: $Q=XW^Q, K=XW^K, V=XW^V$
+All three are linear projections of input: $Q = XW^Q,\ K = XW^K,\ V = XW^V$
 
 ### Difference between self-attention and cross-attention?
 
-**Self-attention**: Q, K, V all come from **same sequence**
+**Self-attention**: $Q$, $K$, $V$ all come from **same sequence**
 - Each position attends to all positions in same sequence
 - Used in: Transformer encoder, decoder (masked)
 - Example: "The cat sat on the mat" - each word attends to all other words
 
-**Cross-attention**: Q from **one sequence**, K and V from **another**
+**Cross-attention**: $Q$ from **one sequence**, $K$ and $V$ from **another**
 - Decoder attends to encoder outputs
 - Used in: Encoder-decoder models (translation, captioning)
 - Example: Translation - French query attends to English keys/values
@@ -189,9 +189,9 @@ $$head_i = \text{Attention}(QW^Q_i, KW^K_i, VW^V_i)$$
 ### What's the computational complexity of attention? What's the bottleneck?
 
 **Time complexity**: $O(n^2 d)$
-- Compute $QK^T$: O(n² d_k)
-- Softmax: O(n²)
-- Multiply by V: O(n² d_v)
+- Compute $QK^T$: $O(n^2 d_k)$
+- Softmax: $O(n^2)$
+- Multiply by $V$: $O(n^2 d_v)$
 - Dominated by $n^2$ term
 
 **Space complexity**: $O(n^2)$ for attention matrix
@@ -206,16 +206,16 @@ $$head_i = \text{Attention}(QW^Q_i, KW^K_i, VW^V_i)$$
 ### How does attention compare to RNN for long-range dependencies?
 
 **Path length**:
-- **RNN**: O(n) - information flows sequentially through hidden states
-- **Attention**: O(1) - direct connection between any two positions
+- **RNN**: $O(n)$ - information flows sequentially through hidden states
+- **Attention**: $O(1)$ - direct connection between any two positions
 
 **Example**: Word at position 1 connecting to word at position 100:
 - RNN: Goes through 99 intermediate steps (information degrades)
 - Attention: Direct connection via attention weight
 
 **Trade-offs**:
-- Attention: Better at long-range, but O(n²) complexity
-- RNN: O(n) complexity, but struggles with long dependencies
+- Attention: Better at long-range, but $O(n^2)$ complexity
+- RNN: $O(n)$ complexity, but struggles with long dependencies
 
 This is why transformers revolutionized NLP - direct modeling of long-range dependencies.
 
@@ -286,7 +286,7 @@ Attention is **permutation-equivariant**: If you shuffle input tokens, you get s
 Without position info, "cat sat on mat" = "mat on sat cat" to the model.
 
 **Solutions**:
-- **Sinusoidal encoding**: $PE_{pos,2i} = \sin(pos/10000^{2i/d})$ - can extrapolate
+- **Sinusoidal encoding**: $PE_{pos,2i} = \sin\!\left(\frac{pos}{10000^{2i/d}}\right)$ - can extrapolate
 - **Learned embeddings**: Train position embeddings
 - **Relative positions**: T5, RoPE (modern approach)
 
@@ -318,14 +318,14 @@ Normalize before sublayer
 
 **Causal mask**: Prevents attending to **future positions**
 
-**Implementation**: Set attention scores to -∞ before softmax:
+**Implementation**: Set attention scores to $-\infty$ before softmax:
 ```
 mask[i,j] = 0 if i ≥ j else -∞
 ```
 
 **Why needed**:
 1. **Training-inference mismatch**: During generation, future tokens don't exist yet
-2. **Autoregressive property**: Model should predict $P(x_t | x_{<t})$, not $P(x_t | x_{all})$
+2. **Autoregressive property**: Model should predict $P(x_t | x_{<t})$, not $P(x_t | x_{\text{all}})$
 3. **Prevent cheating**: Without mask, model sees answers during training
 
 **Example** (4 tokens):
@@ -405,7 +405,7 @@ Without 10/10, model would only see [MASK] during pre-training but never during 
 **Core paradigm**: Update node representations by **aggregating information from neighbors**.
 
 **Framework**:
-$$h_v^{(k+1)} = \text{UPDATE}(h_v^{(k)}, \text{AGGREGATE}(\{h_u^{(k)} : u \in \mathcal{N}(v)\}))$$
+$$h_v^{(k+1)} = \text{UPDATE}\!\left(h_v^{(k)},\ \text{AGGREGATE}\!\left(\{h_u^{(k)} : u \in \mathcal{N}(v)\}\right)\right)$$
 
 **Three steps per layer**:
 1. **Message**: Each neighbor sends its representation
@@ -423,7 +423,7 @@ $$h_v^{(k+1)} = \text{UPDATE}(h_v^{(k)}, \text{AGGREGATE}(\{h_u^{(k)} : u \in \m
 
 **GCN** (Graph Convolutional Network):
 - **Aggregation**: Normalized mean (by degree)
-- **Formula**: $h_v = \sigma(W \sum_{u \in \mathcal{N}(v)} \frac{h_u}{\sqrt{|N(u)||N(v)||}})$
+- **Formula**: $h_v = \sigma\!\left(W \sum_{u \in \mathcal{N}(v)} \frac{h_u}{\sqrt{|\mathcal{N}(u)||\mathcal{N}(v)|}}\right)$
 - **Pros**: Simple, effective
 - **Cons**: Fixed weighting (all neighbors equal)
 
@@ -435,7 +435,7 @@ $$h_v^{(k+1)} = \text{UPDATE}(h_v^{(k)}, \text{AGGREGATE}(\{h_u^{(k)} : u \in \m
 
 **GAT** (Graph Attention):
 - **Aggregation**: Learned attention weights
-- **Formula**: $h_v = \sigma(\sum_{u} \alpha_{vu} W h_u)$ where $\alpha_{vu}$ are attention weights
+- **Formula**: $h_v = \sigma\!\left(\sum_{u} \alpha_{vu} W h_u\right)$ where $\alpha_{vu}$ are attention weights
 - **Pros**: Different neighbors have different importance
 - **Cons**: More parameters, slower
 
@@ -447,13 +447,13 @@ $$h_v^{(k+1)} = \text{UPDATE}(h_v^{(k)}, \text{AGGREGATE}(\{h_u^{(k)} : u \in \m
 
 **Why it happens**:
 - Each layer mixes node with neighbors
-- After k layers, node sees k-hop neighborhood
+- After $k$ layers, node sees $k$-hop neighborhood
 - In connected graph, all nodes eventually see entire graph
 - Representations become indistinguishable
 
 **Example**:
 - Layer 1: Nodes are different
-- Layer 10: All nodes ≈ same (graph-level average)
+- Layer 10: All nodes $\approx$ same (graph-level average)
 
 **Impact**: Can't distinguish nodes, lose local structure
 

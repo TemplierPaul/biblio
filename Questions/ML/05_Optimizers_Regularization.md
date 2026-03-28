@@ -37,15 +37,13 @@ optimizer = optim.SGD(
 ```
 
 **Update Rule**:
-```
-θ = θ - η × ∇L(θ)
-```
+
+$$\theta = \theta - \eta \nabla L(\theta)$$
 
 **With Momentum**:
-```
-v_t = β × v_{t-1} + ∇L(θ)
-θ = θ - η × v_t
-```
+
+$$v_t = \beta \cdot v_{t-1} + \nabla L(\theta)$$
+$$\theta = \theta - \eta \cdot v_t$$
 
 **Intuition**:
 - Basic: Follow negative gradient direction
@@ -73,10 +71,9 @@ optimizer = optim.Adagrad(
 ```
 
 **Update Rule**:
-```
-G_t = G_{t-1} + (∇L(θ))²
-θ = θ - (η / sqrt(G_t + ε)) × ∇L(θ)
-```
+
+$$G_t = G_{t-1} + (\nabla L(\theta))^2$$
+$$\theta = \theta - \frac{\eta}{\sqrt{G_t + \varepsilon}} \cdot \nabla L(\theta)$$
 
 **Intuition**:
 - Adapt learning rate for each parameter
@@ -103,10 +100,9 @@ optimizer = optim.RMSprop(
 ```
 
 **Update Rule**:
-```
-E[g²]_t = α × E[g²]_{t-1} + (1-α) × (∇L(θ))²
-θ = θ - (η / sqrt(E[g²]_t + ε)) × ∇L(θ)
-```
+
+$$\mathbb{E}[g^2]_t = \alpha \cdot \mathbb{E}[g^2]_{t-1} + (1-\alpha) \cdot (\nabla L(\theta))^2$$
+$$\theta = \theta - \frac{\eta}{\sqrt{\mathbb{E}[g^2]_t + \varepsilon}} \cdot \nabla L(\theta)$$
 
 **Intuition**:
 - Fixes AdaGrad's aggressive decay
@@ -135,15 +131,13 @@ optimizer = optim.Adam(
 ```
 
 **Update Rule**:
-```
-m_t = β₁ × m_{t-1} + (1-β₁) × ∇L(θ)        # 1st moment (mean)
-v_t = β₂ × v_{t-1} + (1-β₂) × (∇L(θ))²     # 2nd moment (variance)
 
-m̂_t = m_t / (1 - β₁^t)  # Bias correction
-v̂_t = v_t / (1 - β₂^t)
+$$m_t = \beta_1 \cdot m_{t-1} + (1-\beta_1) \cdot \nabla L(\theta) \quad \text{(1st moment — mean)}$$
+$$v_t = \beta_2 \cdot v_{t-1} + (1-\beta_2) \cdot (\nabla L(\theta))^2 \quad \text{(2nd moment — variance)}$$
 
-θ = θ - η × m̂_t / (sqrt(v̂_t) + ε)
-```
+$$\hat{m}_t = \frac{m_t}{1 - \beta_1^t} \qquad \hat{v}_t = \frac{v_t}{1 - \beta_2^t} \quad \text{(bias correction)}$$
+
+$$\theta = \theta - \eta \cdot \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \varepsilon}$$
 
 **Intuition**:
 - Combines momentum (1st moment) and RMSProp (2nd moment)
@@ -179,9 +173,8 @@ optimizer = optim.AdamW(
 - Better generalization
 
 **Update Rule**:
-```
-θ = θ - η × (m̂_t / (sqrt(v̂_t) + ε) + λ × θ)
-```
+
+$$\theta = \theta - \eta \left( \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \varepsilon} + \lambda \cdot \theta \right)$$
 
 **When to use**: Transformer models, modern deep learning (now preferred over Adam)
 
@@ -326,7 +319,7 @@ for epoch in range(epochs):
 
 **L2 Regularization (Ridge)**
 
-**Formula**: Loss_total = Loss_original + λ × ∑ᵢ wᵢ²
+**Formula**: $\mathcal{L}_\text{total} = \mathcal{L}_\text{original} + \lambda \sum_i w_i^2$
 
 ```python
 import torch.nn as nn
@@ -358,7 +351,7 @@ loss = loss_original + l2_lambda * l2_reg
 
 **L1 Regularization (Lasso)**
 
-**Formula**: Loss_total = Loss_original + λ × ∑ᵢ |wᵢ|
+**Formula**: $\mathcal{L}_\text{total} = \mathcal{L}_\text{original} + \lambda \sum_i |w_i|$
 
 ```python
 # L1 not directly supported in PyTorch optimizers
@@ -398,7 +391,7 @@ loss = loss_original + reg_loss
 
 | Aspect | L1 (Lasso) | L2 (Ridge) | Elastic Net |
 |--------|------------|------------|-------------|
-| Penalty | ∑\|w\| | ∑w² | α(ρ∑\|w\| + (1-ρ)∑w²) |
+| Penalty | $\sum\|w\|$ | $\sum w^2$ | $\alpha\bigl(\rho\sum\|w\| + (1-\rho)\sum w^2\bigr)$ |
 | Sparsity | Yes | No | Moderate |
 | Feature Selection | Yes | No | Yes |
 | Differentiable | No (at 0) | Yes | Mixed |

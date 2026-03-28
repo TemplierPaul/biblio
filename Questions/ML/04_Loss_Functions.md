@@ -55,7 +55,7 @@ Asymmetric L1 loss. Penalizes over/under-estimation differently.
 #### Q: What is Cross-Entropy Loss?
 **Formula**: $\mathcal{L} = -\sum y \log(\hat{y})$.
 Measures the difference between two probability distributions: the true labels $y$ and predicted probabilities $\hat{y}$.
-For **Binary** classification (Log Loss): $- (y \log(p) + (1-y) \log(1-p))$.
+For **Binary** classification (Log Loss): $-(y \log(p) + (1-y) \log(1-p))$.
 **Key Property**: Heavily penalizes **confident wrong predictions**.
 
 #### Q: Wait, isn't Binary Classification just Regression on probabilities?
@@ -68,7 +68,7 @@ For **Binary** classification (Log Loss): $- (y \log(p) + (1-y) \log(1-p))$.
 CE ($\hat{y}-y$) provides strong gradients even when the model is wrong. MSE gradients vanish when sigmoid/softmax saturates ("vanishing gradient problem"). CE minimizes KL divergence to the true distribution.
 
 #### Q: What is Focal Loss?
-$\text{FL} = -(1-p_t)^\gamma \log(p_t)$.
+$$\text{FL} = -(1-p_t)^\gamma \log(p_t)$$
 **Intuition**: Down-weights "easy" examples (where $p_t \approx 1$). Forces model to focus on hard, misclassified examples.
 **Use case**: Extreme class imbalance (e.g., Object Detection background vs. foreground).
 
@@ -117,18 +117,18 @@ $$\mathcal{L} = -\log \frac{\exp(\text{sim}(q, k_+)/\tau)}{\sum \exp(\text{sim}(
 ### Probabilistic (KL Divergence, ELBO)
 
 #### Q: What is KL Divergence?
-**Formula**: $D_{KL}(P || Q) = \sum P(x) \log \frac{P(x)}{Q(x)}$.
+**Formula**: $D_{KL}(P \| Q) = \sum P(x) \log \frac{P(x)}{Q(x)}$.
 **Intuition**: Measures strictly non-negative "distance" (not symmetric) between two distributions. 0 if identical.
 **Interpretation**: "How much information is lost when we approximate $P$ with $Q$?"
 
-#### Q: Forward ($P||Q$) vs Reverse ($Q||P$) KL?
+#### Q: Forward ($P\|Q$) vs Reverse ($Q\|P$) KL?
 *   **Forward KL (MLE)**: **Mode-covering**. "Don't assign 0 probability to data". Model $Q$ stretches to cover all modes of $P$.
 *   **Reverse KL**: **Mode-seeking**. "Don't put mass where data isn't". Model $Q$ collapses to a single mode. Used in **Variational Inference**.
 
 #### Q: Explain the VAE Loss (ELBO).
-$$\text{ELBO} = \text{Reconstruction} - \text{KL(Posterior || Prior)}$$
+$$\text{ELBO} = \text{Reconstruction} - \text{KL(Posterior} \| \text{Prior)}$$
 1.  **Reconstruct**: Make the output look like input.
-2.  **Regularize**: Keep latent space $z$ close to $N(0,1)$.
+2.  **Regularize**: Keep latent space $z$ close to $\mathcal{N}(0,1)$.
 **Issue**: **Posterior Collapse** (Decoder ignores $z$, just uses autoregresion). Fix with KL annealing or "free bits".
 
 ### GANs (WGAN, Adversarial)
@@ -142,7 +142,7 @@ Original GAN loss saturates if Discriminator is too good (vanishing gradients).
 
 #### Q: What does a Diffusion model optimize?
 **Simple answer**: MSE between **predicted noise** and **added noise**.
-$$\mathcal{L} = ||\epsilon - \epsilon_\theta(x_t, t)||^2$$
+$$\mathcal{L} = \|\epsilon - \epsilon_\theta(x_t, t)\|^2$$
 **Deep answer**: It learns the **Score Function** ($\nabla_x \log p(x)$) — the gradient pointing towards higher data density.
 
 #### Q: What is Flow Matching?
@@ -164,7 +164,7 @@ High variance. One lucky trajectory boosts all actions in it.
 
 #### Q: How does PPO work?
 **Clipped Objective**:
-$$\min(r_t A_t, \text{clip}(r_t, 1-\epsilon, 1+\epsilon) A_t)$$
+$$\min(r_t A_t,\ \text{clip}(r_t, 1-\varepsilon, 1+\varepsilon) A_t)$$
 Prevents the policy from changing too much in one step. If the update is too large, gradient is cut off. Stabilizes training.
 
 #### Q: Which alg to choose? (PPO vs SAC)

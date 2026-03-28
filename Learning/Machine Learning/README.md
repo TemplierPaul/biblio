@@ -230,6 +230,7 @@ Quick reference for neural architectures, training methods, and modern ML techni
 **For probability/statistics foundations, see Questions/ML/08_Probability_Statistics.md**
 **For mathematical foundations (optimization, linear algebra, VAE, GAN), see Questions/ML/11_Math_Foundations.md**
 **For detailed loss functions taxonomy and formulations, see Losses.md and Losses_detailed.md**
+**For backpropagation from scratch (chain rule, derivatives, full worked example), see Backpropagation.md**
 
 ---
 
